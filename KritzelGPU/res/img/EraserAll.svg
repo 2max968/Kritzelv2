@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<svg version="1.2" baseProfile="tiny" width="100mm" height="100mm" viewBox="0 0 10000 10000" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve">
+ <g visibility="visible" id="MasterSlide_1_Default">
+  <desc>Master slide
+  </desc>
+  <rect fill="none" stroke="none" x="0" y="0" width="10000" height="10000"/>
+ </g>
+ <g visibility="visible" id="Slide_1_page1">
+  <g>
+   <path fill="rgb(255,153,153)" stroke="none" d="M 3000,1500 C 2500,1500 2000,2000 2000,2500 L 2000,6500 C 2000,7000 2500,7501 3000,7501 L 7000,7501 C 7500,7501 8001,7000 8001,6500 L 8001,2500 C 8001,2000 7500,1500 7000,1500 L 3000,1500 Z"/>
+   <path fill="none" stroke="rgb(0,0,0)" id="Drawing_1_0" stroke-width="847" stroke-linejoin="round" d="M 3000,1500 C 2500,1500 2000,2000 2000,2500 L 2000,6500 C 2000,7000 2500,7501 3000,7501 L 7000,7501 C 7500,7501 8001,7000 8001,6500 L 8001,2500 C 8001,2000 7500,1500 7000,1500 L 3000,1500 Z"/>
+   <rect fill="none" stroke="none" x="2000" y="1500" width="6001" height="6001"/>
+  </g>
+  <g>
+   <defs>
+    <linearGradient id="Gradient_1" gradientUnits="userSpaceOnUse" x1="993" y1="8493" x2="9007" y2="8507">
+     <stop offset="0.4" stop-color="rgb(204,255,102)"/>
+     <stop offset="1" stop-color="rgb(43,87,0)"/>
+    </linearGradient>
+   </defs>
+   <path fill="url(#Gradient_1)" stroke="rgb(0,0,0)" id="Drawing_2_0" stroke-width="847" stroke-linejoin="round" d="M 5000,12250 L 1000,12250 1000,4750 9000,4750 9000,12250 5000,12250 Z"/>
+  </g>
+ </g>
+</svg>

@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Kritzelcast</title>
+		<style>
+		body{
+			background: #94ABB7;
+		}
+		#imgCanvas{
+			display: block;
+			box-shadow: 5px 5px 5px black;
+		}
+		</style>
+	</head>
+	<body>
+		<canvas id="imgCanvas"></canvas>
+		<div style="display:none;"><img id="imgContainer" src="/image" onLoad="loadImg();"/></div>
+
+		<script>
+			setInterval(function()
+			{
+				imgContainer.src = "/image?" + new Date().getTime();
+			}, 500);
+
+			function imgLoaded(imgElement) 
+			{
+				return imgElement.complete && imgElement.naturalHeight !== 0;
+			}
+
+			function loadImg()
+			{
+				//console.log("Width: " + this.width + "," + this.naturalWidth + "," + this.style.width);
+				console.log(imgContainer);
+				imgCanvas.style.width = getCookie("w") + "px";
+				imgCanvas.style.height = getCookie("h") + "px";
+				imgCanvas.width = getCookie("w");
+				imgCanvas.height = getCookie("h");
+				var context = imgCanvas.getContext("2d");
+				context.drawImage(imgContainer, 0, 0);
+			}
+
+			function getCookie(cname) 
+			{
+				var name = cname + "=";
+				var decodedCookie = decodeURIComponent(document.cookie);
+				var ca = decodedCookie.split(';');
+				for(var i = 0; i <ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+				}
+				return "";
+			}
+		</script>
+	</body>
+</html>

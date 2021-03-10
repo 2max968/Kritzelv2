@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="add.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg34"
+   version="1.1"
+   viewBox="0 0 26.458333 26.458333"
+   height="100"
+   width="100">
+  <defs
+     id="defs28" />
+  <sodipodi:namedview
+     inkscape:window-maximized="1"
+     inkscape:window-y="-11"
+     inkscape:window-x="97"
+     inkscape:window-height="1166"
+     inkscape:window-width="1692"
+     units="px"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer3"
+     inkscape:document-units="mm"
+     inkscape:cy="58.965213"
+     inkscape:cx="52.145782"
+     inkscape:zoom="5.6"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata31">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Ebene 1">
+    <rect
+       style="fill:#00ccff;stroke-width:0.435974;stroke:none"
+       id="rect36-6"
+       width="5.2916665"
+       height="21.166666"
+       x="10.583333"
+       y="2.6458333" />
+  </g>
+  <g
+     inkscape:label="Ebene 2"
+     id="layer3"
+     inkscape:groupmode="layer">
+    <rect
+       y="10.583333"
+       x="2.6458333"
+       height="5.2916665"
+       width="21.166666"
+       id="rect36"
+       style="fill:#80e5ff;stroke-width:0.435973;stroke:none" />
+  </g>
+</svg>

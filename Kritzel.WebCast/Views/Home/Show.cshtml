@@ -1,0 +1,37 @@
+﻿@model ShowViewModel
+
+@{ 
+    ViewData["Title"] = "Cast " + Model.Id;
+}
+
+<img src="/Image/@Model.Id" id="imgContainer"/>
+
+<script>
+    var id = "@Model.Id";
+    var version = -1;
+    var info;
+
+    function updateInfo() {
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                setTimeout(updateInfo, 500);
+                if (this.status == 200) {
+                    info = JSON.parse(this.responseText);
+                    if (info.version != undefined && info.version != version) {
+                        version = info.version;
+                        updateImage();
+                    }
+                }
+            }
+        }
+        req.open("get", "/Info/" + id);
+        req.send();
+    }
+
+    function updateImage() {
+        imgContainer.src = "/Image/" + id + "?" + version;
+    }
+
+    setTimeout(updateInfo, 500);
+</script>

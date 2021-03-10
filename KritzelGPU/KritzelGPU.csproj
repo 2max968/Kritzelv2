@@ -1,0 +1,657 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B5065B9D-B683-4505-8B7E-BEA2E615614F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Kritzel.Main</RootNamespace>
+    <AssemblyName>Kritzel</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetPlatformVersion>8.0</TargetPlatformVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>KritzelIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Fizzler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=4ebff4844e382110, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fizzler.1.2.0\lib\netstandard2.0\Fizzler.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\..\..\Desktop\Debug\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp-gdi">
+      <HintPath>..\lib\PdfSharp-gdi.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct2D1, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Direct2D1.4.2.0\lib\net45\SharpDX.Direct2D1.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.DXGI.4.2.0\lib\net45\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="Svg, Version=3.1.0.0, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
+      <HintPath>..\packages\Svg.3.1.1\lib\net452\Svg.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AA_TODO.cs" />
+    <Compile Include="Backgrounds\Background.cs" />
+    <Compile Include="Backgrounds\BackgroundPoints5mm.cs" />
+    <Compile Include="Backgrounds\BackgroundQuadPaper10mm.cs" />
+    <Compile Include="Backgrounds\BackgroundBorder.cs" />
+    <Compile Include="Backgrounds\BackgroundScore.cs" />
+    <Compile Include="Backgrounds\BackgroundQuadPaper5mm.cs" />
+    <Compile Include="Backgrounds\BackgroundRiledPaper15mm.cs" />
+    <Compile Include="Backgrounds\BackgroundRuledTitle15mm.cs" />
+    <Compile Include="BrushCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BrushCreator.Designer.cs">
+      <DependentUpon>BrushCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Colors.Cfg.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="CopyPaster.cs" />
+    <Compile Include="DebugInterface.cs" />
+    <Compile Include="Dialogues\BrushList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\BrushList.Designer.cs">
+      <DependentUpon>BrushList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\CastDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\CastDialog.Designer.cs">
+      <DependentUpon>CastDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\DebugSetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\DebugSetup.Designer.cs">
+      <DependentUpon>DebugSetup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\DPISetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\DPISetup.Designer.cs">
+      <DependentUpon>DPISetup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\ImageImporter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\ImageImporter.Designer.cs">
+      <DependentUpon>ImageImporter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\LayoutEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\LayoutEditor.Designer.cs">
+      <DependentUpon>LayoutEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\MsgBox.cs" />
+    <Compile Include="Dialogues\NewDocumentDialog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogues\NewDocumentDialog.Designer.cs">
+      <DependentUpon>NewDocumentDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\PageAdder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogues\PageAdder.Designer.cs">
+      <DependentUpon>PageAdder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\PageList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\PageList.Designer.cs">
+      <DependentUpon>PageList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\PDFImporter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\PDFImporter.Designer.cs">
+      <DependentUpon>PDFImporter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\ProgressWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\ProgressWindow.Designer.cs">
+      <DependentUpon>ProgressWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\SettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\SettingsDialog.Designer.cs">
+      <DependentUpon>SettingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\Sizes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\Sizes.Designer.cs">
+      <DependentUpon>Sizes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\TimingInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\TimingInfo.Designer.cs">
+      <DependentUpon>TimingInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\Translator.cs" />
+    <Compile Include="Forms\Arc.cs" />
+    <Compile Include="Forms\Arc2.cs" />
+    <Compile Include="Forms\IBackground.cs" />
+    <Compile Include="Forms\Marker.cs" />
+    <Compile Include="Forms\Rect.cs" />
+    <Compile Include="GUIElements\BackgroundSelectPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUIElements\BackgroundSelectPanel.Designer.cs">
+      <DependentUpon>BackgroundSelectPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\ColorDialog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUIElements\ColorDialog.Designer.cs">
+      <DependentUpon>ColorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\ColorPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUIElements\ColorPicker.Designer.cs">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\ColorpickerExtention.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUIElements\ColorpickerExtention.Designer.cs">
+      <DependentUpon>ColorpickerExtention.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\DialogPane.cs" />
+    <Compile Include="GUIElements\DialogPane.Designer.cs">
+      <DependentUpon>DialogPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\DocumentOverview.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUIElements\DocumentOverview.Designer.cs">
+      <DependentUpon>DocumentOverview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\FileMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUIElements\FileMenu.Designer.cs">
+      <DependentUpon>FileMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\GraphRenderer.cs" />
+    <Compile Include="GUIElements\IClosable.cs" />
+    <Compile Include="GUIElements\ItemSelector.cs" />
+    <Compile Include="GUIElements\KCheckBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUIElements\KCheckBox.Designer.cs">
+      <DependentUpon>KCheckBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\NumberFloatBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUIElements\PageOverview.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUIElements\PageOverview.Designer.cs">
+      <DependentUpon>PageOverview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\PenMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUIElements\PenMenu.Designer.cs">
+      <DependentUpon>PenMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\TListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HistoryManager.cs" />
+    <Compile Include="HSLColor.cs" />
+    <Compile Include="HTTPCast.cs" />
+    <Compile Include="InputMode.cs" />
+    <Compile Include="KDocument.cs" />
+    <Compile Include="KPage.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="Line.cs" />
+    <Compile Include="Forms\LinearLine.cs" />
+    <Compile Include="MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Matrix3x3.cs" />
+    <Compile Include="MatrixException.cs" />
+    <Compile Include="MatrixNxM.cs" />
+    <Compile Include="Measurement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Measurement.Designer.cs">
+      <DependentUpon>Measurement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MessageLog.cs" />
+    <Compile Include="MuPDF\PageRenderer.cs" />
+    <Compile Include="MuPDF\Structures.cs" />
+    <Compile Include="Native.cs" />
+    <Compile Include="PageFormat.cs" />
+    <Compile Include="PBrush.cs" />
+    <Compile Include="GUIElements\PickerMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUIElements\PickerMenu.Designer.cs">
+      <DependentUpon>PickerMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Renderer\Effects.cs" />
+    <Compile Include="Renderer\GdiRenderer.cs" />
+    <Compile Include="Renderer\GPURenderer.cs" />
+    <Compile Include="Renderer\GPURenderer3.cs" />
+    <Compile Include="Renderer\GPURenderer1.cs" />
+    <Compile Include="Renderer\GPURenderer2.cs" />
+    <Compile Include="Renderer\Image.cs" />
+    <Compile Include="Renderer\PdfRenderer.cs" />
+    <Compile Include="Renderer\RenderBitmap.cs" />
+    <Compile Include="Renderer\Renderer.cs" />
+    <Compile Include="ResManager.cs" />
+    <Compile Include="ScreenExtensions.cs" />
+    <Compile Include="ScreenObject\Compass.cs" />
+    <Compile Include="ScreenObject\Ruler.cs" />
+    <Compile Include="ScreenObject\BaseScreenObject.cs" />
+    <Compile Include="ScreenObject\Transformer.cs" />
+    <Compile Include="ScreenObject\TransformerRotate.cs" />
+    <Compile Include="ScreenObject\TransformerScale.cs" />
+    <Compile Include="ScreenObject\TransformerTranslate.cs" />
+    <Compile Include="Spline.cs" />
+    <Compile Include="Spline2D.cs" />
+    <Compile Include="GUIElements\InkControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FingerTransform.cs" />
+    <Compile Include="Style.cs" />
+    <Compile Include="TmpManager.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="WebCast.cs" />
+    <EmbeddedResource Include="BrushCreator.resx">
+      <DependentUpon>BrushCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\BrushList.resx">
+      <DependentUpon>BrushList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\CastDialog.resx">
+      <DependentUpon>CastDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\DebugSetup.resx">
+      <DependentUpon>DebugSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\DPISetup.resx">
+      <DependentUpon>DPISetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\ImageImporter.resx">
+      <DependentUpon>ImageImporter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\LayoutEditor.resx">
+      <DependentUpon>LayoutEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\NewDocumentDialog.resx">
+      <DependentUpon>NewDocumentDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\PageAdder.resx">
+      <DependentUpon>PageAdder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\PageList.resx">
+      <DependentUpon>PageList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\PDFImporter.resx">
+      <DependentUpon>PDFImporter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\ProgressWindow.resx">
+      <DependentUpon>ProgressWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\SettingsDialog.resx">
+      <DependentUpon>SettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\Sizes.resx">
+      <DependentUpon>Sizes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\TimingInfo.resx">
+      <DependentUpon>TimingInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\BackgroundSelectPanel.resx">
+      <DependentUpon>BackgroundSelectPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\ColorDialog.resx">
+      <DependentUpon>ColorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\ColorPicker.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\ColorpickerExtention.resx">
+      <DependentUpon>ColorpickerExtention.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\DocumentOverview.resx">
+      <DependentUpon>DocumentOverview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\FileMenu.resx">
+      <DependentUpon>FileMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\KCheckBox.resx">
+      <DependentUpon>KCheckBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\PenMenu.resx">
+      <DependentUpon>PenMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Measurement.resx">
+      <DependentUpon>Measurement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\PickerMenu.resx">
+      <DependentUpon>PickerMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.manifest" />
+    <None Include="pack.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="res\lang\ar.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="res\lang\de.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="res\lang\fr.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="res\lang\en.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Line.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Rect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="KritzelIcon.ico" />
+    <Content Include="res\img\actions.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\blank.cur">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\castActive.svg" />
+    <Content Include="res\img\actions\transMove.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\transRotate.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\transScale.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\EraserAll.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\EraserWhite.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\gui\down.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\gui\rotator.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\gui\scalator.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\gui\select.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\gui\translator.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\gui\up.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\tools\circ2.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\templates\LogEntry.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\templates\LogEntryAdditional.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\templates\LogHeader.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\web\Cast.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\web\Index.html" />
+    <None Include="Resources\feltpen_slT_icon.ico" />
+    <Content Include="res\img\actions\matchScreen.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\resetPosScale.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\resetRotation.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\euro.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\add.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="res\img\addPage.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\expand.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\feltpen.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\fullscreen.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\fullscreenEnd.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\hamburger.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\new.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\tools\circ.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\tools\compass.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\tools\line.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\tools\rect.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\tools\ruler.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\tools\stroke.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\pen2.png" />
+    <None Include="Resources\page.png" />
+    <None Include="Resources\Rotate.png" />
+    <None Include="Resources\Resize.png" />
+    <None Include="Resources\Move.png" />
+    <None Include="Resources\arrow_down.png" />
+    <None Include="Resources\arrow_up.png" />
+    <Content Include="MuPDFLib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="nativegl.dll" />
+    <Content Include="pen2_wOQ_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kritzel.GLRenderer\Kritzel.GLRenderer.csproj">
+      <Project>{7ef2a02b-c985-447e-a439-7fbab9d9cab2}</Project>
+      <Name>Kritzel.GLRenderer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kritzel.HTTPServer\Kritzel.HTTPServer.csproj">
+      <Project>{3466a4ab-4c36-48e3-964a-cab385b4169d}</Project>
+      <Name>Kritzel.HTTPServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kritzel.PointerInputLibrary\Kritzel.PointerInputLibrary.csproj">
+      <Project>{cb70de98-f535-4c66-b90f-7ad99179f2b1}</Project>
+      <Name>Kritzel.PointerInputLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>echo %25date%25, %25time%25 &gt; $(TargetDir)\res\buildtime.txt
+echo Platform: $(PlatformName) &gt; $(TargetDir)\res\buildinfo.txt
+echo Configuration: $(ConfigurationName) &gt;&gt; $(TargetDir)\res\buildinfo.txt
+echo Date: %25date%25 &gt;&gt; $(TargetDir)\res\buildinfo.txt
+echo Time: %25time%25 &gt;&gt; $(TargetDir)\res\buildinfo.txt</PostBuildEvent>
+  </PropertyGroup>
+</Project>

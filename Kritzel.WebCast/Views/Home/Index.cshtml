@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>View Kritzel Webcast</h1>
+
+<div class="text-center">
+    <input class="form-control col-4 d-inline" id="castId" placeholder="Casting ID" />
+    <input class="btn btn-primary" type="button" value="Join" onclick="join();" />
+</div>
+
+<script>
+    function join() {
+        var idName = castId.value;
+        window.location.href = "/Show/" + idName;
+    }
+</script>
