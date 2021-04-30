@@ -45,7 +45,10 @@ namespace Kritzel.Main
             ResManager.Init();
             MainLog.SetOutputFile(new FileInfo(ResManager.GetLogfileName()));
             MainLog.AddLong(0, MessageType.MSG, "Program started",
-                "args:\n" + string.Join("\n", Environment.GetCommandLineArgs()));
+                "current directory: " + Environment.CurrentDirectory
+                 + "\n\nargs:\n" + string.Join("\n", Environment.GetCommandLineArgs())
+                 + "\n\nfiles:\n" + string.Join("\n", Directory.GetFiles(".")));
+            MainLog.AddLong(0, MessageType.MSG, "Build info", ResManager.GetText("buildinfo.txt"));
 
             Configuration.StoreAsDefault();
             Configuration.LoadConfig();

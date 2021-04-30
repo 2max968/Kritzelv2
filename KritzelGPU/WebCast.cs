@@ -9,6 +9,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Diagnostics;
 
 namespace Kritzel.Main
 {
@@ -19,6 +20,8 @@ namespace Kritzel.Main
         static WebClient client;
         static InkControl control;
         static bool uploadFinished = true;
+        static bool downloadFinished = true;
+        static byte[] downloadedData = null;
         static Exception error = null;
 
         public static bool IsCasting { get; private set; } = false;
@@ -44,6 +47,15 @@ namespace Kritzel.Main
                 error = e.Error;
                 uploadFinished = true;
             };
+            client.DownloadDataCompleted += (object s, DownloadDataCompletedEventArgs e) =>
+            {
+                error = e.Error;
+                if (error == null)
+                    downloadedData = e.Result;
+                else
+                    downloadedData = new byte[] { (byte)'e', (byte)'r', (byte)'r', (byte)'o', (byte)'r' };
+                downloadFinished = true;
+            };
             //client.BaseAddress = new Uri($"{host}");
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             //client.DefaultRequestHeaders.Accept.Clear();
@@ -55,9 +67,28 @@ namespace Kritzel.Main
                 //var response = await client.GetAsync(uri);
                 //string text = await response.Content.ReadAsStringAsync();
                 string text = client.DownloadString(new Uri(uri));
+                
                 Program.MainLog.Add(MessageType.MSG, $"Response from Server: '{text}'");
                 if (!text.StartsWith("OK"))
                     return 1;
+            }
+            catch(WebException wex)
+            {
+                if(wex.Status == WebExceptionStatus.TrustFailure)
+                {
+                    Program.MainLog.Add(wex);
+                    if (Dialogues.MsgBox.ShowYesNo("Cast.web.trust"))
+                    {
+                        Program.MainLog.Add(MessageType.WARN, "Ignoring future Https certificate errors");
+                        ServicePointManager.ServerCertificateValidationCallback =
+                            new System.Net.Security.RemoteCertificateValidationCallback(delegate
+                            {
+                                return true;
+                            });
+                        return await StartCasting(host, castID, control);
+                    }
+                }
+                return 2;
             }
             catch(Exception ex)
             {
@@ -94,11 +125,14 @@ namespace Kritzel.Main
                 t.Start();
                 await t;
                 uploadFinished = false;
-                client.UploadDataAsync(new Uri($"{host}Load/{castId}"), "post", stream.ToArray());
+                string url = $"{host}Load/{castId}";
+                client.UploadDataAsync(new Uri(url), "post", stream.ToArray());
                 while(!uploadFinished)
                 {
                     await Task.Delay(10);
                 }
+                Program.MainLog.AddLong(0, MessageType.MSG, $"Uploading image",
+                        $"Url: {url}\nImageSize: {stream.Length}\nError: {error?.Message}");
                 stream.Close();
                 stream.Dispose();
                 if (error == null) return true;
@@ -110,17 +144,41 @@ namespace Kritzel.Main
         {
             error = null;
             uint version = uint.MaxValue;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             while(IsCasting)
             {
                 if(version != control.Page.Version)
                 {
                     version = control.Page.Version;
                     bool success = await UpdateImage(control.Page);
+                    timer.Restart();
                     if(!success)
                     {
+                        Program.MainLog.Add(MessageType.WARN, "Casting stopped by server");
                         IsCasting = false;
                         Dialogues.MsgBox.ShowOk(Language.GetText("Cast.web.close") + "\n" + error.Message);
                     }
+                }
+                else if(timer.ElapsedMilliseconds > 30000)
+                {
+                    downloadFinished = false;
+                    string url = $"{host}Update/{castId}";
+                    client.DownloadDataAsync(new Uri(url), "get");
+                    while(!downloadFinished)
+                    {
+                        await Task.Delay(10);
+                    }
+                    string result = Encoding.ASCII.GetString(downloadedData);
+                    Program.MainLog.AddLong(0, MessageType.MSG, $"Updating cast", 
+                        $"Url: {url}\nResponse: {result}\nError: {error?.Message}");
+                    if(result != "OK")
+                    {
+                        Program.MainLog.Add(MessageType.WARN, "Casting stopped by server: ", result);
+                        IsCasting = false;
+                        Dialogues.MsgBox.ShowOk(Language.GetText("Cast.web.close") + "\n" + error.Message);
+                    }
+                    timer.Restart();
                 }
                 await Task.Delay(500);
             }
@@ -128,6 +186,7 @@ namespace Kritzel.Main
 
         public static void StopCasting()
         {
+            Program.MainLog.Add(MessageType.MSG, "Casting stopped by user");
             IsCasting = false;
         }
     }

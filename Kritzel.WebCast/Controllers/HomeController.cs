@@ -108,7 +108,10 @@ namespace Kritzel.WebCast.Controllers
 
         public IActionResult Download()
         {
-            return View();
+            DownloadsViewModel model = new DownloadsViewModel();
+            DirectoryInfo dir = new DirectoryInfo("wwwroot/downloads");
+            model.Files = dir.GetFiles("*.exe", SearchOption.TopDirectoryOnly);
+            return View(model);
         }
 
         public IActionResult Update(string id)

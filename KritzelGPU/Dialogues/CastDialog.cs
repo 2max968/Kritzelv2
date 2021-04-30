@@ -33,6 +33,7 @@ namespace Kritzel.Main.Dialogues
             }
             lblCurrentIP.Text = Language.GetText("Cast.http.cip") + " " + localIP;
             lblCurrentIP.Tag = localIP;
+            tbWebId.Text = Util.GetUsername() + "-cast";
         }
 
         private void button1_Click(object sender, EventArgs e)
