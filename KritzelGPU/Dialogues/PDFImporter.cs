@@ -25,15 +25,32 @@ namespace Kritzel.Main.Dialogues
         {
             InitializeComponent();
             this.path = path;
+            loadPages(path);
+        }
 
-            Bitmap[] pages = PageRenderer.Render(path, imgPages.ImageSize.Height);
-            imgPages.Images.AddRange(pages);
-            for (int i = 0; i < pages.Length; i++)
+        private async void loadPages(string path)
+        {
+            using (PageRenderer pr = new PageRenderer(path))
             {
-                ListViewItem itm = new ListViewItem("Page " + (i + 1));
-                itm.ImageIndex = i;
-                itm.Checked = true;
-                lvPages.Items.Add(itm);
+                pbProgress.Maximum = pr.PageCount;
+                for (int i = 0; i < pr.PageCount; i++)
+                {
+                    ListViewItem itm = new ListViewItem("Page " + (i + 1));
+                    itm.ImageIndex = i;
+                    itm.Checked = true;
+                    lvPages.Items.Add(itm);
+                }
+                for(int i = 0; i < pr.PageCount; i++)
+                {
+                    Task<Bitmap> t = new Task<Bitmap>(() => pr.RenderPage(i, imgPages.ImageSize.Height));
+                    t.Start();
+                    imgPages.Images.Add(await t);
+                    pbProgress.Value++;
+                    lblProgress.Text = $"{i + 1}/{pr.PageCount}";
+                }
+                pnProgress.Hide();
+                btnCancel.Enabled = true;
+                btnOk.Enabled = true;
             }
         }
 

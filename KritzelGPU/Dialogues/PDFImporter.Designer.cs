@@ -35,6 +35,10 @@
             this.btnDeselect = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.pnProgress = new System.Windows.Forms.Panel();
+            this.pbProgress = new System.Windows.Forms.ProgressBar();
+            this.lblProgress = new System.Windows.Forms.Label();
+            this.pnProgress.SuspendLayout();
             this.SuspendLayout();
             // 
             // lvPages
@@ -83,6 +87,7 @@
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOk.Enabled = false;
             this.btnOk.Location = new System.Drawing.Point(621, 385);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(167, 53);
@@ -95,6 +100,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Enabled = false;
             this.btnCancel.Location = new System.Drawing.Point(448, 385);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(167, 53);
@@ -103,6 +109,36 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // pnProgress
+            // 
+            this.pnProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnProgress.Controls.Add(this.lblProgress);
+            this.pnProgress.Controls.Add(this.pbProgress);
+            this.pnProgress.Location = new System.Drawing.Point(12, 12);
+            this.pnProgress.Name = "pnProgress";
+            this.pnProgress.Size = new System.Drawing.Size(776, 64);
+            this.pnProgress.TabIndex = 5;
+            // 
+            // pbProgress
+            // 
+            this.pbProgress.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pbProgress.Location = new System.Drawing.Point(0, 0);
+            this.pbProgress.Name = "pbProgress";
+            this.pbProgress.Size = new System.Drawing.Size(776, 30);
+            this.pbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.pbProgress.TabIndex = 0;
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblProgress.Location = new System.Drawing.Point(0, 30);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(66, 20);
+            this.lblProgress.TabIndex = 1;
+            this.lblProgress.Text = "Loading";
+            // 
             // PDFImporter
             // 
             this.AcceptButton = this.btnOk;
@@ -110,6 +146,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.pnProgress);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnDeselect);
@@ -121,6 +158,8 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "PDFImporter";
+            this.pnProgress.ResumeLayout(false);
+            this.pnProgress.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -133,5 +172,8 @@
         private System.Windows.Forms.Button btnDeselect;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Panel pnProgress;
+        private System.Windows.Forms.ProgressBar pbProgress;
+        private System.Windows.Forms.Label lblProgress;
     }
 }

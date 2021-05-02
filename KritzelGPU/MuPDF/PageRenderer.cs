@@ -3,11 +3,51 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Imaging;
 using CC = System.Runtime.InteropServices.CallingConvention;
+using System.Collections.Generic;
 
 namespace MupdfSharp
 {
-	static class PageRenderer
+	public class PageRenderer : IDisposable
 	{
+		IntPtr ctx, stm, doc;
+		public int PageCount { get; private set; }
+
+		public PageRenderer(string path)
+        {
+			ctx = NativeMethods.NewContext(); // Creates the context
+			stm = NativeMethods.OpenFile(ctx, path); // opens file test.pdf as a stream
+			doc = NativeMethods.OpenDocumentStream(ctx, stm); // opens the document
+			PageCount = NativeMethods.CountPages(ctx, doc);
+		}
+
+		public Bitmap RenderPage(int index, int height)
+        {
+			Bitmap result = null;
+			try
+			{
+				IntPtr p = NativeMethods.LoadPage(ctx, doc, index); // loads the page (first page number is 0)
+				Rectangle b = NativeMethods.BoundPage(ctx, p); // gets the page size
+
+				float zoom = height / (float)(b.Bottom - b.Top);
+
+				result = RenderPage(ctx, doc, p, b, zoom);
+				NativeMethods.DropPage(ctx, p); // releases the resources consumed by the 
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+				if (result == null) result = new Bitmap(1, 1);
+			}
+			return result;
+		}
+
+		public void Dispose()
+		{
+			NativeMethods.DropDocument(ctx, doc); // releases the resources
+			NativeMethods.DropStream(ctx, stm);
+			NativeMethods.DropContext(ctx);
+		}
+
 		public static Bitmap[] Render(string path, int height, params int[] pageIndexes) {
 			IntPtr ctx = NativeMethods.NewContext (); // Creates the context
 			IntPtr stm = NativeMethods.OpenFile (ctx, path); // opens file test.pdf as a stream
@@ -114,7 +154,7 @@ namespace MupdfSharp
 			return bmp;
 		}
 
-		public enum ColorSpace
+        public enum ColorSpace
 		{
 			Rgb,
 			Bgr,
