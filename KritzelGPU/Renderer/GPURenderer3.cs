@@ -483,5 +483,10 @@ namespace Kritzel.Main.Renderer
         {
             GL.End();
         }
+
+        public override Matrix3x3 GetCurrentTransform()
+        {
+            return Transformation.Clone();
+        }
     }
 }

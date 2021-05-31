@@ -17,6 +17,11 @@ namespace Kritzel.Main
 {
     public partial class MainWindow : Form
     {
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SetClipboardViewer(IntPtr hWndNewViewer);
+        [DllImport("User32.dll")]
+        public static extern bool ChangeClipboardChain(IntPtr hWnd, IntPtr hWndNewNext);
+
         public delegate void Callback(Control dialog);
         public static MainWindow Instance { get; private set; } = null;
 
@@ -28,6 +33,8 @@ namespace Kritzel.Main
         KDocument doc = new KDocument();
         Bitmap icoFullscreen, icoFullscreenEnd;
         List<uint> autosavedList = new List<uint>();
+        IntPtr clipboardViewerNewNext;
+        Button[] sizeButtons;
 
         public InkControl inkControl1;
 
@@ -58,6 +65,16 @@ namespace Kritzel.Main
             btnShift.Image = ResManager.LoadIcon("actions/transMove.svg", Util.GetGUISize());
             btnScale.Image = ResManager.LoadIcon("actions/transScale.svg", Util.GetGUISize());
             btnRot.Image = ResManager.LoadIcon("actions/transRotate.svg", Util.GetGUISize());
+            btnBack.Image = ResManager.LoadIcon("actions/undo.svg", Util.GetGUISize());
+            btnForward.Image = ResManager.LoadIcon("actions/redo.svg", Util.GetGUISize());
+            btnDeletePage.Image = ResManager.LoadIcon("actions/delete.svg", Util.GetGUISize());
+            btnDeletePage.Text = "";
+            btnCopy.Image = ResManager.LoadIcon("actions/copy.svg", Util.GetGUISize());
+            btnCopy.Text = "";
+            btnPaste.Image = ResManager.LoadIcon("actions/paste.svg", Util.GetGUISize());
+            btnPaste.Text = "";
+            btnCut.Image = ResManager.LoadIcon("actions/cut.svg", Util.GetGUISize());
+            btnCut.Text = "";
             btnShift.Click += TransformButton_Click;
             btnScale.Click += TransformButton_Click;
             btnRot.Click += TransformButton_Click;
@@ -105,7 +122,35 @@ namespace Kritzel.Main
                 }
             }
 
+            sizeButtons = new Button[Configuration.PenSizeNum];
+            for (int i = 0; i < Configuration.PenSizeNum; i++)
+            {
+                float size = Configuration.PenSizeMin + i * (Configuration.PenSizeMax - Configuration.PenSizeMin) / (float)(Configuration.PenSizeNum - 1);
+                Button btnSize = new Button();
+                btnSize.FlatStyle = FlatStyle.Flat;
+                btnSize.FlatAppearance.BorderSize = 0;
+                btnSize.Size = new Size(Util.GetGUISize(), Util.GetGUISize());
+                btnSize.Dock = DockStyle.Right;
+                btnSize.Tag = size;
+                btnSize.Click += BtnSize_Click;
+                pnSizes.Controls.Add(btnSize);
+                sizeButtons[i] = btnSize;
+                Bitmap bmp = new Bitmap(Util.GetGUISize(), Util.GetGUISize());
+                float rad = (float)sizeButtons[i].Tag;
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    g.FillEllipse(Brushes.Black, new RectangleF(
+                        Util.GetGUISize() / 2 - rad, Util.GetGUISize() / 2 - rad,
+                        rad * 2, rad * 2));
+                }
+                btnSize.Image = bmp;
+            }
+            pnSizes.Width = Configuration.PenSizeNum * Util.GetGUISize();
+            pnSizes.Visible = Configuration.CalculateSplinesDuringDrawing;
+
             this.Shown += MainWindow_Shown;
+            inkControl1.SelectionChanged += InkControl1_SelectionChanged;
             Style.StyleChanged += Style_StyleChanged;
             Style_StyleChanged(null, Style.Default);
 
@@ -120,6 +165,30 @@ namespace Kritzel.Main
                 item.Text = Language.GetText(item.Text);
 
             this.KeyPreview = true;
+        }
+
+        private void BtnSize_Click(object sender, EventArgs e)
+        {
+            inkControl1.Thicknes = (float)((Button)sender).Tag;
+            Configuration.PenCurrentSize = inkControl1.Thicknes;
+            setSizeButton();
+        }
+
+        void setSizeButton()
+        {
+            for (int i = 0; i < sizeButtons.Length; i++)
+            {
+                float rad = (float)sizeButtons[i].Tag;
+                sizeButtons[i].BackColor = (rad == inkControl1.Thicknes)
+                    ? Style.Default.Selection : Style.Default.MenuBackground;
+            }
+        }
+
+        private void InkControl1_SelectionChanged(object sender, Line[] e)
+        {
+            bool viewButtons = e.Length > 0;
+            btnCopy.Visible = viewButtons;
+            btnCut.Visible = viewButtons;
         }
 
         private void TransformButton_Click(object sender, EventArgs e)
@@ -150,6 +219,11 @@ namespace Kritzel.Main
             btnFile.BackColor = btnFullscreen.BackColor = btnLayout.BackColor
                 = btnFormType.BackColor = e.MenuBackground;
             panelSide.BackColor = e.MenuBackground;
+            btnCopy.BackColor = btnPaste.BackColor = btnCut.BackColor
+                = btnBack.BackColor = btnForward.BackColor = e.MenuBackground;
+            colorPicker1.BackColor = e.MenuContrast;
+            pnSizes.BackColor = e.MenuBackground;
+            setSizeButton();
         }
 
         private void ColorPicker1_SetColor(Color c)
@@ -164,6 +238,7 @@ namespace Kritzel.Main
 
         private void MainWindow_Shown(object sender, EventArgs e)
         {
+            clipboardViewerNewNext = SetClipboardViewer(this.Handle);
             try
             {
                 inkControl1.InitRenderer();
@@ -193,6 +268,7 @@ namespace Kritzel.Main
             }
             if (!cancel)
             {
+                ChangeClipboardChain(this.Handle, clipboardViewerNewNext);
                 if (user)
                 {
                     var tempdir = TmpManager.GetTmpDir();
@@ -243,6 +319,7 @@ namespace Kritzel.Main
         private void Menu_SettingsClosed(object sender, int e)
         {
             panelSide.Dock = Configuration.LeftHanded ? DockStyle.Right : DockStyle.Left;
+            pnSizes.Visible = Configuration.SizeOptionsInTitlebar;
         }
 
         private void btnFormType_Click(object sender, EventArgs e)
@@ -258,9 +335,11 @@ namespace Kritzel.Main
                     case InkMode.Arc: btnFormType.BackgroundImage = Forms.Arc.BitmapArc;break;
                     case InkMode.Arc2: btnFormType.BackgroundImage = Forms.Arc2.BitmapArc2; break;
                     case InkMode.Marker: btnFormType.BackgroundImage = Forms.Marker.BitmapMarker;break;
+                    case InkMode.Text: btnFormType.BackgroundImage = Forms.TextBox.BitmapTB;break;
                     default: btnFormType.BackgroundImage = ResManager.GetErrorBmp(16,16); break;
                 }
                 inkControl1.InkMode = menu.Mode;
+                setSizeButton();
             });
         }
 
@@ -492,9 +571,50 @@ namespace Kritzel.Main
             base.OnKeyDown(e);
         }
 
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            inkControl1.Undo();
+        }
+
+        private void btnForward_Click(object sender, EventArgs e)
+        {
+            inkControl1.Redo();
+        }
+
+        private void btnPaste_Click(object sender, EventArgs e)
+        {
+            inkControl1.PasteSelection();
+        }
+
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            inkControl1.CopySelection();
+        }
+
         public KDocument GetDocument()
         {
             return doc;
+        }
+
+        private void btnCut_Click(object sender, EventArgs e)
+        {
+            inkControl1.CopySelection();
+            inkControl1.RemoveSelection();
+        }
+
+        private void colorPicker1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            uint WM_DRAWCLIPBOARD = 0x0308;
+            if(m.Msg == WM_DRAWCLIPBOARD)
+            {
+                btnPaste.Visible = CopyPaster.CheckClipboard();
+            }
+            base.WndProc(ref m);
         }
     }
 }

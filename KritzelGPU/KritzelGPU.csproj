@@ -213,6 +213,12 @@
     <Compile Include="Dialogues\Sizes.Designer.cs">
       <DependentUpon>Sizes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogues\TextBoxInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\TextBoxInput.Designer.cs">
+      <DependentUpon>TextBoxInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogues\TimingInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,8 +229,11 @@
     <Compile Include="Forms\Arc.cs" />
     <Compile Include="Forms\Arc2.cs" />
     <Compile Include="Forms\IBackground.cs" />
+    <Compile Include="Forms\ImageObject.cs" />
     <Compile Include="Forms\Marker.cs" />
     <Compile Include="Forms\Rect.cs" />
+    <Compile Include="Forms\TextBox.cs" />
+    <Compile Include="Forms\TransformableForm.cs" />
     <Compile Include="GUIElements\BackgroundSelectPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -348,6 +357,7 @@
     <Compile Include="ResManager.cs" />
     <Compile Include="ScreenExtensions.cs" />
     <Compile Include="ScreenObject\Compass.cs" />
+    <Compile Include="ScreenObject\ExtendedMenu.cs" />
     <Compile Include="ScreenObject\Ruler.cs" />
     <Compile Include="ScreenObject\BaseScreenObject.cs" />
     <Compile Include="ScreenObject\Transformer.cs" />
@@ -405,6 +415,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\Sizes.resx">
       <DependentUpon>Sizes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\TextBoxInput.resx">
+      <DependentUpon>TextBoxInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\TimingInfo.resx">
       <DependentUpon>TimingInfo.cs</DependentUpon>
@@ -491,6 +504,30 @@
     <Content Include="res\img\actions.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\img\actions\copy.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\cut.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\delete.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\matchScreen.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\resetPosScale.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\paste.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\redo.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\undo.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="res\img\blank.cur">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -505,10 +542,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\EraserAll.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\EraserWhite.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\gui\down.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -531,6 +568,15 @@
     <Content Include="res\img\tools\circ2.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\img\tools\photo.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\tools\text.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\tools\stroke.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="res\templates\LogEntry.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -545,12 +591,6 @@
     </Content>
     <Content Include="res\web\Index.html" />
     <None Include="Resources\feltpen_slT_icon.ico" />
-    <Content Include="res\img\actions\matchScreen.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="res\img\actions\resetPosScale.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="res\img\actions\resetRotation.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -595,9 +635,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\tools\ruler.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="res\img\tools\stroke.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\pen2.png" />

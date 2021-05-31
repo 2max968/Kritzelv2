@@ -283,5 +283,30 @@ namespace Kritzel.Main
             Matrix3x3 diff = mat2 - mat1;
             return mat1 + diff * t;
         }
+
+        public string StoreToString()
+        {
+            string[] texts = new string[6];
+            for (int i = 0; i < 6; i++)
+            {
+                texts[i] = Util.FToS(elements[i]);
+            }
+            return string.Join(",", texts);
+        }
+
+        public static Matrix3x3 LoadFromString(string text)
+        {
+            string[] parts = text.Split(',');
+            if(parts.Length == 6)
+            {
+                Matrix3x3 mat = new Matrix3x3();
+                for(int i = 0; i < 6; i++)
+                {
+                    mat.elements[i] = Util.SToF(parts[i]);
+                }
+                return mat;
+            }
+            return null;
+        }
     }
 }

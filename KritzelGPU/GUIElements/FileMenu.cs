@@ -28,6 +28,7 @@ namespace Kritzel.Main.GUIElements
         {
             InitializeComponent();
 
+            this.Font = new Font(this.Font.FontFamily, this.Font.Size * Util.GetScaleFactor());
             this.Width = 5 * Util.GetGUISize();
             this.control = control;
             this.document = document;

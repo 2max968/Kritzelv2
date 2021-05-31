@@ -20,6 +20,7 @@ namespace Kritzel.Main
 {
     public class KPage : IDisposable
     {
+        public event EventHandler<Line[]> SelectionChanged;
         public PageFormat Format;
         List<Line> lines;
         public int LineCount { get { return lines.Count; } }
@@ -102,6 +103,11 @@ namespace Kritzel.Main
                     xml.WriteStartElement("Line");
                     xml.WriteAttributeString("color", ColorTranslator.ToHtml(l.Brush.GetRawColor()));
                     xml.WriteAttributeString("type", l.GetType().FullName);
+                    if(l is Forms.TransformableForm)
+                    {
+                        var transformable = (Forms.TransformableForm)l;
+                        xml.WriteAttributeString("matrix", transformable.Transformation.StoreToString());
+                    }
                     xml.WriteAttributeString("params", l.ToParamString());
                     /*xml.WriteStartElement("Brush");
                     xml.WriteAttributeString("type", l.Brush.SType());
@@ -142,6 +148,16 @@ namespace Kritzel.Main
                                 line = t.GetConstructor(new Type[0]).Invoke(new object[0]) as Line;
                                 if (line != null)
                                 {
+                                    if(line is Forms.TransformableForm)
+                                    {
+                                        try
+                                        {
+                                            var strMat = xml.GetAttribute("matrix");
+                                            ((Forms.TransformableForm)line).Transformation
+                                                = Matrix3x3.LoadFromString(strMat);
+                                        }
+                                        catch (Exception) { }
+                                    }
                                     line.FromParamString(param);
                                     line.CalcSpline();
                                     line.CalculateBounds();
@@ -222,6 +238,7 @@ namespace Kritzel.Main
 
         public void SelectArea(PointF[] points)
         {
+            List<Line> selection = new List<Line>();
             lock (this)
             {
                 Deselect();
@@ -261,10 +278,13 @@ namespace Kritzel.Main
                             break;
                         }
                     }
+                    if (lines[i].Selected)
+                        selection.Add(lines[i]);
                 }
 
                 sBuffer.Dispose();
             }
+            SelectionChanged?.Invoke(this, selection.ToArray());
         }
 
         public void Deselect()
@@ -274,6 +294,7 @@ namespace Kritzel.Main
                 foreach (Line l in lines)
                     l.Selected = false;
             }
+            SelectionChanged?.Invoke(this, new Line[0]);
         }
 
         public void Dispose()
@@ -308,7 +329,11 @@ namespace Kritzel.Main
 
                 for (int i = 0; i < lines.Count; i++)
                 {
-                    if (!(lines[i] is Forms.IBackground))
+                    if(lines[i] is Forms.TransformableForm)
+                    {
+                        ((Forms.TransformableForm)lines[i]).RenderTransformed(r);
+                    }
+                    else if (!(lines[i] is Forms.IBackground))
                     {
                         lines[i].Render(r);
                         if (Configuration.ShowLineBoundingBoxes)
@@ -572,6 +597,11 @@ namespace Kritzel.Main
         public void ChangeDocument(KDocument doc)
         {
             this.document = doc;
+        }
+
+        public void RemoveSelectionChangedEventHandler()
+        {
+            SelectionChanged = null;
         }
     }
 }

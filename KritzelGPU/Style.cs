@@ -42,5 +42,11 @@ namespace Kritzel.Main
             Default = style;
             StyleChanged?.Invoke(style, style);
         }
+
+        public static void SetStyle()
+        {
+            var style = Configuration.DarkMode ? Style.DefaultDark : Style.DefaultLight;
+            SetStyle(style);
+        }
     }
 }

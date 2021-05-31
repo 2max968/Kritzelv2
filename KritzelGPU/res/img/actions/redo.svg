@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100"
+   height="100"
+   viewBox="0 0 26.458333 26.458334"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="redo.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="6.1447579"
+     inkscape:cx="43.603515"
+     inkscape:cy="55.552994"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1705"
+     inkscape:window-height="1166"
+     inkscape:window-x="84"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect1402"
+       style="fill:#800080;stroke-width:0.412618"
+       d="M 13.20178,18.520833 V 23.8125 H 8.1421395 L 2.6184457,18.520833 Z" />
+    <path
+       id="rect1402-1"
+       style="fill:#800080;stroke-width:0.583528"
+       d="m 18.179771,0.04702555 8.278564,5.13043605 -8.213452,5.2529094 -0.0155,-2.4928711 H 2.6184457 V 7.8858236 L 8.088396,2.6458333 h 10.107912 z" />
+    <rect
+       style="fill:#c300c3;fill-opacity:1;stroke-width:0.612615"
+       id="rect1419"
+       width="5.2916665"
+       height="10.583333"
+       x="-7.910111"
+       y="7.9375"
+       transform="scale(-1,1)" />
+  </g>
+</svg>

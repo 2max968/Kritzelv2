@@ -32,7 +32,7 @@ namespace Kritzel.Main.GUIElements
         public ItemSelector()
         {
             brushBgr = new SolidBrush(Style.Default.MenuBackground);
-            brushFg = new SolidBrush(Color.Black);
+            brushFg = new SolidBrush(Style.Default.MenuForeground);
             brushSel = new SolidBrush(Style.Default.Selection);
 
             this.Disposed += ItemSelector_Disposed;

@@ -99,6 +99,8 @@ namespace Kritzel.Main.Dialogues
                 pdf.PdfPage pPage = pdfdoc.Pages[p];
                 float w = (float)pPage.Width.Millimeter;
                 float h = (float)pPage.Height.Millimeter;
+                if(pPage.Rotate == 90 || pPage.Rotate == 270)
+                    Util.Swap(ref w, ref h);
                 page.Format = new PageFormat(w, h);
                 page.Background = null;
                 page.ShowDate = false;

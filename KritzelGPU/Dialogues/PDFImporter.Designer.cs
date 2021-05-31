@@ -36,8 +36,8 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.pnProgress = new System.Windows.Forms.Panel();
-            this.pbProgress = new System.Windows.Forms.ProgressBar();
             this.lblProgress = new System.Windows.Forms.Label();
+            this.pbProgress = new System.Windows.Forms.ProgressBar();
             this.pnProgress.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -120,15 +120,6 @@
             this.pnProgress.Size = new System.Drawing.Size(776, 64);
             this.pnProgress.TabIndex = 5;
             // 
-            // pbProgress
-            // 
-            this.pbProgress.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pbProgress.Location = new System.Drawing.Point(0, 0);
-            this.pbProgress.Name = "pbProgress";
-            this.pbProgress.Size = new System.Drawing.Size(776, 30);
-            this.pbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.pbProgress.TabIndex = 0;
-            // 
             // lblProgress
             // 
             this.lblProgress.AutoSize = true;
@@ -138,6 +129,15 @@
             this.lblProgress.Size = new System.Drawing.Size(66, 20);
             this.lblProgress.TabIndex = 1;
             this.lblProgress.Text = "Loading";
+            // 
+            // pbProgress
+            // 
+            this.pbProgress.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pbProgress.Location = new System.Drawing.Point(0, 0);
+            this.pbProgress.Name = "pbProgress";
+            this.pbProgress.Size = new System.Drawing.Size(776, 30);
+            this.pbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.pbProgress.TabIndex = 0;
             // 
             // PDFImporter
             // 

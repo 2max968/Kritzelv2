@@ -18,10 +18,11 @@ using System.Xml;
 
 namespace Kritzel.Main
 {
-    public enum InkMode { Pen, Line, Rect, Arc, Arc2, Marker };
+    public enum InkMode { Pen, Line, Rect, Arc, Arc2, Marker, Text };
 
     public class InkControl : PictureBox
     {
+        public event EventHandler<Line[]> SelectionChanged;
         KPage page = null;
         public KPage Page { get { return page; } }
         Line line = null;
@@ -487,6 +488,11 @@ namespace Kritzel.Main
                     //while (gpuRenderer.Drawing) ;
                     //Util.WaitTimeout(gpuRenderer, gpuRenderer.GetType().GetProperty("Drawing"), 500);
                     tmpLine = line;
+                    if (line is Forms.TextBox)
+                    {
+                        var input = new Dialogues.TextBoxInput((Forms.TextBox)line, this);
+                        input.Show();
+                    }
                     line = null;
                     linePoints = null;
                     recreateBufferFull();
@@ -536,6 +542,12 @@ namespace Kritzel.Main
                     line = new Forms.Marker();
                     line.Brush = Brush;
                     line.AddPoint(p[0].X, p[0].Y, line.CalcRad(pressure, Thicknes));
+                }
+                else if(InkMode == InkMode.Text)
+                {
+                    line = new Forms.TextBox();
+                    line.Brush = Brush;
+                    line.AddPoint(p[0].X, p[0].Y, 1);
                 }
             }
 
@@ -646,10 +658,17 @@ namespace Kritzel.Main
         {
             this.page?.OnHide();
             this.page?.BackgroundImage?.UnloadGPU();
+            this.page?.RemoveSelectionChangedEventHandler();
             this.page = page;
             this.page.OnShow(this);
             //ResetTransformation(true);
             RefreshPage();
+            this.page.SelectionChanged += Page_SelectionChanged;
+        }
+
+        private void Page_SelectionChanged(object sender, Line[] e)
+        {
+            SelectionChanged?.Invoke(this, e);
         }
 
         public void RefreshPage()
@@ -970,6 +989,7 @@ namespace Kritzel.Main
             Line[] lines = CopyPaster.PasteLines(page.GetHashCode());
             page.AddLines(lines);
             ShowSelectionMenu();
+            SelectionChanged.Invoke(this, lines);
             RefreshPage();
         }
 
@@ -998,14 +1018,14 @@ namespace Kritzel.Main
                     bso.Close = true;
 
             TransformerRotate rot = new TransformerRotate(this.page, this);
-            TransformerScale scalX = new TransformerScale(this.page, this, 0);
-            TransformerScale scalY = new TransformerScale(this.page, this, 90);
-            TransformerScale scalXY = new TransformerScale(this.page, this, 45);
-            TransformerTranslate trans = new TransformerTranslate(this.page, this, rot, scalX, scalY, scalXY);
+            //TransformerScale scalX = new TransformerScale(this.page, this, 0);
+            //TransformerScale scalY = new TransformerScale(this.page, this, 90);
+            //TransformerScale scalXY = new TransformerScale(this.page, this, 45);
+            TransformerTranslate trans = new TransformerTranslate(this.page, this, rot);
             ScreenObjects.Add(rot);
-            ScreenObjects.Add(scalX);
-            ScreenObjects.Add(scalY);
-            ScreenObjects.Add(scalXY);
+            //ScreenObjects.Add(scalX);
+            //ScreenObjects.Add(scalY);
+            //ScreenObjects.Add(scalXY);
             ScreenObjects.Add(trans);
         }
 

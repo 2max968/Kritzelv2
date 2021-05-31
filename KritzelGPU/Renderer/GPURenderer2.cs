@@ -18,6 +18,7 @@ namespace Kritzel.Main.Renderer
         float scaleF;
         Matrix scaleI, scaleT;
         Pen linePen = null;
+        Matrix3x3 currentTransform = new Matrix3x3();
 
         public GPURenderer2(System.Windows.Forms.Control cltr)
         {
@@ -106,19 +107,24 @@ namespace Kritzel.Main.Renderer
 
         public override void Transform(Matrix3x3 m)
         {
-            Matrix mat = m.CreateGdiMatrix();
+            /*Matrix mat = m.CreateGdiMatrix();
             g.MultiplyTransform(scaleI, MatrixOrder.Append);
             g.MultiplyTransform(mat, MatrixOrder.Append);
             g.MultiplyTransform(scaleT, MatrixOrder.Append);
-            mat.Dispose();
+            mat.Dispose();*/
+            currentTransform *= m;
+            g.Transform = currentTransform.CreateGdiMatrix();
+            g.MultiplyTransform(scaleT, MatrixOrder.Append);
         }
 
         public override void ResetTransform()
         {
-            Matrix tmp = g.Transform;
+            /*Matrix tmp = g.Transform;
             g.Transform = new Matrix();
             g.MultiplyTransform(scaleT, MatrixOrder.Prepend);
-            tmp.Dispose();
+            tmp.Dispose();*/
+            g.Transform = scaleT.Clone();
+            currentTransform = new Matrix3x3();
         }
 
         public override void DrawDashPolygon(PointF[] pts)
@@ -265,6 +271,11 @@ namespace Kritzel.Main.Renderer
         public override void EndRects()
         {
             r.EndRects();
+        }
+
+        public override Matrix3x3 GetCurrentTransform()
+        {
+            return currentTransform.Clone();
         }
     }
 }

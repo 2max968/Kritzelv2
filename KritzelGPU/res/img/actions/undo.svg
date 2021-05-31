@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100"
+   height="100"
+   viewBox="0 0 26.458333 26.458334"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="undo.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="6.1447579"
+     inkscape:cx="43.603515"
+     inkscape:cy="55.552994"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1705"
+     inkscape:window-height="1166"
+     inkscape:window-x="84"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect1402"
+       style="fill:#800080;stroke-width:1.5595"
+       d="M 50 70 L 50 90 L 69.123047 90 L 90 70 L 50 70 z "
+       transform="scale(0.26458333)" />
+    <path
+       id="rect1402-1"
+       style="fill:#800080;stroke-width:2.20546"
+       d="M 31.185547 0.17773438 L -0.10351562 19.568359 L 30.939453 39.421875 L 30.998047 30 L 90 30 L 90 29.804688 L 69.326172 10 L 31.123047 10 L 31.185547 0.17773438 z "
+       transform="scale(0.26458333)" />
+    <rect
+       style="fill:#c300c3;stroke-width:0.612615;fill-opacity:1"
+       id="rect1419"
+       width="5.2916665"
+       height="10.583333"
+       x="18.520834"
+       y="7.9375" />
+  </g>
+</svg>

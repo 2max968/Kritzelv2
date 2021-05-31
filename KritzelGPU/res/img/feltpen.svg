@@ -8,7 +8,7 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    sodipodi:docname="feltpen.svg"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
    id="svg8"
    version="1.1"
    viewBox="0 0 26.458333 26.458334"
@@ -18,18 +18,18 @@
      id="defs2" />
   <sodipodi:namedview
      inkscape:window-maximized="1"
-     inkscape:window-y="-8"
-     inkscape:window-x="-8"
-     inkscape:window-height="1017"
-     inkscape:window-width="1920"
+     inkscape:window-y="-11"
+     inkscape:window-x="84"
+     inkscape:window-height="1166"
+     inkscape:window-width="1705"
      units="px"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="89.983432"
-     inkscape:cx="58.351233"
-     inkscape:zoom="15.839192"
+     inkscape:cy="69.190222"
+     inkscape:cx="30.363633"
+     inkscape:zoom="5.6"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -79,6 +79,14 @@
        height="14.552083"
        width="13.758333"
        id="rect1448"
-       style="fill:#ffffff;stroke-width:0.291254;fill-opacity:1" />
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.291254" />
+    <rect
+       style="fill:#cbcbcb;fill-opacity:1;stroke-width:0.774665"
+       id="rect856"
+       width="5.5607734"
+       height="14.724009"
+       x="14.424718"
+       y="-1.5420885"
+       ry="1.4137943" />
   </g>
 </svg>

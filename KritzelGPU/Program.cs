@@ -52,7 +52,7 @@ namespace Kritzel.Main
 
             Configuration.StoreAsDefault();
             Configuration.LoadConfig();
-            Style.Default = Configuration.DarkMode ? Style.DefaultDark : Style.DefaultLight;
+            Style.SetStyle();
             ResManager.DeleteOldLogs(Configuration.NumberOfLogs);
             TmpManager.Init();
             Language.Init();

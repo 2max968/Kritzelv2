@@ -435,5 +435,20 @@ namespace Kritzel.Main
                 return HSLColor.InvertColor(input);
             return input;
         }
+
+        public static void Swap<T>(ref T a, ref T b)
+        {
+            T tmp = a;
+            a = b;
+            b = tmp;
+        }
+
+        public static SizeF MeasureString(string text, Font font)
+        {
+            using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
+            {
+                return g.MeasureString(text, font);
+            }
+        }
     }
 }

@@ -39,8 +39,8 @@ namespace Kritzel.Main.Renderer
         public abstract void BeginLines(gdi.Color c, float width);
         public abstract void BatchedLine(PointF p1, PointF p2);
         public abstract void EndLines();
-
         public abstract void Dispose();
+        public abstract Matrix3x3 GetCurrentTransform();
 
         public static GPURenderer Create(System.Windows.Forms.Control cltr)
         {

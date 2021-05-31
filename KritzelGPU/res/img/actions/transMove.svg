@@ -31,9 +31,9 @@
      inkscape:document-rotation="0"
      showgrid="false"
      units="px"
-     inkscape:window-width="1699"
+     inkscape:window-width="1705"
      inkscape:window-height="1166"
-     inkscape:window-x="90"
+     inkscape:window-x="84"
      inkscape:window-y="-11"
      inkscape:window-maximized="1" />
   <metadata
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -54,7 +54,7 @@
      id="layer1">
     <path
        id="rect835"
-       style="fill:#800080;stroke:none;stroke-width:1.75995;stroke-opacity:1"
+       style="fill:#00ccff;stroke:none;stroke-width:1.75995;stroke-opacity:1"
        d="M 50.384766 9 L 35.001953 33.578125 L 43.382812 33.695312 L 43.382812 43.380859 L 33.882812 43.380859 L 34 35 L 9 49.617188 L 33.578125 65 L 33.695312 56.619141 L 43.382812 56.619141 L 43.382812 66.164062 L 35 66.228516 L 50.15625 90.90625 L 65.001953 66 L 56.621094 66.064453 L 56.621094 56.619141 L 66.164062 56.619141 L 66.228516 65.001953 L 90.90625 49.845703 L 66 35 L 66.064453 43.380859 L 56.621094 43.380859 L 56.621094 33.882812 L 65.001953 34 L 50.384766 9 z "
        transform="scale(0.26458333)" />
   </g>

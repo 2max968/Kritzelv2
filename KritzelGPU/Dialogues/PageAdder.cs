@@ -19,10 +19,16 @@ namespace Kritzel.Main.Dialogues
         KDocument document;
         Dictionary<string, PageFormat> formats;
         List<KPage> pages = null;
+        private GUIElements.ItemSelector isPosition;
 
         public PageAdder(InkControl control, KDocument document)
         {
             InitializeComponent();
+
+            isPosition = new ItemSelector();
+            isPosition.Dock = DockStyle.Top;
+            Controls.Add(isPosition);
+            isPosition.SendToBack();
 
             this.control = control;
             this.document = document;
@@ -38,6 +44,13 @@ namespace Kritzel.Main.Dialogues
             var padding = this.Padding;
             padding.Top = Util.GetGUISize() / 2;
             this.Padding = padding;
+
+            this.BackColor = Style.Default.MenuBackground;
+            panelBottom.BackColor = Style.Default.MenuContrast;
+            this.ForeColor = Style.Default.MenuForeground;
+            comboBox1.BackColor = Style.Default.MenuContrast;
+            comboBox1.ForeColor = Style.Default.MenuForeground;
+            isPosition.ForeColor = Style.Default.MenuForeground;
 
             formats = PageFormat.GetFormats();
             foreach (var f in formats)

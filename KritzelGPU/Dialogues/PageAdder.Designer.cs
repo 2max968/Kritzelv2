@@ -36,7 +36,6 @@
             this.lblPDF2 = new System.Windows.Forms.Label();
             this.lblPDF1 = new System.Windows.Forms.Label();
             this.pbPDFIcon = new System.Windows.Forms.PictureBox();
-            this.isPosition = new Kritzel.Main.GUIElements.ItemSelector();
             this.panelBottom.SuspendLayout();
             this.pnPDF.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPDFIcon)).BeginInit();
@@ -46,10 +45,11 @@
             // 
             this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.ItemHeight = 55;
-            this.comboBox1.Location = new System.Drawing.Point(0, 181);
+            this.comboBox1.Location = new System.Drawing.Point(0, 0);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(436, 63);
             this.comboBox1.TabIndex = 0;
@@ -81,7 +81,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.linkLabel1.Location = new System.Drawing.Point(0, 329);
+            this.linkLabel1.Location = new System.Drawing.Point(0, 148);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(290, 37);
             this.linkLabel1.TabIndex = 6;
@@ -95,7 +95,7 @@
             this.pnPDF.Controls.Add(this.lblPDF1);
             this.pnPDF.Controls.Add(this.pbPDFIcon);
             this.pnPDF.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnPDF.Location = new System.Drawing.Point(0, 244);
+            this.pnPDF.Location = new System.Drawing.Point(0, 63);
             this.pnPDF.Name = "pnPDF";
             this.pnPDF.Size = new System.Drawing.Size(436, 85);
             this.pnPDF.TabIndex = 8;
@@ -131,17 +131,6 @@
             this.pbPDFIcon.TabIndex = 0;
             this.pbPDFIcon.TabStop = false;
             // 
-            // isPosition
-            // 
-            this.isPosition.Dock = System.Windows.Forms.DockStyle.Top;
-            this.isPosition.Items = new string[0];
-            this.isPosition.Location = new System.Drawing.Point(0, 0);
-            this.isPosition.Name = "isPosition";
-            this.isPosition.SelectedIndex = 0;
-            this.isPosition.Size = new System.Drawing.Size(436, 181);
-            this.isPosition.TabIndex = 7;
-            this.isPosition.Text = "isPosition";
-            // 
             // PageAdder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -151,7 +140,6 @@
             this.Controls.Add(this.pnPDF);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.panelBottom);
-            this.Controls.Add(this.isPosition);
             this.Name = "PageAdder";
             this.Size = new System.Drawing.Size(436, 608);
             this.panelBottom.ResumeLayout(false);
@@ -169,7 +157,6 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Panel panelBottom;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private GUIElements.ItemSelector isPosition;
         private System.Windows.Forms.Panel pnPDF;
         private System.Windows.Forms.Label lblPDF2;
         private System.Windows.Forms.Label lblPDF1;

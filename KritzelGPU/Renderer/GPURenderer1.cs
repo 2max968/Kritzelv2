@@ -465,5 +465,10 @@ namespace Kritzel.Main.Renderer
             circleBrush?.Dispose();
             circleBrush = null;
         }
+
+        public override Matrix3x3 GetCurrentTransform()
+        {
+            return currentTransform;
+        }
     }
 }

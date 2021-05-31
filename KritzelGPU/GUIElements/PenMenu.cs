@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kritzel.Main.ScreenObject;
+using System.IO;
 
 namespace Kritzel.Main.GUIElements
 {
@@ -27,6 +28,7 @@ namespace Kritzel.Main.GUIElements
             this.control = control;
             this.Mode = control.InkMode;
 
+            this.Font = new Font(this.Font.FontFamily, this.Font.Size * Util.GetScaleFactor());
             int guiSize = Util.GetGUISize();
             this.Width = guiSize * Configuration.PenSizeNum;
             panelBottom.Height = guiSize;
@@ -53,6 +55,8 @@ namespace Kritzel.Main.GUIElements
             btnStroke.Image = Line.BitmapStrk;
             btnRuler.Image = Ruler.Icon;
             btnCompass.Image = Compass.Icon;
+            btnTextBox.Image = Forms.TextBox.BitmapTB;
+            btnAddImage.Image = Forms.ImageObject.IconPhoto;
             if (control.EraserColor == Color.Transparent)
                 btnEraser.Image = bmpEraser;
             else
@@ -190,6 +194,32 @@ namespace Kritzel.Main.GUIElements
         {
             Mode = InkMode.Arc2;
             OnClose?.Invoke();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Mode = InkMode.Text;
+            OnClose?.Invoke();
+        }
+
+        private void btnAddImage_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Images|*.jpg;*.jpeg;*.png;*.bmp";
+            if(ofd.ShowDialog() == DialogResult.OK)
+            {
+                Renderer.Image img;
+                using (var stream = File.OpenRead(ofd.FileName))
+                {
+                    img = new Renderer.Image(new Bitmap(stream));
+                }
+                float s1 = control.Page.Format.Width / img.GdiBitmap.Width;
+                float s2 = control.Page.Format.Height / img.GdiBitmap.Height;
+                float s = Math.Min(s1, s2);
+                var imObj = new Forms.ImageObject(img, new RectangleF(0, 0, s * img.GdiBitmap.Width, s * img.GdiBitmap.Height));
+                control.Page.AddLine(imObj);
+                OnClose?.Invoke();
+            }
         }
     }
 }

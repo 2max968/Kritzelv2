@@ -38,6 +38,8 @@
             this.btnCompass = new System.Windows.Forms.Button();
             this.btnEraser = new System.Windows.Forms.Button();
             this.btnArc2 = new System.Windows.Forms.Button();
+            this.btnTextBox = new System.Windows.Forms.Button();
+            this.btnAddImage = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // panelBottom
@@ -45,7 +47,7 @@
             this.panelBottom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelBottom.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.panelBottom.Location = new System.Drawing.Point(0, 428);
+            this.panelBottom.Location = new System.Drawing.Point(0, 608);
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(322, 64);
             this.panelBottom.TabIndex = 0;
@@ -118,7 +120,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Teal;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 264);
+            this.panel1.Location = new System.Drawing.Point(0, 295);
             this.panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(322, 3);
@@ -130,7 +132,7 @@
             this.btnRuler.FlatAppearance.BorderSize = 0;
             this.btnRuler.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRuler.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRuler.Location = new System.Drawing.Point(0, 302);
+            this.btnRuler.Location = new System.Drawing.Point(0, 333);
             this.btnRuler.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnRuler.Name = "btnRuler";
             this.btnRuler.Size = new System.Drawing.Size(322, 35);
@@ -147,7 +149,7 @@
             this.btnCompass.FlatAppearance.BorderSize = 0;
             this.btnCompass.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCompass.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCompass.Location = new System.Drawing.Point(0, 267);
+            this.btnCompass.Location = new System.Drawing.Point(0, 298);
             this.btnCompass.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCompass.Name = "btnCompass";
             this.btnCompass.Size = new System.Drawing.Size(322, 35);
@@ -164,7 +166,7 @@
             this.btnEraser.FlatAppearance.BorderSize = 0;
             this.btnEraser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEraser.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEraser.Location = new System.Drawing.Point(0, 389);
+            this.btnEraser.Location = new System.Drawing.Point(0, 569);
             this.btnEraser.Name = "btnEraser";
             this.btnEraser.Size = new System.Drawing.Size(322, 39);
             this.btnEraser.TabIndex = 9;
@@ -190,23 +192,57 @@
             this.btnArc2.UseVisualStyleBackColor = true;
             this.btnArc2.Click += new System.EventHandler(this.btnArc2_Click);
             // 
+            // btnTextBox
+            // 
+            this.btnTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnTextBox.FlatAppearance.BorderSize = 0;
+            this.btnTextBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTextBox.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTextBox.Location = new System.Drawing.Point(0, 264);
+            this.btnTextBox.Name = "btnTextBox";
+            this.btnTextBox.Size = new System.Drawing.Size(322, 31);
+            this.btnTextBox.TabIndex = 11;
+            this.btnTextBox.Text = "Tool.text";
+            this.btnTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTextBox.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnTextBox.UseVisualStyleBackColor = true;
+            this.btnTextBox.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnAddImage
+            // 
+            this.btnAddImage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnAddImage.FlatAppearance.BorderSize = 0;
+            this.btnAddImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddImage.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddImage.Location = new System.Drawing.Point(0, 368);
+            this.btnAddImage.Name = "btnAddImage";
+            this.btnAddImage.Size = new System.Drawing.Size(322, 30);
+            this.btnAddImage.TabIndex = 12;
+            this.btnAddImage.Text = "Tool.addImage";
+            this.btnAddImage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddImage.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAddImage.UseVisualStyleBackColor = true;
+            this.btnAddImage.Click += new System.EventHandler(this.btnAddImage_Click);
+            // 
             // PenMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.btnAddImage);
             this.Controls.Add(this.btnEraser);
             this.Controls.Add(this.btnRuler);
             this.Controls.Add(this.btnCompass);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelBottom);
+            this.Controls.Add(this.btnTextBox);
             this.Controls.Add(this.btnArc2);
             this.Controls.Add(this.btnCircle);
             this.Controls.Add(this.btnRect);
             this.Controls.Add(this.btnLine);
             this.Controls.Add(this.btnStroke);
             this.Name = "PenMenu";
-            this.Size = new System.Drawing.Size(322, 492);
+            this.Size = new System.Drawing.Size(322, 672);
             this.ResumeLayout(false);
 
         }
@@ -223,5 +259,7 @@
         private System.Windows.Forms.Button btnCompass;
         private System.Windows.Forms.Button btnEraser;
         private System.Windows.Forms.Button btnArc2;
+        private System.Windows.Forms.Button btnTextBox;
+        private System.Windows.Forms.Button btnAddImage;
     }
 }

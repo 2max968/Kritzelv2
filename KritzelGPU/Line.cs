@@ -87,11 +87,11 @@ namespace Kritzel.Main
 
     public class Line
     {
-        public static readonly Bitmap BitmapStrk = ResManager.LoadIcon("tools/stroke.png", Util.GetGUISize());
+        public static readonly Bitmap BitmapStrk = ResManager.LoadIcon("tools/stroke.svg", Util.GetGUISize());
 
         public PBrush Brush { get; set; }
         public List<LPoint> Points { get; private set; } = new List<LPoint>();
-        RectangleF bounds = new RectangleF(0, 0, 0, 0);
+        protected RectangleF bounds = new RectangleF(0, 0, 0, 0);
         public int RenderPos { get; private set; } = 0;
         public Spline2D Spline { get; private set; } = null;
         public RectangleF Bounds
@@ -316,7 +316,7 @@ namespace Kritzel.Main
             return false;
         }
 
-        public void Transform(Matrix3x3 mat)
+        public virtual void Transform(Matrix3x3 mat)
         {
             for(int i = 0; i < Points.Count; i++)
             {

@@ -16,7 +16,7 @@ namespace Kritzel.Main.GUIElements
         List<Color> colors;
         ColorPicker parent;
 
-        public ColorpickerExtention(ColorPicker parent)
+        public ColorpickerExtention(ColorPicker parent, Color? selectedColor)
         {
             InitializeComponent();
 
@@ -34,7 +34,8 @@ namespace Kritzel.Main.GUIElements
                 int y = (i / wNum) * Util.GetGUISize();
                 Button btn = new Button();
                 btn.FlatStyle = FlatStyle.Flat;
-                btn.BackColor = Color.White;
+                btn.BackColor = (colors[i] == selectedColor) 
+                    ? Style.Default.Selection : Style.Default.MenuBackground;
                 btn.FlatAppearance.BorderSize = 0;
                 btn.BackgroundImage = parent.createIcon(colors[i]);
                 btn.Bounds = new Rectangle(x, y, Util.GetGUISize(), Util.GetGUISize());
@@ -42,6 +43,8 @@ namespace Kritzel.Main.GUIElements
                 btn.Tag = colors[i];
                 Controls.Add(btn);
             }
+
+            this.BackColor = Style.Default.MenuBackground;
         }
 
         public void AddCloseHandler(CloseDelegate handler)

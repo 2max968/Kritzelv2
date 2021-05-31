@@ -61,6 +61,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbLefthand = new System.Windows.Forms.CheckBox();
             this.cbDarkMode = new System.Windows.Forms.CheckBox();
+            this.cbShowPenSizes = new System.Windows.Forms.CheckBox();
             this.pnBottom.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -278,6 +279,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.cbShowPenSizes);
             this.tabPage3.Controls.Add(this.groupBox1);
             this.tabPage3.Controls.Add(this.cbCalcSpline);
             this.tabPage3.Controls.Add(this.cbRefreshTransform);
@@ -471,6 +473,17 @@
             this.cbDarkMode.Text = "Settings.darkMode";
             this.cbDarkMode.UseVisualStyleBackColor = true;
             // 
+            // cbShowPenSizes
+            // 
+            this.cbShowPenSizes.AutoSize = true;
+            this.cbShowPenSizes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbShowPenSizes.Location = new System.Drawing.Point(3, 336);
+            this.cbShowPenSizes.Name = "cbShowPenSizes";
+            this.cbShowPenSizes.Size = new System.Drawing.Size(786, 33);
+            this.cbShowPenSizes.TabIndex = 10;
+            this.cbShowPenSizes.Text = "Settings.showPenSizesInTitlebar";
+            this.cbShowPenSizes.UseVisualStyleBackColor = true;
+            // 
             // SettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -538,5 +551,6 @@
         private System.Windows.Forms.CheckBox cbLefthand;
         private System.Windows.Forms.TextBox tbConfPath;
         private System.Windows.Forms.CheckBox cbDarkMode;
+        private System.Windows.Forms.CheckBox cbShowPenSizes;
     }
 }

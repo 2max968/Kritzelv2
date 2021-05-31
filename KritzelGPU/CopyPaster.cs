@@ -77,5 +77,11 @@ namespace Kritzel.Main
 
             return ret.ToArray();
         }
+
+        public static bool CheckClipboard()
+        {
+            string text = PasteString();
+            return text.StartsWith(LineID);
+        }
     }
 }

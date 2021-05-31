@@ -27,6 +27,7 @@ namespace Kritzel.Main.GUIElements
         Bitmap feltpen;
         Panel buttonContainer = null;
         bool enabled = true;
+        Color? selectedColor = null;
 
         public ColorPicker()
         {
@@ -68,6 +69,7 @@ namespace Kritzel.Main.GUIElements
                 buttonContainer.BackColor = e.MenuBackground;
             }
             this.BackColor = e.MenuContrast;
+            refresh(true);
         }
 
         private void ColorPicker_Resize(object o, EventArgs e)
@@ -167,6 +169,8 @@ namespace Kritzel.Main.GUIElements
                 btn.FlatStyle = FlatStyle.Flat;
                 btn.MouseUp += Btn_MouseClick;
                 btn.FlatAppearance.BorderSize = 0;
+                if (colors[i] == selectedColor)
+                    btn.BackColor = Style.Default.Selection;
                 buttonContainer.Controls.Add(btn);
             }
             Controls.Add(buttonContainer);
@@ -196,6 +200,7 @@ namespace Kritzel.Main.GUIElements
                         }
                         btn.BackColor = Style.Default.Selection;
                         SetColor?.Invoke(c);
+                        selectedColor = c;
                     }
                 }
                 else if(e.Button == MouseButtons.Right)
@@ -227,7 +232,7 @@ namespace Kritzel.Main.GUIElements
 
         private void btnExpand_Click(object sender, EventArgs e)
         {
-            ColorpickerExtention cpe = new ColorpickerExtention(this);
+            ColorpickerExtention cpe = new ColorpickerExtention(this, selectedColor);
             MainWindow.Instance.OpenDialog(cpe);
         }
 
@@ -270,6 +275,8 @@ namespace Kritzel.Main.GUIElements
 
         public void SetColorExtern(Color c)
         {
+            selectedColor = c;
+            refresh(true);
             SetColor?.Invoke(c);
         }
     }

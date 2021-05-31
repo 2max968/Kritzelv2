@@ -68,6 +68,7 @@ namespace Kritzel.Main.Dialogues
             cbDate.Checked = Configuration.ShowDate;
             cbLefthand.Checked = Configuration.LeftHanded;
             cbDarkMode.Checked = Configuration.DarkMode;
+            cbShowPenSizes.Checked = Configuration.SizeOptionsInTitlebar;
 
             Translator.Translate(this);
             Configuration.SetState();
@@ -103,9 +104,11 @@ namespace Kritzel.Main.Dialogues
             Configuration.ShowDate = cbDate.Checked;
             Configuration.LeftHanded = cbLefthand.Checked;
             Configuration.DarkMode = cbDarkMode.Checked;
+            Configuration.SizeOptionsInTitlebar = cbShowPenSizes.Checked;
 
             Configuration.SaveConfig();
             Language.SelectLanguage();
+            Style.SetStyle();
 
             string rsConf;
             if(Configuration.CheckRestart(out rsConf))

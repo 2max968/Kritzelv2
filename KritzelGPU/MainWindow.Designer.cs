@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             this.panelTop = new System.Windows.Forms.Panel();
             this.panelTopMid = new System.Windows.Forms.Panel();
+            this.colorPicker1 = new Kritzel.Main.GUIElements.ColorPicker();
+            this.pnSizes = new System.Windows.Forms.Panel();
             this.panelTopRight = new System.Windows.Forms.Panel();
             this.btnFormType = new System.Windows.Forms.Button();
             this.btnLayout = new System.Windows.Forms.Button();
@@ -64,12 +66,16 @@
             this.btnScale = new System.Windows.Forms.Button();
             this.btnShift = new System.Windows.Forms.Button();
             this.panelPageControl = new System.Windows.Forms.Panel();
+            this.btnDeletePage = new System.Windows.Forms.Button();
             this.btnPageDown = new System.Windows.Forms.Button();
             this.btnPageSelect = new System.Windows.Forms.Button();
             this.btnPageUp = new System.Windows.Forms.Button();
             this.pnInkControlContainer = new System.Windows.Forms.Panel();
-            this.btnDeletePage = new System.Windows.Forms.Button();
-            this.colorPicker1 = new Kritzel.Main.GUIElements.ColorPicker();
+            this.btnCut = new System.Windows.Forms.Button();
+            this.btnCopy = new System.Windows.Forms.Button();
+            this.btnPaste = new System.Windows.Forms.Button();
+            this.btnBack = new System.Windows.Forms.Button();
+            this.btnForward = new System.Windows.Forms.Button();
             this.panelTop.SuspendLayout();
             this.panelTopMid.SuspendLayout();
             this.panelTopRight.SuspendLayout();
@@ -81,6 +87,7 @@
             this.panelMovePage.SuspendLayout();
             this.panelTransform.SuspendLayout();
             this.panelPageControl.SuspendLayout();
+            this.pnInkControlContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
@@ -98,11 +105,30 @@
             // panelTopMid
             // 
             this.panelTopMid.Controls.Add(this.colorPicker1);
+            this.panelTopMid.Controls.Add(this.pnSizes);
             this.panelTopMid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelTopMid.Location = new System.Drawing.Point(64, 0);
             this.panelTopMid.Name = "panelTopMid";
             this.panelTopMid.Size = new System.Drawing.Size(582, 64);
             this.panelTopMid.TabIndex = 2;
+            // 
+            // colorPicker1
+            // 
+            this.colorPicker1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colorPicker1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.colorPicker1.Location = new System.Drawing.Point(0, 0);
+            this.colorPicker1.Name = "colorPicker1";
+            this.colorPicker1.Size = new System.Drawing.Size(388, 64);
+            this.colorPicker1.TabIndex = 0;
+            this.colorPicker1.Load += new System.EventHandler(this.colorPicker1_Load);
+            // 
+            // pnSizes
+            // 
+            this.pnSizes.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnSizes.Location = new System.Drawing.Point(388, 0);
+            this.pnSizes.Name = "pnSizes";
+            this.pnSizes.Size = new System.Drawing.Size(194, 64);
+            this.pnSizes.TabIndex = 1;
             // 
             // panelTopRight
             // 
@@ -187,6 +213,7 @@
             this.btnFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnFile.Dock = System.Windows.Forms.DockStyle.Left;
             this.btnFile.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnFile.FlatAppearance.BorderSize = 0;
             this.btnFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnFile.Location = new System.Drawing.Point(0, 0);
             this.btnFile.Name = "btnFile";
@@ -434,6 +461,19 @@
             this.panelPageControl.Size = new System.Drawing.Size(78, 192);
             this.panelPageControl.TabIndex = 11;
             // 
+            // btnDeletePage
+            // 
+            this.btnDeletePage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnDeletePage.FlatAppearance.BorderSize = 0;
+            this.btnDeletePage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDeletePage.Location = new System.Drawing.Point(0, 141);
+            this.btnDeletePage.Name = "btnDeletePage";
+            this.btnDeletePage.Size = new System.Drawing.Size(78, 51);
+            this.btnDeletePage.TabIndex = 14;
+            this.btnDeletePage.Text = "Delete";
+            this.btnDeletePage.UseVisualStyleBackColor = true;
+            this.btnDeletePage.Click += new System.EventHandler(this.btnDeletePage_Click);
+            // 
             // btnPageDown
             // 
             this.btnPageDown.Dock = System.Windows.Forms.DockStyle.Top;
@@ -475,32 +515,71 @@
             // 
             // pnInkControlContainer
             // 
+            this.pnInkControlContainer.Controls.Add(this.btnCut);
+            this.pnInkControlContainer.Controls.Add(this.btnCopy);
+            this.pnInkControlContainer.Controls.Add(this.btnPaste);
+            this.pnInkControlContainer.Controls.Add(this.btnBack);
+            this.pnInkControlContainer.Controls.Add(this.btnForward);
             this.pnInkControlContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnInkControlContainer.Location = new System.Drawing.Point(78, 64);
             this.pnInkControlContainer.Name = "pnInkControlContainer";
             this.pnInkControlContainer.Size = new System.Drawing.Size(760, 505);
             this.pnInkControlContainer.TabIndex = 11;
             // 
-            // btnDeletePage
+            // btnCut
             // 
-            this.btnDeletePage.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnDeletePage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDeletePage.Location = new System.Drawing.Point(0, 141);
-            this.btnDeletePage.Name = "btnDeletePage";
-            this.btnDeletePage.Size = new System.Drawing.Size(78, 51);
-            this.btnDeletePage.TabIndex = 14;
-            this.btnDeletePage.Text = "Delete";
-            this.btnDeletePage.UseVisualStyleBackColor = true;
-            this.btnDeletePage.Click += new System.EventHandler(this.btnDeletePage_Click);
+            this.btnCut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCut.Location = new System.Drawing.Point(168, 6);
+            this.btnCut.Name = "btnCut";
+            this.btnCut.Size = new System.Drawing.Size(75, 75);
+            this.btnCut.TabIndex = 4;
+            this.btnCut.Text = "Cut";
+            this.btnCut.UseVisualStyleBackColor = true;
+            this.btnCut.Click += new System.EventHandler(this.btnCut_Click);
             // 
-            // colorPicker1
+            // btnCopy
             // 
-            this.colorPicker1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colorPicker1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.colorPicker1.Location = new System.Drawing.Point(0, 0);
-            this.colorPicker1.Name = "colorPicker1";
-            this.colorPicker1.Size = new System.Drawing.Size(582, 64);
-            this.colorPicker1.TabIndex = 0;
+            this.btnCopy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCopy.Location = new System.Drawing.Point(87, 6);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(75, 75);
+            this.btnCopy.TabIndex = 3;
+            this.btnCopy.Text = "Copy";
+            this.btnCopy.UseVisualStyleBackColor = true;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
+            // btnPaste
+            // 
+            this.btnPaste.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPaste.Location = new System.Drawing.Point(6, 6);
+            this.btnPaste.Name = "btnPaste";
+            this.btnPaste.Size = new System.Drawing.Size(75, 75);
+            this.btnPaste.TabIndex = 2;
+            this.btnPaste.Text = "Paste";
+            this.btnPaste.UseVisualStyleBackColor = true;
+            this.btnPaste.Click += new System.EventHandler(this.btnPaste_Click);
+            // 
+            // btnBack
+            // 
+            this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBack.Location = new System.Drawing.Point(592, 6);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(75, 75);
+            this.btnBack.TabIndex = 1;
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
+            // btnForward
+            // 
+            this.btnForward.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnForward.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnForward.Location = new System.Drawing.Point(673, 6);
+            this.btnForward.Name = "btnForward";
+            this.btnForward.Size = new System.Drawing.Size(75, 75);
+            this.btnForward.TabIndex = 0;
+            this.btnForward.UseVisualStyleBackColor = true;
+            this.btnForward.Click += new System.EventHandler(this.btnForward_Click);
             // 
             // MainWindow
             // 
@@ -528,6 +607,7 @@
             this.panelMovePage.ResumeLayout(false);
             this.panelTransform.ResumeLayout(false);
             this.panelPageControl.ResumeLayout(false);
+            this.pnInkControlContainer.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -575,5 +655,11 @@
         private System.Windows.Forms.Button btnResetRotation;
         private System.Windows.Forms.Panel pnInkControlContainer;
         private System.Windows.Forms.Button btnDeletePage;
+        private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.Button btnForward;
+        private System.Windows.Forms.Button btnCopy;
+        private System.Windows.Forms.Button btnPaste;
+        private System.Windows.Forms.Button btnCut;
+        private System.Windows.Forms.Panel pnSizes;
     }
 }
