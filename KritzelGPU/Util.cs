@@ -24,6 +24,10 @@ namespace Kritzel.Main
 
         public delegate void DelayedAction();
 
+        [DllImport("shell32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool IsUserAnAdmin();
+
         public static RectangleF CreateRect(PointF p1, PointF p2)
         {
             RectangleF rect = new RectangleF(p1.X, p1.Y, p2.X - p1.X, p2.Y - p1.Y);

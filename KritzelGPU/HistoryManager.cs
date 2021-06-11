@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using frm = System.Windows.Forms;
 
 namespace Kritzel.Main
 {
@@ -24,6 +26,8 @@ namespace Kritzel.Main
 
         static Dictionary<KPage, History> history = new Dictionary<KPage, History>();
         static Dictionary<KPage, int> versions = new Dictionary<KPage, int>();
+        static frm.Control btnUndo = null;
+        static frm.Control btnRedo = null;
 
         public static void StoreState(KPage page)
         {
@@ -42,6 +46,7 @@ namespace Kritzel.Main
             };
             history[page].Versions.Add(entry);
             history[page].Current++;
+            SetButtonVisibility(page);
         }
 
         public static bool Undo(KPage page)
@@ -50,6 +55,7 @@ namespace Kritzel.Main
             if (history[page].Current <= 0) return false;
 
             page.LoadFromString(E.GetString(history[page].Versions[--history[page].Current].Data), Program.MainLog);
+            SetButtonVisibility(page);
             return true;
         }
 
@@ -59,7 +65,21 @@ namespace Kritzel.Main
             if (history[page].Current >= history[page].Versions.Count - 1) return false;
 
             page.LoadFromString(E.GetString(history[page].Versions[++history[page].Current].Data), Program.MainLog);
+            SetButtonVisibility(page);
             return true;
+        }
+
+        public static void RegisterHistoryButtons(frm.Control btnUndo, frm.Control btnRedo)
+        {
+            HistoryManager.btnUndo = btnUndo;
+            HistoryManager.btnRedo = btnRedo;
+        }
+
+        public static void SetButtonVisibility(KPage page)
+        {
+            if (!history.ContainsKey(page)) return;
+            if(btnUndo != null) btnUndo.Enabled = history[page].Current > 0;
+            if(btnRedo != null) btnRedo.Enabled = history[page].Current < history[page].Versions.Count - 1;
         }
     }
 }

@@ -43,6 +43,8 @@
             // 
             // btnMinus
             // 
+            this.btnMinus.FlatAppearance.BorderSize = 0;
+            this.btnMinus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMinus.Location = new System.Drawing.Point(15, 12);
             this.btnMinus.Name = "btnMinus";
@@ -55,6 +57,8 @@
             // btnPlus
             // 
             this.btnPlus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPlus.FlatAppearance.BorderSize = 0;
+            this.btnPlus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPlus.Location = new System.Drawing.Point(402, 12);
             this.btnPlus.Name = "btnPlus";
@@ -77,6 +81,8 @@
             // btnC1
             // 
             this.btnC1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnC1.FlatAppearance.BorderSize = 0;
+            this.btnC1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnC1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnC1.Location = new System.Drawing.Point(15, 465);
             this.btnC1.Name = "btnC1";
@@ -89,6 +95,8 @@
             // btnC2
             // 
             this.btnC2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnC2.FlatAppearance.BorderSize = 0;
+            this.btnC2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnC2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnC2.Location = new System.Drawing.Point(271, 466);
             this.btnC2.Name = "btnC2";

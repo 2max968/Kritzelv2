@@ -163,7 +163,7 @@ namespace Kritzel.Main
             return true;
         }
 
-        public void LoadDocument(string path, MessageLog log)
+        public bool LoadDocument(string path, MessageLog log)
         {
             log?.Add(MessageType.MSG, "Loading File '{0}'", path);
             DirectoryInfo dir = TmpManager.GetTmpDir();
@@ -171,7 +171,31 @@ namespace Kritzel.Main
             {
                 ZipFile zip = new ZipFile(path);
                 if (dir.Exists) dir.RemoveAll();
-                zip.ExtractAll(dir.FullName);
+                try
+                {
+                    zip.ExtractAll(dir.FullName);
+                }
+                catch(BadPasswordException)
+                {
+                    Dialogues.PasswordDialog dialog = new Dialogues.PasswordDialog();
+                    var res = dialog.ShowDialog(out string pw, delegate (string _password)
+                    {
+                        try
+                        {
+                            zip.Password = _password;
+                            zip.ExtractAll(dir.FullName);
+                            return true;
+                        }
+                        catch(BadPasswordException)
+                        {
+                            return false;
+                        }
+                    });
+                    if(res == DialogResult.Cancel)
+                    {
+                        return false;
+                    }
+                }
             }
             FileInfo docFile = new FileInfo(dir + "\\document.kritzel");
             XmlReader reader = XmlReader.Create(docFile.FullName);
@@ -220,6 +244,7 @@ namespace Kritzel.Main
 
             this.FilePath = path;
             SetCurrentStateAsSaved();
+            return true;
         }
 
         public void RemovePage(KPage page)

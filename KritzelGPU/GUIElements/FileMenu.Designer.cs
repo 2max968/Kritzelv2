@@ -36,6 +36,7 @@
             this.btnAddPage = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnCast = new System.Windows.Forms.Button();
+            this.btnPrint = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnNew
@@ -162,11 +163,26 @@
             this.btnCast.UseVisualStyleBackColor = true;
             this.btnCast.Click += new System.EventHandler(this.btnCast_Click);
             // 
+            // btnPrint
+            // 
+            this.btnPrint.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnPrint.FlatAppearance.BorderSize = 0;
+            this.btnPrint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrint.Location = new System.Drawing.Point(0, 548);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(401, 58);
+            this.btnPrint.TabIndex = 8;
+            this.btnPrint.Text = "File.print";
+            this.btnPrint.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnPrint.UseVisualStyleBackColor = true;
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            // 
             // FileMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.btnCast);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnAddPage);
@@ -177,7 +193,7 @@
             this.Controls.Add(this.btnClose);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "FileMenu";
-            this.Size = new System.Drawing.Size(401, 598);
+            this.Size = new System.Drawing.Size(401, 672);
             this.ResumeLayout(false);
 
         }
@@ -192,5 +208,6 @@
         private System.Windows.Forms.Button btnAddPage;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnCast;
+        private System.Windows.Forms.Button btnPrint;
     }
 }

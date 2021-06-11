@@ -9,6 +9,7 @@ namespace Kritzel.Main.Renderer
 {
     public abstract class BaseRenderer
     {
+        public enum TextAlign { Left, Center, Right }
         public bool RenderSpecial = true;
         public abstract void DrawLine(Color c, float width, PointF p1, PointF p2, bool capStart = false, bool capEnd = false);
         public abstract void FillEllipse(PBrush c, RectangleF rect);
@@ -25,5 +26,6 @@ namespace Kritzel.Main.Renderer
         public abstract void BeginRects(PBrush brush);
         public abstract void Rect(RectangleF rect);
         public abstract void EndRects();
+        public abstract void DrawText(string text, Color color, float x, float y, string fontFamily, float size, TextAlign align);
     }
 }

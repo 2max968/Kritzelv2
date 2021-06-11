@@ -90,9 +90,11 @@ namespace Kritzel.Main.GUIElements
             }
         }
 
-        private void btnOpen_Click(object sender, EventArgs e)
+        private async void btnOpen_Click(object sender, EventArgs e)
         {
             if (!Util.AskForSave(document)) return;
+            CloseMenu?.Invoke();
+            await Task.Delay(0);
             OpenFileDialog diagOpenDoc = new OpenFileDialog();
             //diagOpenDoc.Filter = "Supportet Files|*.krit;*.pdf;*.jpg;*.jpeg;*.png;*.bmp|Kritzel Documents|*.zip|PDF Files|*.pdf|Images|*.jpg;*.jpeg;*.bmp;*.png";
             diagOpenDoc.Filter = "Supportet Files|*.krit;*.pdf|Kritzel Documents|*.krit|PDF Files|*.pdf";
@@ -104,14 +106,16 @@ namespace Kritzel.Main.GUIElements
                 {
                     KDocument doc = new KDocument();
                     MessageLog log = new MessageLog();
-                    doc.LoadDocument(diagOpenDoc.FileName, log);
-                    Console.WriteLine(log);
-                    document = doc;
-                    window.SetDocument(document);
+                    if (doc.LoadDocument(diagOpenDoc.FileName, log))
+                    {
+                        Console.WriteLine(log);
+                        document = doc;
+                        window.SetDocument(document);
+                    }
                 }
                 else if (ext == ".pdf")
                 {
-                    Dialogues.PDFImporter imp = new Dialogues.PDFImporter(diagOpenDoc.FileName);
+                    PDFImporter imp = new PDFImporter(diagOpenDoc.FileName);
                     if (imp.ShowDialog(window) == DialogResult.OK)
                     {
                         KDocument doc = new KDocument();
@@ -122,36 +126,22 @@ namespace Kritzel.Main.GUIElements
                         //document.Pages.AddRange(imp.Pages);
                     }
                 }
-                /*else if (ext == ".jpg" || ext == ".jpeg" || ext == ".bmp" || ext == ".png")
-                {
-                    Bitmap bmp = new Bitmap(diagOpenDoc.FileName);
-                    Dialogues.ImageImporter ii = new Dialogues.ImageImporter(bmp);
-                    if (ii.ShowDialog(window) == DialogResult.OK)
-                    {
-                        KPage p = new KPage();
-                        p.Format = ii.Format;
-                        p.BackgroundImage = new Renderer.Image(ii.EditetImage);
-                        p.Background = null;
-                        p.ShowDate = false;
-                        document.Pages.Add(p);
-                        control.LoadPage(p);
-                    }
-                }*/
                 else
                 {
                     MessageBox.Show("Error importing File");
                 }
-                CloseMenu?.Invoke();
             }
         }
 
-        private void btnSaveAs_Click(object sender, EventArgs e)
+        private async void btnSaveAs_Click(object sender, EventArgs e)
         {
-            SaveAs();
+            await SaveAs();
         }
 
-        public void SaveAs()
-        { 
+        public async Task SaveAs()
+        {
+            CloseMenu?.Invoke();
+            await Task.Delay(0);
             try
             {
                 SaveFileDialog diagSaveDoc = new SaveFileDialog();
@@ -190,6 +180,7 @@ namespace Kritzel.Main.GUIElements
                         g.Clear(Color.White);
                         Renderer.GdiRenderer r = g.GetRenderer();
                         g.ScaleTransform(factor, factor);
+                        page.DrawPDFHQ(r, bmp.Height);
                         page.Draw(r);
                         bmp.Save(diagSaveDoc.FileName);
                     }
@@ -203,7 +194,6 @@ namespace Kritzel.Main.GUIElements
             {
                 MessageBox.Show(ex.Message, "Error saving File", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            CloseMenu?.Invoke();
         }
 
         private void btnAddPage_Click(object sender, EventArgs e)
@@ -228,11 +218,11 @@ namespace Kritzel.Main.GUIElements
             this.CloseMenu += new CloseMenuEvent(handler);
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
-                if (document.FilePath == "") SaveAs();
+                if (document.FilePath == "") await SaveAs();
                 else
                 {
                     document.SaveDocument(document.FilePath);
@@ -245,8 +235,10 @@ namespace Kritzel.Main.GUIElements
             }
         }
 
-        private void btnSettings_Click(object sender, EventArgs e)
+        private async void btnSettings_Click(object sender, EventArgs e)
         {
+            CloseMenu?.Invoke();
+            await Task.Delay(0);
             SettingsDialog settings = new SettingsDialog();
             settings.ShowDialog();
             SettingsClosed?.Invoke(this, 0);
@@ -269,6 +261,53 @@ namespace Kritzel.Main.GUIElements
                 cd.ShowDialog();
             }
             CloseMenu?.Invoke();
+        }
+
+        private async void btnPrint_Click(object sender, EventArgs e)
+        {
+            CloseMenu?.Invoke();
+            await Task.Delay(0);
+            PrintDialog pd = new PrintDialog();
+            pd.AllowCurrentPage = true;
+            pd.AllowSomePages = true;
+            pd.Document = new PrintDocument();
+            pd.UseEXDialog = true;
+            pd.PrinterSettings.FromPage = 1;
+            pd.PrinterSettings.ToPage = document.Pages.Count;
+            pd.PrinterSettings.MaximumPage = document.Pages.Count;
+            pd.PrinterSettings.MinimumPage = 1;
+            int currentPage = 0;
+            pd.Document.PrintPage += (_sender, _e) =>
+            {
+                if (pd.PrinterSettings.PrintRange == PrintRange.AllPages)
+                {
+                    Renderer.GdiRenderer r = new Renderer.GdiRenderer(_e.Graphics);
+                    document.Pages[currentPage].DrawPDFHQ(r, (int)Util.MmToPoint(_e.PageBounds.Height));
+                    document.Pages[currentPage++].Draw(r);
+                    _e.HasMorePages = currentPage < document.Pages.Count;
+                }
+                else if (pd.PrinterSettings.PrintRange == PrintRange.CurrentPage)
+                {
+                    Renderer.GdiRenderer r = new Renderer.GdiRenderer(_e.Graphics);
+                    control.Page.DrawPDFHQ(r, (int)Util.MmToPoint(_e.PageBounds.Height));
+                    control.Page.Draw(r);
+                    _e.HasMorePages = false;
+                }
+                else if (pd.PrinterSettings.PrintRange == PrintRange.SomePages)
+                {
+                    int fromPage = Math.Max(0, pd.PrinterSettings.FromPage - 1);
+                    int toPage = Math.Min(document.Pages.Count - 1, pd.PrinterSettings.ToPage - 1);
+                    Renderer.GdiRenderer r = new Renderer.GdiRenderer(_e.Graphics);
+                    int realPage = currentPage++ + fromPage;
+                    document.Pages[realPage].DrawPDFHQ(r, (int)Util.MmToPoint(_e.PageBounds.Height));
+                    document.Pages[realPage].Draw(r);
+                    _e.HasMorePages = realPage < toPage;
+                }
+            };
+            if(pd.ShowDialog() == DialogResult.OK)
+            {
+                pd.Document.Print();
+            }
         }
     }
 }

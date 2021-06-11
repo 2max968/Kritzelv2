@@ -22,7 +22,7 @@ namespace Kritzel.Main.GUIElements
 
             this.parent = parent;
             colors = parent.GetColors();
-            int wNum = parent.GetCapacity();
+            int wNum = Math.Max (parent.GetCapacity(), 1);
             int hNum = (colors.Count - 1) / wNum + 1;
             this.Location = new Point(parent.Location.X + Util.GetGUISize(), parent.Location.Y);
             this.Width = wNum * Util.GetGUISize();

@@ -20,9 +20,12 @@ namespace Kritzel.Main
 {
     public enum InkMode { Pen, Line, Rect, Arc, Arc2, Marker, Text };
 
+    [System.ComponentModel.DesignerCategory("")]
     public class InkControl : PictureBox
     {
         public event EventHandler<Line[]> SelectionChanged;
+        public event EventHandler<KPage> PageLoaded;
+        public event EventHandler<Line> LineAdded;
         KPage page = null;
         public KPage Page { get { return page; } }
         Line line = null;
@@ -45,7 +48,6 @@ namespace Kritzel.Main
             {
                 if (page == null) return;
                 page.Format = value;
-                var s = page.Format.GetPixelSize();
             }
         }
         volatile Matrix3x3 transform = new Matrix3x3();
@@ -493,6 +495,7 @@ namespace Kritzel.Main
                         var input = new Dialogues.TextBoxInput((Forms.TextBox)line, this);
                         input.Show();
                     }
+                    LineAdded?.Invoke(this, line);
                     line = null;
                     linePoints = null;
                     recreateBufferFull();
@@ -664,6 +667,7 @@ namespace Kritzel.Main
             //ResetTransformation(true);
             RefreshPage();
             this.page.SelectionChanged += Page_SelectionChanged;
+            PageLoaded?.Invoke(this, page);
         }
 
         private void Page_SelectionChanged(object sender, Line[] e)
@@ -1007,6 +1011,16 @@ namespace Kritzel.Main
         {
             foreach (Line l in page.EnumerateLines())
                 l.Selected = true;
+            SelectionChanged?.Invoke(this, page.EnumerateLines().ToArray());
+            ShowSelectionMenu();
+            RefreshPage();
+        }
+
+        public void SelectLines(IEnumerable<Line> lines)
+        {
+            foreach (Line l in page.EnumerateLines())
+                l.Selected = lines.Contains(l);
+            SelectionChanged?.Invoke(this, lines.ToArray());
             ShowSelectionMenu();
             RefreshPage();
         }
@@ -1029,6 +1043,13 @@ namespace Kritzel.Main
             ScreenObjects.Add(trans);
         }
 
+        public void HideSelectionMenu()
+        {
+            foreach (BaseScreenObject bso in ScreenObjects)
+                if (bso is Transformer)
+                    bso.Close = true;
+        }
+
         public void Undo()
         {
             if (!HistoryManager.Undo(Page))
@@ -1043,6 +1064,16 @@ namespace Kritzel.Main
                 SystemSounds.Beep.Play();
             else
                 RefreshPage();
+        }
+
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
+                float x = e.X, y = e.Y;
+                transform.GetInverse().Transform(ref x, ref y);
+                Page.Click(this, x, y);
+            }
         }
     }
 }

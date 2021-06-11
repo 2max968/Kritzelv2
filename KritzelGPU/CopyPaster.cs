@@ -57,17 +57,20 @@ namespace Kritzel.Main
                     string[] parts = lines[i].Split(new string[] { ";" }, 3, StringSplitOptions.RemoveEmptyEntries);
                     string typeName = parts[1];
                     Type t = Assembly.GetCallingAssembly().GetType(typeName);
-                    Line line = t.GetConstructor(new Type[0]).Invoke(new object[0]) as Line;
-                    if (line != null)
+                    if (t != null)
                     {
-                        line.FromParamString(parts[2]);
-                        if(shiftLines) line.Transform(Matrix3x3.Translation(16,16));
-                        line.CalcSpline();
-                        line.CalculateBounds();
+                        Line line = t.GetConstructor(new Type[0]).Invoke(new object[0]) as Line;
+                        if (line != null)
+                        {
+                            line.FromParamString(parts[2]);
+                            if (shiftLines) line.Transform(Matrix3x3.Translation(16, 16));
+                            line.CalcSpline();
+                            line.CalculateBounds();
+                        }
+                        line.Brush = PBrush.CreateSolid(ColorTranslator.FromHtml(parts[0]));
+                        line.Selected = true;
+                        ret.Add(line);
                     }
-                    line.Brush = PBrush.CreateSolid(ColorTranslator.FromHtml(parts[0]));
-                    line.Selected = true;
-                    ret.Add(line);
                 }
                 catch (Exception)
                 {

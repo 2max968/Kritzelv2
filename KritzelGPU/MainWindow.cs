@@ -84,6 +84,7 @@ namespace Kritzel.Main
             btnResetRotation.Image = ResManager.LoadIcon("actions/resetRotation.svg", Util.GetGUISize());
             btnMatchWindow.Image = ResManager.LoadIcon("actions/matchScreen.svg", Util.GetGUISize());
             btnResetTransform.Image = ResManager.LoadIcon("actions/resetPosScale.svg", Util.GetGUISize());
+            btnLayout.Image = ResManager.LoadIcon("layout.svg", Util.GetGUISize());
             btnResetTransform.Text = btnResetRotation.Text = btnMatchWindow.Text = "";
             btnFormType.BackgroundImage = Line.BitmapStrk;
 
@@ -151,6 +152,8 @@ namespace Kritzel.Main
 
             this.Shown += MainWindow_Shown;
             inkControl1.SelectionChanged += InkControl1_SelectionChanged;
+            inkControl1.PageLoaded += InkControl1_PageLoaded;
+            inkControl1.LineAdded += InkControl1_LineAdded;
             Style.StyleChanged += Style_StyleChanged;
             Style_StyleChanged(null, Style.Default);
 
@@ -165,6 +168,21 @@ namespace Kritzel.Main
                 item.Text = Language.GetText(item.Text);
 
             this.KeyPreview = true;
+            HistoryManager.RegisterHistoryButtons(btnBack, btnForward);
+        }
+
+        private void InkControl1_LineAdded(object sender, Line e)
+        {
+            if(inkControl1.InkMode == InkMode.Text)
+            {
+                inkControl1.InkMode = InkMode.Pen;
+                btnFormType.BackgroundImage = Line.BitmapStrk;
+            }
+        }
+
+        private void InkControl1_PageLoaded(object sender, KPage e)
+        {
+            HistoryManager.SetButtonVisibility(e);
         }
 
         private void BtnSize_Click(object sender, EventArgs e)
@@ -189,6 +207,7 @@ namespace Kritzel.Main
             bool viewButtons = e.Length > 0;
             btnCopy.Visible = viewButtons;
             btnCut.Visible = viewButtons;
+            Dialogues.TextBoxInput.CloseAll();
         }
 
         private void TransformButton_Click(object sender, EventArgs e)

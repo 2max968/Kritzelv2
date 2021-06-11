@@ -603,5 +603,46 @@ namespace Kritzel.Main
         {
             SelectionChanged = null;
         }
+
+        public void DrawPDFHQ(BaseRenderer r, int height)
+        {
+            if (OriginalPage != null)
+            {
+                string filename = Path.Combine(TmpManager.GetTmpDir().FullName, "tmp.pdf");
+                using (PdfDocument doc = new PdfDocument())
+                {
+                    doc.AddPage(OriginalPage);
+                    doc.Save(filename);
+                }
+                using (Bitmap bmp = MupdfSharp.PageRenderer.Render(filename, height, new int[] { 0 })[0])
+                {
+                    using (var img = new Renderer.Image(bmp))
+                    {
+                        var sizePx = Format.GetPixelSize();
+                        r.DrawImage(img, new RectangleF(0, 0, sizePx.Width, sizePx.Height));
+                    }
+                }
+                File.Delete(filename);
+            }
+        }
+
+        public void Click(InkControl control, float x, float y)
+        {
+            x = Util.PointToMm(x);
+            y = Util.PointToMm(y);
+            foreach(var line in lines)
+            {
+                if(line is Forms.IClickable)
+                {
+                    var clickable = (Forms.IClickable)line;
+                    var bounds = clickable.GetClickableBounds();
+                    if(x >= bounds.Left && y >= bounds.Top
+                        && x <= bounds.Right && y <= bounds.Bottom)
+                    {
+                        clickable.Click(control);
+                    }
+                }
+            }
+        }
     }
 }

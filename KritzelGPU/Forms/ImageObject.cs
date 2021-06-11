@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,11 +43,32 @@ namespace Kritzel.Main.Forms
         {
             if(Points.Count >= 4 && image != null)
             {
-                float x = Util.MmToPoint(Points[0].X);
-                float y = Util.MmToPoint(Points[0].Y);
-                float w = Util.MmToPoint(Points[2].X) - x;
-                float h = Util.MmToPoint(Points[2].Y) - y;
+                float x = Points[0].X;
+                float y = Points[0].Y;
+                float w = Points[2].X - x;
+                float h = Points[2].Y - y;
                 g.DrawImage(image, new RectangleF(x, y, w, h));
+            }
+        }
+
+        public override string ToParamString()
+        {
+            float x = Points[0].X;
+            float y = Points[0].Y;
+            float w = Points[2].X - x;
+            float h = Points[2].Y - y;
+            try
+            {
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    image.GdiBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    byte[] pngData = stream.GetBuffer();
+                    return $"{x};{y};{w};{h};{Transformation};{Convert.ToBase64String(pngData)}";
+                }
+            }
+            catch(Exception)
+            {
+                return "null";
             }
         }
     }

@@ -357,9 +357,8 @@ namespace Kritzel.Main.Renderer
             text.TextFormat format = new text.TextFormat(writeFactory, "Arial", sizept);
             using (Brush b = GetBrush(brush))
             {
-                renderTarget.DrawText(str, format, rectpt, b);
+                renderTarget.DrawText(str, format, rectpt, b, DrawTextOptions.None, MeasuringMode.GdiNatural);
             }
-            format.Dispose();
         }
 
         public static explicit operator RenderTarget(GPURenderer1 r)
@@ -469,6 +468,29 @@ namespace Kritzel.Main.Renderer
         public override Matrix3x3 GetCurrentTransform()
         {
             return currentTransform;
+        }
+
+        public override void DrawText(string str, gdi.Color color, float x, float y, string fontFamily, float size, TextAlign align)
+        {
+            using (SolidColorBrush b = new SolidColorBrush(renderTarget,
+                new RawColor4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f)))
+            {
+
+                using (text.TextFormat format = new text.TextFormat(writeFactory, fontFamily, Util.MmToPoint(size)))
+                {
+                    switch (align)
+                    {
+                        case TextAlign.Left: format.TextAlignment = text.TextAlignment.Leading; break;
+                        case TextAlign.Center: format.TextAlignment = text.TextAlignment.Center; break;
+                        case TextAlign.Right: format.TextAlignment = text.TextAlignment.Trailing; break;
+                    }
+                    using (text.TextLayout layout = new text.TextLayout(writeFactory, str, format, 1000, 1000, Util.GetScaleFactor(), true))
+                    {
+                        layout.MaxWidth = layout.Metrics.Width;
+                        renderTarget.DrawTextLayout(new RawVector2(x, y), layout, b);
+                    }
+                }
+            }
         }
     }
 }

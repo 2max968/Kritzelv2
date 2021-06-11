@@ -51,9 +51,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
@@ -76,7 +74,11 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>KritzelIcon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Win32Resource>..\Win32Ressource\Kritzel.res</Win32Resource>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Fizzler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=4ebff4844e382110, processorArchitecture=MSIL">
@@ -189,6 +191,12 @@
     <Compile Include="Dialogues\PageList.Designer.cs">
       <DependentUpon>PageList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogues\PasswordDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\PasswordDialog.Designer.cs">
+      <DependentUpon>PasswordDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogues\PDFImporter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -229,6 +237,7 @@
     <Compile Include="Forms\Arc.cs" />
     <Compile Include="Forms\Arc2.cs" />
     <Compile Include="Forms\IBackground.cs" />
+    <Compile Include="Forms\IClickable.cs" />
     <Compile Include="Forms\ImageObject.cs" />
     <Compile Include="Forms\Marker.cs" />
     <Compile Include="Forms\Rect.cs" />
@@ -366,9 +375,7 @@
     <Compile Include="ScreenObject\TransformerTranslate.cs" />
     <Compile Include="Spline.cs" />
     <Compile Include="Spline2D.cs" />
-    <Compile Include="GUIElements\InkControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="GUIElements\InkControl.cs" />
     <Compile Include="FingerTransform.cs" />
     <Compile Include="Style.cs" />
     <Compile Include="TmpManager.cs" />
@@ -403,6 +410,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\PageList.resx">
       <DependentUpon>PageList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\PasswordDialog.resx">
+      <DependentUpon>PasswordDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\PDFImporter.resx">
       <DependentUpon>PDFImporter.cs</DependentUpon>
@@ -563,6 +573,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\gui\up.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\layout.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\tools\circ2.svg">

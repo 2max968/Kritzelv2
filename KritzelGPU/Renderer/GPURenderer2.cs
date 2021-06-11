@@ -277,5 +277,10 @@ namespace Kritzel.Main.Renderer
         {
             return currentTransform.Clone();
         }
+
+        public override void DrawText(string text, Color color, float x, float y, string fontFamily, float size, TextAlign align)
+        {
+            r.DrawText(text, color, x, y, fontFamily, size, align);
+        }
     }
 }

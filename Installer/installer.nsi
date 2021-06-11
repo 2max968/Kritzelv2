@@ -8,6 +8,8 @@
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
+!define REG_FILE_DOCUMENT_NAME "Kritzel.Document"
+!define REG_FILE_DOCUMENT_DESCRIPTION "Kritzel Document"
 
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
@@ -103,12 +105,17 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\Kritzel.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
+  WriteRegStr HKCR ".krit" "" "${REG_FILE_DOCUMENT_NAME}"
+  WriteRegStr HKCR "${REG_FILE_DOCUMENT_NAME}" "" "${REG_FILE_DOCUMENT_DESCRIPTION}"
+  WriteRegStr HKCR "${REG_FILE_DOCUMENT_NAME}\Shell\Open\Command" "" '"$INSTDIR\Kritzel.exe" "%1"'
+  WriteRegStr HKCR "${REG_FILE_DOCUMENT_NAME}\DefaultIcon" "" '"$INSTDIR\Kritzel.exe",1'
   CreateDirectory "$INSTDIR\logs"
   CreateDirectory "$INSTDIR\config"
   CreateDirectory "$INSTDIR\tmp"
   nsExec::Exec 'icacls "$INSTDIR\logs" /GRANT *S-1-1-0:F'
   nsExec::Exec 'icacls "$INSTDIR\config" /GRANT *S-1-1-0:F'
   nsExec::Exec 'icacls "$INSTDIR\tmp" /GRANT *S-1-1-0:F'
+  ;nsExec::Exec '"$INSTDIR\Kritzel.exe" setup'
 SectionEnd
 
 
@@ -119,7 +126,7 @@ FunctionEnd
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "M�chten Sie $(^Name) und alle seinen Komponenten deinstallieren?" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Möchten Sie $(^Name) und alle seinen Komponenten deinstallieren?" IDYES +2
   Abort
 FunctionEnd
 
@@ -157,5 +164,6 @@ Section Uninstall
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
+  DeleteRegKey HKCR "${REG_FILE_DOCUMENT_NAME}"
   SetAutoClose true
 SectionEnd

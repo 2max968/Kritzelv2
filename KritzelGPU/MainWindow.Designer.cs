@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.panelTop = new System.Windows.Forms.Panel();
             this.panelTopMid = new System.Windows.Forms.Panel();
-            this.colorPicker1 = new Kritzel.Main.GUIElements.ColorPicker();
             this.pnSizes = new System.Windows.Forms.Panel();
             this.panelTopRight = new System.Windows.Forms.Panel();
             this.btnFormType = new System.Windows.Forms.Button();
@@ -76,6 +75,9 @@
             this.btnPaste = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.btnForward = new System.Windows.Forms.Button();
+            this.pnForward = new System.Windows.Forms.Panel();
+            this.pnBack = new System.Windows.Forms.Panel();
+            this.colorPicker1 = new Kritzel.Main.GUIElements.ColorPicker();
             this.panelTop.SuspendLayout();
             this.panelTopMid.SuspendLayout();
             this.panelTopRight.SuspendLayout();
@@ -88,6 +90,8 @@
             this.panelTransform.SuspendLayout();
             this.panelPageControl.SuspendLayout();
             this.pnInkControlContainer.SuspendLayout();
+            this.pnForward.SuspendLayout();
+            this.pnBack.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
@@ -99,7 +103,7 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(838, 64);
+            this.panelTop.Size = new System.Drawing.Size(778, 64);
             this.panelTop.TabIndex = 9;
             // 
             // panelTopMid
@@ -109,23 +113,13 @@
             this.panelTopMid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelTopMid.Location = new System.Drawing.Point(64, 0);
             this.panelTopMid.Name = "panelTopMid";
-            this.panelTopMid.Size = new System.Drawing.Size(582, 64);
+            this.panelTopMid.Size = new System.Drawing.Size(522, 64);
             this.panelTopMid.TabIndex = 2;
-            // 
-            // colorPicker1
-            // 
-            this.colorPicker1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colorPicker1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.colorPicker1.Location = new System.Drawing.Point(0, 0);
-            this.colorPicker1.Name = "colorPicker1";
-            this.colorPicker1.Size = new System.Drawing.Size(388, 64);
-            this.colorPicker1.TabIndex = 0;
-            this.colorPicker1.Load += new System.EventHandler(this.colorPicker1_Load);
             // 
             // pnSizes
             // 
             this.pnSizes.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnSizes.Location = new System.Drawing.Point(388, 0);
+            this.pnSizes.Location = new System.Drawing.Point(328, 0);
             this.pnSizes.Name = "pnSizes";
             this.pnSizes.Size = new System.Drawing.Size(194, 64);
             this.pnSizes.TabIndex = 1;
@@ -133,11 +127,11 @@
             // panelTopRight
             // 
             this.panelTopRight.AutoSize = true;
-            this.panelTopRight.Controls.Add(this.btnFormType);
             this.panelTopRight.Controls.Add(this.btnLayout);
+            this.panelTopRight.Controls.Add(this.btnFormType);
             this.panelTopRight.Controls.Add(this.btnFullscreen);
             this.panelTopRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelTopRight.Location = new System.Drawing.Point(646, 0);
+            this.panelTopRight.Location = new System.Drawing.Point(586, 0);
             this.panelTopRight.Name = "panelTopRight";
             this.panelTopRight.Size = new System.Drawing.Size(192, 64);
             this.panelTopRight.TabIndex = 1;
@@ -145,12 +139,11 @@
             // btnFormType
             // 
             this.btnFormType.BackColor = System.Drawing.Color.White;
-            this.btnFormType.BackgroundImage = global::Kritzel.Main.Properties.Resources.Pen;
             this.btnFormType.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnFormType.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnFormType.FlatAppearance.BorderSize = 0;
             this.btnFormType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFormType.Location = new System.Drawing.Point(0, 0);
+            this.btnFormType.Location = new System.Drawing.Point(64, 0);
             this.btnFormType.Name = "btnFormType";
             this.btnFormType.Size = new System.Drawing.Size(64, 64);
             this.btnFormType.TabIndex = 2;
@@ -160,12 +153,11 @@
             // btnLayout
             // 
             this.btnLayout.BackColor = System.Drawing.Color.White;
-            this.btnLayout.BackgroundImage = global::Kritzel.Main.Properties.Resources.page;
             this.btnLayout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnLayout.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnLayout.FlatAppearance.BorderSize = 0;
             this.btnLayout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLayout.Location = new System.Drawing.Point(64, 0);
+            this.btnLayout.Location = new System.Drawing.Point(0, 0);
             this.btnLayout.Name = "btnLayout";
             this.btnLayout.Size = new System.Drawing.Size(64, 64);
             this.btnLayout.TabIndex = 1;
@@ -349,7 +341,7 @@
             this.panelSide.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelSide.Location = new System.Drawing.Point(0, 64);
             this.panelSide.Name = "panelSide";
-            this.panelSide.Size = new System.Drawing.Size(78, 505);
+            this.panelSide.Size = new System.Drawing.Size(78, 480);
             this.panelSide.TabIndex = 10;
             // 
             // panelMovePage
@@ -515,15 +507,15 @@
             // 
             // pnInkControlContainer
             // 
+            this.pnInkControlContainer.Controls.Add(this.pnBack);
+            this.pnInkControlContainer.Controls.Add(this.pnForward);
             this.pnInkControlContainer.Controls.Add(this.btnCut);
             this.pnInkControlContainer.Controls.Add(this.btnCopy);
             this.pnInkControlContainer.Controls.Add(this.btnPaste);
-            this.pnInkControlContainer.Controls.Add(this.btnBack);
-            this.pnInkControlContainer.Controls.Add(this.btnForward);
             this.pnInkControlContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnInkControlContainer.Location = new System.Drawing.Point(78, 64);
             this.pnInkControlContainer.Name = "pnInkControlContainer";
-            this.pnInkControlContainer.Size = new System.Drawing.Size(760, 505);
+            this.pnInkControlContainer.Size = new System.Drawing.Size(700, 480);
             this.pnInkControlContainer.TabIndex = 11;
             // 
             // btnCut
@@ -561,9 +553,9 @@
             // 
             // btnBack
             // 
-            this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBack.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBack.Location = new System.Drawing.Point(592, 6);
+            this.btnBack.Location = new System.Drawing.Point(0, 0);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(75, 75);
             this.btnBack.TabIndex = 1;
@@ -572,20 +564,48 @@
             // 
             // btnForward
             // 
-            this.btnForward.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnForward.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnForward.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnForward.Location = new System.Drawing.Point(673, 6);
+            this.btnForward.Location = new System.Drawing.Point(0, 0);
             this.btnForward.Name = "btnForward";
             this.btnForward.Size = new System.Drawing.Size(75, 75);
             this.btnForward.TabIndex = 0;
             this.btnForward.UseVisualStyleBackColor = true;
             this.btnForward.Click += new System.EventHandler(this.btnForward_Click);
             // 
+            // pnForward
+            // 
+            this.pnForward.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnForward.Controls.Add(this.btnForward);
+            this.pnForward.Location = new System.Drawing.Point(613, 6);
+            this.pnForward.Name = "pnForward";
+            this.pnForward.Size = new System.Drawing.Size(75, 75);
+            this.pnForward.TabIndex = 5;
+            // 
+            // pnBack
+            // 
+            this.pnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnBack.Controls.Add(this.btnBack);
+            this.pnBack.Location = new System.Drawing.Point(532, 6);
+            this.pnBack.Name = "pnBack";
+            this.pnBack.Size = new System.Drawing.Size(75, 75);
+            this.pnBack.TabIndex = 6;
+            // 
+            // colorPicker1
+            // 
+            this.colorPicker1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colorPicker1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.colorPicker1.Location = new System.Drawing.Point(0, 0);
+            this.colorPicker1.Name = "colorPicker1";
+            this.colorPicker1.Size = new System.Drawing.Size(328, 64);
+            this.colorPicker1.TabIndex = 0;
+            this.colorPicker1.Load += new System.EventHandler(this.colorPicker1_Load);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(838, 569);
+            this.ClientSize = new System.Drawing.Size(778, 544);
             this.Controls.Add(this.pnInkControlContainer);
             this.Controls.Add(this.panelSide);
             this.Controls.Add(this.panelTop);
@@ -608,6 +628,8 @@
             this.panelTransform.ResumeLayout(false);
             this.panelPageControl.ResumeLayout(false);
             this.pnInkControlContainer.ResumeLayout(false);
+            this.pnForward.ResumeLayout(false);
+            this.pnBack.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -661,5 +683,7 @@
         private System.Windows.Forms.Button btnPaste;
         private System.Windows.Forms.Button btnCut;
         private System.Windows.Forms.Panel pnSizes;
+        private System.Windows.Forms.Panel pnBack;
+        private System.Windows.Forms.Panel pnForward;
     }
 }

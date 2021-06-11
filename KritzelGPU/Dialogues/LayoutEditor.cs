@@ -36,6 +36,13 @@ namespace Kritzel.Main.Dialogues
             lvBackgrounds.SelectedIndexChanged += LvBackgrounds_SelectedIndexChanged;
             createBackgroundList(page.Background != null ? page.Background.GetType() : null);
 
+            this.BackColor = Style.Default.MenuBackground;
+            this.ForeColor = Style.Default.MenuForeground;
+            foreach(Control control in Controls)
+            {
+                if (control is Button) control.BackColor = Style.Default.MenuContrast;
+            }
+
             Translator.Translate(this);
         }
 

@@ -122,5 +122,27 @@ namespace Kritzel.Main.Renderer
         {
             return GetGuiResources(Process.GetCurrentProcess().Handle, 0);
         }
+
+        public override void DrawText(string text, Color color, float x, float y, string fontFamily, float size, TextAlign align)
+        {
+            using (Font ft = new Font(fontFamily, Util.MmToPoint(size)))
+            {
+                using (SolidBrush b = new SolidBrush(color))
+                {
+
+                    using (StringFormat sf = new StringFormat())
+                    {
+                        switch(align)
+                        {
+                            case TextAlign.Left: sf.Alignment = StringAlignment.Near; break;
+                            case TextAlign.Center: sf.Alignment = StringAlignment.Center; break;
+                            case TextAlign.Right: sf.Alignment = StringAlignment.Far; break;
+                        }
+                        var textSize = g.MeasureString(text, ft, int.MaxValue, sf);
+                        g.DrawString(text, ft, b, new RectangleF(x, y, textSize.Width, textSize.Height), sf);
+                    }
+                }
+            }
+        }
     }
 }

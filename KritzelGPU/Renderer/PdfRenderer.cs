@@ -122,5 +122,20 @@ namespace Kritzel.Main.Renderer
         {
             
         }
+
+        public override void DrawText(string text, Color color, float x, float y, string fontFamily, float size, TextAlign align)
+        {
+            XFont ft = new XFont(fontFamily, Util.MmToPoint(size));
+            XSolidBrush b = new XSolidBrush(color);
+            XStringFormat sf = new XStringFormat();
+            switch (align)
+            {
+                case TextAlign.Left: sf.Alignment = XStringAlignment.Near; break;
+                case TextAlign.Center: sf.Alignment = XStringAlignment.Center; break;
+                case TextAlign.Right: sf.Alignment = XStringAlignment.Far; break;
+            }
+            var textSize = g.MeasureString(text, ft, sf);
+            g.DrawString(text, ft, b, new RectangleF(x, y, (float)textSize.Width, (float)textSize.Height), sf);
+        }
     }
 }
