@@ -491,7 +491,7 @@ namespace Kritzel.Main.Renderer
 
         public override void DrawText(string text, gdi.Color color, float x, float y, string fontFamily, float size, TextAlign align)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

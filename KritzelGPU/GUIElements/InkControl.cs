@@ -114,8 +114,11 @@ namespace Kritzel.Main
         bool transScaleLocked = true;
         bool transTranslateLocked = true;
         public Color EraserColor = Color.Transparent;
-        Cursor blankCursor;
-        bool cursorHidden = false;
+        Cursor blankCursor, eraserCursor;
+        int cursorState = 0;
+        MouseButtons mouseButtons = MouseButtons.None;
+        PointF fingerDownPos = new PointF();
+        int lastFingerCount = 0;
 
         public InkControl()
         {
@@ -150,11 +153,20 @@ namespace Kritzel.Main
             if (Process.GetCurrentProcess().ProcessName == "devenv")
                 active = false;
 
-            Stream stream = ResManager.GetStream("img/blank.cur");
-            if (stream != null)
-                blankCursor = new Cursor(stream);
-            else
-                blankCursor = Cursors.Default;
+            using (Stream stream = ResManager.GetStream("img/blank.cur"))
+            {
+                if (stream != null)
+                    blankCursor = new Cursor(stream);
+                else
+                    blankCursor = Cursors.Default;
+            }
+            using (Stream stream = ResManager.GetStream("img/eraser.cur"))
+            {
+                if (stream != null)
+                    eraserCursor = new Cursor(stream);
+                else
+                    eraserCursor = Cursors.Default;
+            }
         }
 
         public Matrix3x3 GetTransform()
@@ -164,22 +176,17 @@ namespace Kritzel.Main
 
         private void InkControl_MouseDown(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (Configuration.HandleMouseInput && pm.Touches.Count == 0)
             {
-                if (Configuration.HandleMouseInput && pm.Touches.Count == 0)
-                {
-                    mouseDown = true;
-                    mousePos = e.Location;
-                }
+                mouseDown = true;
+                mousePos = e.Location;
+                mouseButtons = e.Button;
             }
         }
 
         private void InkControl_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                mouseDown = false;
-            }
+            mouseDown = false;
         }
 
         public void InitRenderer()
@@ -213,7 +220,7 @@ namespace Kritzel.Main
                 }
                 lastMousePos = new Point(e.X, e.Y);
             }
-            else if(e.Button == MouseButtons.Right && Configuration.HandleMouseInput && !onScreenObject && pm.Touches.Count == 0)
+            /*else if(e.Button == MouseButtons.Right && Configuration.HandleMouseInput && !onScreenObject && pm.Touches.Count == 0)
             {
                 for (int i = 0; i < page.LineCount; i++)
                 {
@@ -228,7 +235,7 @@ namespace Kritzel.Main
                         break;
                     }
                 }
-            }
+            }*/
             else
             {
                 lastMouseDown = false;
@@ -302,16 +309,21 @@ namespace Kritzel.Main
             }
 
             // Show / Hide Cursor
-            if (pen != null && pen.Down && !cursorHidden)
+            if (pen != null && pen.Down && cursorState != 1)
             {
                 this.Cursor = blankCursor;
-                cursorHidden = true;
+                cursorState = 1;
 
             }
-            else if ((pen == null || !pen.Down) && cursorHidden)
+            else if((ModifierKeys & Keys.Control) == Keys.Control && cursorState != 2)
+            {
+                this.Cursor = eraserCursor;
+                cursorState = 2;
+            }
+            else if ((pen == null || !pen.Down) && cursorState != 0)
             {
                 this.Cursor = Cursors.Default;
-                cursorHidden = false;
+                cursorState = 0;
             }
 
             // Screen Objects
@@ -323,6 +335,21 @@ namespace Kritzel.Main
                 {
                     ScreenObjects[i].Dispose();
                     ScreenObjects.RemoveAt(i--);
+                }
+            }
+
+            // Translate Mouse
+            if(Configuration.HandleMouseInput)
+            {
+                if (mouse != null && (ModifierKeys & Keys.Control) == Keys.Control)
+                {
+                    pen = new Touch(mouse.X, mouse.Y, mouse.Id, TouchDevice.Pen, 1000, PenFlags.INVERTED, true);
+                    mouse = null;
+                }
+                else if(mouse != null && (mouseButtons & MouseButtons.Right) == MouseButtons.Right)
+                {
+                    pen = new Touch(mouse.X, mouse.Y, mouse.Id, TouchDevice.Pen, 1, PenFlags.BARREL, true);
+                    mouse = null;
                 }
             }
 
@@ -396,6 +423,10 @@ namespace Kritzel.Main
                         transform *= mat;
                     }
                 }
+                else if(lastFingerCount == 0)
+                {
+                    fingerDownPos = fp;
+                }
                 lastMove = true;
                 lastMovePoint = fp;
                 pen = null;
@@ -404,6 +435,14 @@ namespace Kritzel.Main
             }
             else if(lastMove)
             {
+                float dx = lastMovePoint.X - fingerDownPos.X;
+                float dy = lastMovePoint.Y - fingerDownPos.Y;
+                float d = (float)Math.Sqrt(dx * dx + dy * dy);
+                if(d < 5 && fingers.Count == 0)
+                {
+                    page.SelectArea(new PointF[] { fingerDownPos, lastMousePos });
+                }
+
                 lastMove = false;
                 recreateBufferFull();
                 transTranslateLocked = true;
@@ -614,6 +653,8 @@ namespace Kritzel.Main
                     recreateBufferFull();
                 }
             }
+
+            lastFingerCount = fingers.Count;
         }
 
         private void this_paint(object sender, PaintEventArgs e)

@@ -35,6 +35,7 @@ namespace Kritzel.Main
         List<uint> autosavedList = new List<uint>();
         IntPtr clipboardViewerNewNext;
         Button[] sizeButtons;
+        Form wndBreakout = null;
 
         public InkControl inkControl1;
 
@@ -75,6 +76,8 @@ namespace Kritzel.Main
             btnPaste.Text = "";
             btnCut.Image = ResManager.LoadIcon("actions/cut.svg", Util.GetGUISize());
             btnCut.Text = "";
+            btnBreakout.Image = ResManager.LoadIcon("actions/breakout.svg", Util.GetGUISize());
+            btnBreakout.Text = "";
             btnShift.Click += TransformButton_Click;
             btnScale.Click += TransformButton_Click;
             btnRot.Click += TransformButton_Click;
@@ -242,6 +245,7 @@ namespace Kritzel.Main
                 = btnBack.BackColor = btnForward.BackColor = e.MenuBackground;
             colorPicker1.BackColor = e.MenuContrast;
             pnSizes.BackColor = e.MenuBackground;
+            pnInkControlContainer.BackColor = e.Background;
             setSizeButton();
         }
 
@@ -255,7 +259,7 @@ namespace Kritzel.Main
             }
         }
 
-        private void MainWindow_Shown(object sender, EventArgs e)
+        private async void MainWindow_Shown(object sender, EventArgs e)
         {
             clipboardViewerNewNext = SetClipboardViewer(this.Handle);
             try
@@ -269,6 +273,8 @@ namespace Kritzel.Main
                 Dialogues.MsgBox.ShowOk(ex.Message);
                 Application.Exit();
             }
+            await Task.Delay(500);
+            btnPaste.Visible = CopyPaster.CheckClipboard();
         }
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -624,6 +630,36 @@ namespace Kritzel.Main
         private void colorPicker1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnBreakout_Click(object sender, EventArgs e)
+        {
+            if (wndBreakout == null)
+            {
+                wndBreakout = new Form();
+                wndBreakout.TopMost = true;
+                wndBreakout.MinimizeBox = wndBreakout.MaximizeBox = wndBreakout.ShowInTaskbar = false;
+                wndBreakout.ClientSize = new Size(600, 400);
+                wndBreakout.StartPosition = FormStartPosition.Manual;
+                var screenBounds = Screen.PrimaryScreen.WorkingArea;
+                wndBreakout.Location = new Point(screenBounds.Right - wndBreakout.Size.Width - 32,
+                    screenBounds.Bottom - wndBreakout.Size.Height - 32);
+                wndBreakout.Controls.Add(inkControl1);
+                wndBreakout.Show();
+                wndBreakout.Icon = Program.WindowIcon;
+                wndBreakout.Text = "Kritzel - Overlay";
+
+                wndBreakout.FormClosing += (_sender, _e) =>
+                {
+                    pnInkControlContainer.Controls.Add(inkControl1);
+                    wndBreakout = null;
+                    this.Activate();
+                };
+            }
+            else
+            {
+                wndBreakout.Close();
+            }
         }
 
         protected override void WndProc(ref Message m)

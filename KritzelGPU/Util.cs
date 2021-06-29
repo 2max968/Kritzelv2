@@ -454,5 +454,23 @@ namespace Kritzel.Main
                 return g.MeasureString(text, font);
             }
         }
+
+        public static RectangleF GetFullBounds(IEnumerable<Line> lines)
+        {
+            if (lines.Count() == 0) return new RectangleF(0, 0, 1, 1);
+            var _line = lines.GetEnumerator();
+            _line.MoveNext();
+            float x1 = _line.Current.Bounds.Left, x2 = _line.Current.Bounds.Right;
+            float y1 = _line.Current.Bounds.Top, y2 = _line.Current.Bounds.Bottom;
+            while(_line.MoveNext())
+            {
+                Line line = _line.Current;
+                if (line.Bounds.Left < x1) x1 = line.Bounds.Left;
+                if (line.Bounds.Right > x2) x2 = line.Bounds.Right;
+                if (line.Bounds.Top < y1) y1 = line.Bounds.Top;
+                if (line.Bounds.Bottom > y2) y2 = line.Bounds.Bottom;
+            }
+            return new RectangleF(x1, y1, x2 - x1, y2 - y1);
+        }
     }
 }

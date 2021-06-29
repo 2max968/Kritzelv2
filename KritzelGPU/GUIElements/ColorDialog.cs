@@ -274,6 +274,15 @@ namespace Kritzel.Main.GUIElements
 
         private void btnMore_Click(object sender, EventArgs e)
         {
+            /*var ecp = new Dialogues.ExtendedColorPicker();
+            ecp.Color = SelectedColor;
+            if(ecp.ShowDialog() == DialogResult.OK)
+            {
+                SelectedColor = ecp.Color;
+                btnOk.BackColor = ecp.Color;
+                btnOk.Enabled = true;
+            }*/
+
             var cd = new System.Windows.Forms.ColorDialog();
             cd.Color = SelectedColor;
             if(cd.ShowDialog() == DialogResult.OK)

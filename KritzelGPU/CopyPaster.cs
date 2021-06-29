@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -12,9 +14,13 @@ namespace Kritzel.Main
     public class CopyPaster
     {
         public const string LineID = "KritzelLines";
+        public const string DataType = "Kritzel.Copydata";
 
         public static void CopyLine(Line[] lines, int pageHash = 0)
         {
+            if (lines.Length == 0) return;
+
+            DataObject data = new DataObject();
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{0}{1:X}\n", LineID, pageHash);
             foreach (Line line in lines)
@@ -22,17 +28,36 @@ namespace Kritzel.Main
                     ColorTranslator.ToHtml(line.Brush.GetColor()),
                     line.GetType().FullName,
                     line.ToParamString());
-            CopyString(sb.ToString());
-        }
+            data.SetData(DataType, sb.ToString());
 
-        public static void CopyString(string text)
-        {
-            Clipboard.SetText(text);
+            RectangleF rectF = Util.GetFullBounds(lines);
+            Rectangle rect = new Rectangle((int)rectF.X, (int)rectF.Y, (int)rectF.Width, (int)rectF.Height);
+            Bitmap bmp = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppRgb);
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                g.TranslateTransform(-rect.X, -rect.Y);
+                g.Clear(Color.White);
+                var r = new Renderer.GdiRenderer(g);
+                r.RenderSpecial = false;
+                foreach (Line l in lines) l.Render(r);
+            }
+            data.SetImage(bmp);
+            /*MemoryStream pngStream = new MemoryStream();
+            bmp.Save(pngStream, ImageFormat.Png);
+            pngStream.Position = 0;
+            data.SetData("PNG", false, pngStream);
+            pngStream.Dispose();*/
+
+            Clipboard.SetDataObject(data, true);
+            bmp.Dispose();
         }
 
         public static string PasteString()
         {
-            return Clipboard.GetText();
+            if (!Clipboard.ContainsData(DataType))
+                return "";
+            return (string)Clipboard.GetData(DataType);
         }
 
         public static Line[] PasteLines(int pageHash = 0)

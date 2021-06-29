@@ -160,6 +160,12 @@
     <Compile Include="Dialogues\DPISetup.Designer.cs">
       <DependentUpon>DPISetup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogues\ExtendedColorPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\ExtendedColorPicker.Designer.cs">
+      <DependentUpon>ExtendedColorPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogues\ImageImporter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -396,6 +402,9 @@
     <EmbeddedResource Include="Dialogues\DPISetup.resx">
       <DependentUpon>DPISetup.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\ExtendedColorPicker.resx">
+      <DependentUpon>ExtendedColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\ImageImporter.resx">
       <DependentUpon>ImageImporter.cs</DependentUpon>
     </EmbeddedResource>
@@ -514,6 +523,9 @@
     <Content Include="res\img\actions.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\img\actions\breakout.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="res\img\actions\copy.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -550,6 +562,9 @@
     </Content>
     <Content Include="res\img\actions\transScale.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\eraser.cur">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\EraserAll.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

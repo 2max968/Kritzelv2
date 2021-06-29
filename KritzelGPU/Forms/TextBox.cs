@@ -84,7 +84,7 @@ namespace Kritzel.Main.Forms
             {
                 FontFamily = parts[0];
                 FontSize = Util.SToF(parts[1]);
-                float x = Util.SToF(parts[2]) - size.Width / 2;
+                float x = Util.SToF(parts[2]);
                 float y = Util.SToF(parts[3]);
                 Points.Clear();
                 Points.Add(new LPoint(x, y, 1));
