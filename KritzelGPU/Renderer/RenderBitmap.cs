@@ -103,10 +103,12 @@ namespace Kritzel.Main.Renderer
     public class RenderBitmap3 : RenderBitmap
     {
         public FrameBufferObject FBO;
+        GPURenderer3 parent;
 
-        public RenderBitmap3(int w, int h)
+        public RenderBitmap3(int w, int h, GPURenderer3 parent)
         {
             FBO = new FrameBufferObject(w, h, 4);
+            this.parent = parent;
         }
 
         public override void Begin()
@@ -122,6 +124,7 @@ namespace Kritzel.Main.Renderer
 
         public override void End()
         {
+            parent.FlushTextRenderer();
             FBO.Blit();
         }
     }

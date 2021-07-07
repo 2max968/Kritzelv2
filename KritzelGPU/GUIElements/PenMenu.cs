@@ -28,7 +28,7 @@ namespace Kritzel.Main.GUIElements
             this.control = control;
             this.Mode = control.InkMode;
 
-            this.Font = new Font(this.Font.FontFamily, this.Font.Size * Util.GetScaleFactor());
+            this.Font = new Font(this.Font.FontFamily, Util.GetFontSizePixel(), GraphicsUnit.Pixel);
             int guiSize = Util.GetGUISize();
             this.Width = guiSize * Configuration.PenSizeNum;
             panelBottom.Height = guiSize;
@@ -64,7 +64,7 @@ namespace Kritzel.Main.GUIElements
 
             for(int i = 0; i < Configuration.PenSizeNum; i++)
             {
-                float size = Configuration.PenSizeMin + i * (Configuration.PenSizeMax - Configuration.PenSizeMin) / (float)(Configuration.PenSizeNum - 1);
+                float size = Configuration.PenSizeMin + i * (Configuration.PenSizeMax - Configuration.PenSizeMin) / (float)(Configuration.PenSizeNum - 1) * Util.GetScaleFactor();
                 Button btn = new Button();
                 Bitmap bmp = new Bitmap(guiSize, guiSize);
                 Graphics g = Graphics.FromImage(bmp);

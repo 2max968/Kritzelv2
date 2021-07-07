@@ -303,7 +303,7 @@ namespace Kritzel.Main
                 if (t.TouchDevice == TouchDevice.Mouse && t.Down)
                     mouse = t;
             }
-            if(mouseDown)
+            if(mouseDown && (mouseButtons & MouseButtons.Left) == MouseButtons.Left)
             {
                 mouse = new Touch((int)mousePos.X, (int)mousePos.Y, Touch.MOUSE_ID, TouchDevice.Mouse, Touch.MAX_PREASSURE, PenFlags.NONE, true);
             }

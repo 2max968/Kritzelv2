@@ -85,7 +85,7 @@ namespace Kritzel.Main.Renderer
             hwndProps.Hwnd = cltr.Handle;
             hwndProps.PixelSize = new Size2(cltr.Width, cltr.Height);
             hwndProps.PresentOptions = PresentOptions.Immediately;
-            rtProps.Type = RenderTargetType.Default;
+            rtProps.Type = Configuration.D2D_RendertargetType;
             mainRenderTarget = new WindowRenderTarget(factory, rtProps, hwndProps);
             Program.MainLog.Add(MessageType.MSG, "Render Target created: {0}", mainRenderTarget.NativePointer);
             //RenderTarget = mainRenderTarget;

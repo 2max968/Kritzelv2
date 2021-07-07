@@ -1,6 +1,7 @@
 ﻿using Kritzel.GLRenderer;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -25,6 +26,9 @@ namespace Kritzel.Main.Renderer
         float[] pEllipseX;
         float[] pEllipseY;
         float lineWidth;
+        gdi.Bitmap textBuffer = null;
+        gdi.Graphics textRenderer = null;
+        bool textUpdate = false;
 
         public GPURenderer3(System.Windows.Forms.Control cltr)
         {
@@ -77,6 +81,8 @@ namespace Kritzel.Main.Renderer
         public override void Dispose()
         {
             if (Disposed) return;
+            textBuffer.Dispose();
+            textRenderer.Dispose();
             ctx.Dispose();
         }
 
@@ -246,6 +252,14 @@ namespace Kritzel.Main.Renderer
             while (tLock) ;
             stateDraw = true;
             ctx.MakeCurrent();
+            if(textBuffer == null || textBuffer.Width != (int)Width || textBuffer.Height != (int)Height)
+            {
+                textRenderer?.Dispose();
+                textBuffer?.Dispose();
+                textBuffer = new gdi.Bitmap((int)Width, (int)Height);
+                textRenderer = gdi.Graphics.FromImage(textBuffer);
+                textRenderer.SmoothingMode = SmoothingMode.None;
+            }
             return true;
         }
 
@@ -262,7 +276,7 @@ namespace Kritzel.Main.Renderer
         public override void End()
         {
             if (!stateDraw) return;
-            
+
             /*NativeGL.nglUseProgram(ellipseShader);
             float x1 = 0, y1 = 0, x2 = 100, y2 = 100;
             GL.Color(1, 1, 1, 1);
@@ -274,6 +288,7 @@ namespace Kritzel.Main.Renderer
             GL.End();
             NativeGL.nglUseProgram(0);*/
 
+            FlushTextRenderer();
             ctx.SwapBuffer();
             stateDraw = false;
         }
@@ -327,17 +342,15 @@ namespace Kritzel.Main.Renderer
 
         public override void DrawDashPolygon(PointF[] pts)
         {
-            GL.Color(gdi.Color.Gray);
-            GL.Begin(PrimitiveType.QUADS);
-            for (int i = 0; i < pts.Length - 1; i++)
-            {
-                drawLine(4, pts[i], pts[i + 1]);
-            }
-            GL.End();
-            GL.Begin(PrimitiveType.LINES);
-            GL.Vertex2(pts[pts.Length - 1]);
-            GL.Vertex2(pts[0]);
-            GL.End();
+            textRenderer.ResetTransform();
+            Transformation.Transform(pts);
+            gdi.Pen p = new gdi.Pen(gdi.Color.Gray, 4);
+            p.DashStyle = DashStyle.Dash;
+            textRenderer.DrawCurve(p, pts);
+            p.Width = 2;
+            textRenderer.DrawLine(p, pts[pts.Length - 1], pts[0]);
+            p.Dispose();
+            textUpdate = true;
         }
 
         public override void FillPolygon(PBrush b, PointF[] pts)
@@ -349,57 +362,35 @@ namespace Kritzel.Main.Renderer
                 GL.Vertex2(pts[i].X, pts[i].Y);
             }
             GL.End();*/
+            textRenderer.Transform = Transformation.CreateGdiMatrix();
+            textRenderer.GetRenderer().FillPolygon(b, pts);
+            textUpdate = true;
         }
 
         public override void DrawText(string str, PBrush brush, RectangleF rect, float size)
         {
-            float quality = 5;
-            size = Util.MmToPoint(size);
-            rect = Util.MmToPoint(rect);
-            gdi.Graphics dummy = gdi.Graphics.FromHwnd(IntPtr.Zero);
-            gdi.Font ft = new gdi.Font("Calibri", size / Util.GetScaleFactor() * quality);
-            gdi.SizeF s = dummy.MeasureString(str, ft);
-            s.Height *= 2;
-            s.Height *= quality;
-            s.Width *= quality;
-            gdi.Bitmap bmp = new gdi.Bitmap((int)s.Width, (int)s.Height);
-            gdi.Color c1 = brush.GetColor();
-            gdi.Color c2 = gdi.Color.FromArgb(0, c1.R, c1.G, c1.B);
-            gdi.SolidBrush b = new gdi.SolidBrush(c1);
-            gdi.Graphics g = gdi.Graphics.FromImage(bmp);
-            g.Clear(c2);
-            g.DrawString(str, ft, b, new PointF(0, 0));
-
-            int tex = GLRenderer.Util.LoadTexture(bmp);
-            Opengl32.glEnable(GLConsts.GL_TEXTURE_2D);
-            Opengl32.glBindTexture(GLConsts.GL_TEXTURE_2D, tex);
-            rect = new RectangleF(rect.X, rect.Y, s.Width / quality, s.Height / quality);
-            GL.Color(1, 1, 1, 1);
-            GL.Begin(PrimitiveType.QUADS);
-            GL.TexCoord(0, 0);GL.Vertex2(rect.Left, rect.Top);
-            GL.TexCoord(1, 0);GL.Vertex2(rect.Right, rect.Top);
-            GL.TexCoord(1, 1);GL.Vertex2(rect.Right, rect.Bottom);
-            GL.TexCoord(0, 1);GL.Vertex2(rect.Left, rect.Bottom);
-            GL.End();
-            Opengl32.glDisable(GLConsts.GL_TEXTURE_2D);
-
-            Opengl32.glDeleteTextures(1, ref tex);
-            b.Dispose();
-            bmp.Dispose();
-            dummy.Dispose();
+            textRenderer.Transform = Transformation.CreateGdiMatrix();
+            textRenderer.GetRenderer().DrawText(str, brush, rect, size);
+            textUpdate = true;
         }
 
         public override RenderBitmap CreateRenderTarget()
         {
-            return new RenderBitmap3((int)Width, (int)Height);
+            return new RenderBitmap3((int)Width, (int)Height, this);
         }
 
         public override void SetRenderTarget(RenderBitmap bmp)
         {
             if (bmp == null || !(bmp is RenderBitmap3))
+            {
+                FlushTextRenderer();
                 NativeGL.nglBindFramebuffer(0);
+            }
             else
+            {
+                FlushTextRenderer();
                 ((RenderBitmap3)bmp).FBO.Bind();
+            }
         }
 
         public override void DrawRenderBitmap(RenderBitmap bmp)
@@ -428,13 +419,18 @@ namespace Kritzel.Main.Renderer
 
         public override void DrawText(string text, PointF pos, float size, gdi.Color c)
         {
-            //TODO: Text
+            textRenderer.Transform = Transformation.CreateGdiMatrix();
+            gdi.Font ft = new gdi.Font("Calibri", size);
+            gdi.SolidBrush b = new gdi.SolidBrush(c);
+            textRenderer.DrawString(text, ft, b, pos);
+            b.Dispose();
+            textUpdate = true;
         }
 
         public override void BeginCircles(PBrush brush)
         {
             if (brush != null) GL.Color(brush.GetColor());
-            GL.Begin(PrimitiveType.TRIANGLE_STRIP);
+            GL.Begin(PrimitiveType.TRIANGLES);
         }
 
         public override void Circle(float x, float y, float r)
@@ -491,7 +487,35 @@ namespace Kritzel.Main.Renderer
 
         public override void DrawText(string text, gdi.Color color, float x, float y, string fontFamily, float size, TextAlign align)
         {
-            //throw new NotImplementedException();
+            textRenderer.Transform = Transformation.CreateGdiMatrix();
+            textRenderer.GetRenderer().DrawText(text, color, x, y, fontFamily, size, align);
+            textUpdate = true;
+        }
+
+        public void FlushTextRenderer()
+        {
+            if (textUpdate)
+            {
+                ResetTransform();
+                int texture = GLRenderer.Util.LoadTexture(textBuffer);
+
+                float x1 = 0, y1 = Height, x2 = Width, y2 = 0;
+                Opengl32.glEnable(GLConsts.GL_TEXTURE_2D);
+                Opengl32.glBindTexture(GLConsts.GL_TEXTURE_2D, texture);
+
+                GL.Color(1, 1, 1, 1);
+                GL.Begin(PrimitiveType.QUADS);
+                GL.TexCoord(0, 1); GL.Vertex2(x1, y1);
+                GL.TexCoord(1, 1); GL.Vertex2(x2, y1);
+                GL.TexCoord(1, 0); GL.Vertex2(x2, y2);
+                GL.TexCoord(0, 0); GL.Vertex2(x1, y2);
+                GL.End();
+                Opengl32.glDisable(GLConsts.GL_TEXTURE_2D);
+
+                Opengl32.glDeleteTextures(1, ref texture);
+                textRenderer.Clear(gdi.Color.FromArgb(0, 255, 255, 255));
+                textUpdate = false;
+            }
         }
     }
 }

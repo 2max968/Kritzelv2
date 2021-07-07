@@ -19,6 +19,7 @@ namespace Kritzel.Main.Renderer
         Matrix scaleI, scaleT;
         Pen linePen = null;
         Matrix3x3 currentTransform = new Matrix3x3();
+        public bool Copy { get; set; } = true;
 
         public GPURenderer2(System.Windows.Forms.Control cltr)
         {
@@ -34,7 +35,7 @@ namespace Kritzel.Main.Renderer
 
         public override bool Begin()
         {
-            if(buffer == null)
+            if (buffer == null)
             {
                 float scale = GetScaleFactor();
                 buffer = new Bitmap((int)(cltr.Width * scale),
@@ -57,10 +58,13 @@ namespace Kritzel.Main.Renderer
 
         public override void End()
         {
-            Graphics g = cltr.CreateGraphics();
-            g.DrawImage(buffer,
-                new Rectangle(new Point(0, 0), cltr.Size));
-            g.Dispose();
+            if (Copy)
+            {
+                Graphics g = cltr.CreateGraphics();
+                g.DrawImage(buffer,
+                    new Rectangle(new Point(0, 0), cltr.Size));
+                g.Dispose();
+            }
             Drawing = false;
         }
 
@@ -281,6 +285,16 @@ namespace Kritzel.Main.Renderer
         public override void DrawText(string text, Color color, float x, float y, string fontFamily, float size, TextAlign align)
         {
             r.DrawText(text, color, x, y, fontFamily, size, align);
+        }
+
+        public Bitmap GetBuffer()
+        {
+            return buffer;
+        }
+
+        public Graphics GetGraphics()
+        {
+            return g;
         }
     }
 }

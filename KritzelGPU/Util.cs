@@ -198,6 +198,11 @@ namespace Kritzel.Main
             return effDpi / 96f;
         }
 
+        public static float GetFontSizePixel()
+        {
+            return 16 * Util.GetScaleFactor();
+        }
+
         public static bool Contains<T>(this T[] array, T obj)
         {
             for (int i = 0; i < array.Length; i++)

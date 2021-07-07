@@ -16,22 +16,18 @@ namespace Kritzel.Main
         {
             Languages = new Dictionary<string, Language>();
             List<string> files = ResManager.ListFiles("lang", "*.ini");
-            string currLang = System.Globalization.CultureInfo.CurrentCulture.Name;
+            string currLang = System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName.ToLower();
+            Program.MainLog.Add(MessageType.MSG, "System Language: {0}", currLang);
             foreach(string str in files)
             {
                 Language lang = new Language(str);
                 if (lang.Key != "" && !Languages.ContainsKey(lang.Key))
                 {
                     Languages.Add(lang.Key, lang);
-
-                    /*if (Configuration.Language == "" && lang.Key.Substring(2) == currLang.Substring(2))
-                        CurrentLanguage = lang;
-                    if (Configuration.Language != "" && lang.Key == Configuration.Language)
-                        CurrentLanguage = lang;*/
                 }
             }
-            //if (CurrentLanguage == null && Languages.ContainsKey("en-US"))
-            //    CurrentLanguage = Languages["en-US"];
+            if (CurrentLanguage == null && Languages.ContainsKey("en-US"))
+                CurrentLanguage = Languages["en-US"];
             SelectLanguage();
         }
 
@@ -80,11 +76,12 @@ namespace Kritzel.Main
 
         public static void SelectLanguage()
         {
-            string currLang = System.Globalization.CultureInfo.CurrentCulture.Name;
+            string currLang = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            Program.MainLog.Add(MessageType.MSG, "System Language: {0}", currLang);
             foreach (KeyValuePair<string, Language> kvp in Languages)
             {
                 var lang = kvp.Value;
-                if (Configuration.Language == "" && lang.Key.Substring(2) == currLang.Substring(2))
+                if (Configuration.Language == "" && lang.Key.Substring(0, 2) == currLang.Substring(0, 2))
                     CurrentLanguage = lang;
                 if (Configuration.Language != "" && lang.Key == Configuration.Language)
                     CurrentLanguage = lang;

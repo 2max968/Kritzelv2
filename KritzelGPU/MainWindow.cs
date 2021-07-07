@@ -140,7 +140,7 @@ namespace Kritzel.Main
                 pnSizes.Controls.Add(btnSize);
                 sizeButtons[i] = btnSize;
                 Bitmap bmp = new Bitmap(Util.GetGUISize(), Util.GetGUISize());
-                float rad = (float)sizeButtons[i].Tag;
+                float rad = (float)sizeButtons[i].Tag * Util.GetScaleFactor();
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
                     g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -654,6 +654,10 @@ namespace Kritzel.Main
                     pnInkControlContainer.Controls.Add(inkControl1);
                     wndBreakout = null;
                     this.Activate();
+                };
+                wndBreakout.KeyDown += (_sender, _e) =>
+                {
+                    OnKeyDown(_e);
                 };
             }
             else

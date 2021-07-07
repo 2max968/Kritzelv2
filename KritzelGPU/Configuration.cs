@@ -24,6 +24,7 @@ namespace Kritzel.Main
         public static Dictionary<FieldInfo, object> defaults = null;
 
         [CP] public static RenderMode Renderer = RenderMode.Direct2D;
+        [CP] public static SharpDX.Direct2D1.RenderTargetType D2D_RendertargetType = SharpDX.Direct2D1.RenderTargetType.Default;
         [CP] public static float PenSizeMin = 3;
         [CP] public static float PenSizeMax = 11;
         [CP] public static int PenSizeNum = 5;

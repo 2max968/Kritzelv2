@@ -73,7 +73,7 @@
             this.btnLine.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnLine.FlatAppearance.BorderSize = 0;
             this.btnLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLine.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnLine.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnLine.Location = new System.Drawing.Point(0, 48);
             this.btnLine.Name = "btnLine";
             this.btnLine.Size = new System.Drawing.Size(322, 54);
@@ -89,7 +89,7 @@
             this.btnRect.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnRect.FlatAppearance.BorderSize = 0;
             this.btnRect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRect.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnRect.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnRect.Location = new System.Drawing.Point(0, 102);
             this.btnRect.Name = "btnRect";
             this.btnRect.Size = new System.Drawing.Size(322, 52);
