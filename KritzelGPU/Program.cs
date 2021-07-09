@@ -38,6 +38,10 @@ namespace Kritzel.Main
         [STAThread]
         static void Main()
         {
+#if !DEBUG
+            try
+            {
+#endif
             SetProcessDpiAwareness(PROCESS_DPI_AWARENESS.PROCESS_SYSTEM_DPI_AWARE);
 
             Environment.CurrentDirectory = new FileInfo(Application.ExecutablePath).DirectoryName;
@@ -69,6 +73,14 @@ namespace Kritzel.Main
             Application.Run(new MainWindow());
             //DebugInterface.Stop();
             HTTPCast.StopCasting();
+#if !DEBUG
+            }
+            catch(Exception e)
+            {
+                MainLog.Add(MessageType.ERROR, "Program crashed");
+                MainLog.Add(e);
+            }
+#endif
         }
     }
 }

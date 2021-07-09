@@ -9,6 +9,10 @@ namespace Kritzel.PointerInputLibrary
 {
     public class PointerManager
     {
+        public event EventHandler<Touch> PenDown;
+        public event EventHandler<Touch> PenUp;
+        public event EventHandler<Touch> PenMove;
+
         public Dictionary<uint, Touch> Touches { get; private set; } 
             = new Dictionary<uint, Touch>();
 
@@ -57,7 +61,23 @@ namespace Kritzel.PointerInputLibrary
                     t = new Touch(m, target);
                     if (Touches.ContainsKey(t.Id))
                     {
-                        Touches[t.Id].MoveTo(t);
+                        Touch ot = Touches[t.Id];
+                        if(t.TouchDevice == TouchDevice.Pen)
+                        {
+                            if(ot.Pressure == 0 && t.Pressure > 0)
+                            {
+                                PenDown?.Invoke(this, t);
+                            }
+                            else if(ot.Pressure > 0 && t.Pressure == 0)
+                            {
+                                PenUp?.Invoke(this, t);
+                            }
+                            else
+                            {
+                                PenMove?.Invoke(this, t);
+                            }
+                        }
+                        ot.MoveTo(t);
                     }
                     else
                     {

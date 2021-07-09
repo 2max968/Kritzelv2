@@ -31,7 +31,7 @@ namespace Kritzel.Main.ScreenObject
         public Ruler(InkControl parent)
         {
             this.parent = parent;
-            size = Util.MmToPoint(Configuration.RulerSize);
+            size = Util.MmToPoint(Configuration.RulerSize * Util.GetScaleFactor() / 1.5f);
             grip = Util.MmToPoint(5);
             base.transformScale = false;
         }
