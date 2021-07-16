@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Source>C:\Users\milky\Documents\KritzelIcon.png</Source>
+    <SmallTileSource>C:\Users\milky\Documents\KritzelIcon.png</SmallTileSource>
+    <MediumTileSource>C:\Users\milky\Documents\KritzelIcon.png</MediumTileSource>
+    <WideTileSource>C:\Users\milky\Documents\KritzelIcon.png</WideTileSource>
+    <LargeTileSource>C:\Users\milky\Documents\KritzelIcon.png</LargeTileSource>
+    <AppIconSource>C:\Users\milky\Documents\KritzelIcon.png</AppIconSource>
+    <SplashScreenSource>C:\Users\milky\Documents\KritzelIcon.png</SplashScreenSource>
+    <PackageLogoSource>C:\Users\milky\Documents\KritzelIcon.png</PackageLogoSource>
+    <UapAppxPackageBuildMode>StoreAndSideload</UapAppxPackageBuildMode>
+    <AppxShowAllApps>False</AppxShowAllApps>
+    <AppxBuildConfigurationSelection>x86</AppxBuildConfigurationSelection>
+    <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
+  </PropertyGroup>
+</Project>

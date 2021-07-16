@@ -57,6 +57,7 @@ namespace Kritzel.Main.GUIElements
             btnCompass.Image = Compass.Icon;
             btnTextBox.Image = Forms.TextBox.BitmapTB;
             btnAddImage.Image = Forms.ImageObject.IconPhoto;
+            btnStamp.Image = Forms.LineGroup.Stamp;
             if (control.EraserColor == Color.Transparent)
                 btnEraser.Image = bmpEraser;
             else
@@ -219,6 +220,21 @@ namespace Kritzel.Main.GUIElements
                 var imObj = new Forms.ImageObject(img, new RectangleF(0, 0, s * img.GdiBitmap.Width, s * img.GdiBitmap.Height));
                 control.Page.AddLine(imObj);
                 OnClose?.Invoke();
+            }
+        }
+
+        private async void btnStamp_Click(object sender, EventArgs e)
+        {
+            OnClose?.Invoke();
+            await Task.Delay(0);
+            if(Dialogues.StampMenu.Instance != null)
+            {
+                Dialogues.StampMenu.Instance.Close();
+            }
+            else
+            {
+                var stampmenu = new Dialogues.StampMenu(control);
+                stampmenu.Show();
             }
         }
     }

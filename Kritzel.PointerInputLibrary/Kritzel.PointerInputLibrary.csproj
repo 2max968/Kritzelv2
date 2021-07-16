@@ -87,6 +87,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>copy "C:\Users\milky\Documents\GCC\StylusLib\bin\Debug\StylusLib.dll" "$(TargetDir)"</PreBuildEvent>
+    <PreBuildEvent>rem copy "C:\Users\milky\Documents\GCC\StylusLib\bin\Debug\StylusLib.dll" "$(TargetDir)"</PreBuildEvent>
   </PropertyGroup>
 </Project>

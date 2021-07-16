@@ -85,10 +85,10 @@
       <HintPath>..\packages\Fizzler.1.2.0\lib\netstandard2.0\Fizzler.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip">
-      <HintPath>..\..\..\..\Desktop\Debug\Ionic.Zip.dll</HintPath>
+      <HintPath>..\packages\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp-gdi">
-      <HintPath>..\lib\PdfSharp-gdi.dll</HintPath>
+      <HintPath>..\packages\PdfSharp-gdi.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
@@ -227,6 +227,12 @@
     <Compile Include="Dialogues\Sizes.Designer.cs">
       <DependentUpon>Sizes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogues\StampMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\StampMenu.Designer.cs">
+      <DependentUpon>StampMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogues\TextBoxInput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -245,6 +251,7 @@
     <Compile Include="Forms\IBackground.cs" />
     <Compile Include="Forms\IClickable.cs" />
     <Compile Include="Forms\ImageObject.cs" />
+    <Compile Include="Forms\LineGroup.cs" />
     <Compile Include="Forms\Marker.cs" />
     <Compile Include="Forms\Rect.cs" />
     <Compile Include="Forms\TextBox.cs" />
@@ -435,6 +442,9 @@
     <EmbeddedResource Include="Dialogues\Sizes.resx">
       <DependentUpon>Sizes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\StampMenu.resx">
+      <DependentUpon>StampMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\TextBoxInput.resx">
       <DependentUpon>TextBoxInput.cs</DependentUpon>
     </EmbeddedResource>
@@ -563,6 +573,9 @@
     <Content Include="res\img\actions\transScale.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\img\clef.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="res\img\eraser.cur">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -597,6 +610,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\tools\photo.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\tools\stamp.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\tools\text.svg">

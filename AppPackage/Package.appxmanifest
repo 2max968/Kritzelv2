@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap mp rescap">
-  <Identity Name="3dea6468-f0b5-455c-9631-04a541e6891f" Publisher="CN=milky" Version="1.0.0.0" />
+  <Identity Name="590752max968.KritzelNotes" Publisher="CN=260FC781-894A-478F-89EE-E61602A7A37B" Version="1.0.14.0" />
   <Properties>
-    <DisplayName>AppPackage</DisplayName>
-    <PublisherDisplayName>milky</PublisherDisplayName>
+    <DisplayName>KritzelNotes</DisplayName>
+    <PublisherDisplayName>2max968</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -16,8 +16,14 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
       <uap:VisualElements DisplayName="Kritzel" Description="AppPackage" BackgroundColor="transparent" Square150x150Logo="Images\Square150x150Logo.png" Square44x44Logo="Images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png">
         </uap:DefaultTile>
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape"/>
+          <uap:Rotation Preference="portrait"/>
+          <uap:Rotation Preference="landscapeFlipped"/>
+          <uap:Rotation Preference="portraitFlipped"/></uap:InitialRotationPreference>
+        <uap:SplashScreen Image="Images\SplashScreen.png"/>
       </uap:VisualElements>
     </Application>
   </Applications>

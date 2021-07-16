@@ -102,5 +102,20 @@ namespace Kritzel.Main.ScreenObject
         {
             Disposed = true;
         }
+
+        public virtual bool ManipulateInput(ref float x, ref float y, int screenWidth, int screenHeight)
+        {
+            return !Collides(x, y, screenWidth, screenHeight);
+        }
+
+        public bool ManipulateInput(Touch t, int screenWidth, int screenHeight)
+        {
+            float x = t.X;
+            float y = t.Y;
+            bool b = ManipulateInput(ref x, ref y, screenWidth, screenHeight);
+            t.X = (int)x;
+            t.Y = (int)y;
+            return b;
+        }
     }
 }

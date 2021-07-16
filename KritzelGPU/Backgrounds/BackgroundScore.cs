@@ -30,5 +30,16 @@ namespace Kritzel.Main.Backgrounds
                 }
             }
         }
+
+        public override void DrawThumbnail(Bitmap thumbnail)
+        {
+            using (Graphics g = Graphics.FromImage(thumbnail))
+            {
+                using(Bitmap icon = ResManager.LoadIcon("clef.svg", thumbnail.Width, thumbnail.Height))
+                {
+                    g.DrawImage(icon, new PointF(0, 0));
+                }
+            }
+        }
     }
 }

@@ -165,5 +165,39 @@ namespace Kritzel.Main.ScreenObject
             bool baseChange = base.Think(allTouches, ref stylus, ref mouse, screenWidth, screenHeight);
             return baseChange || change;
         }
+
+        public override bool ManipulateInput(ref float x, ref float y, int screenWidth, int screenHeight)
+        {
+            if (Collides(x, y, screenWidth, screenHeight))
+                return false;
+            float _x = x, _y = y;
+            Transformation.GetInverse().Transform(ref _x, ref _y);
+            if (!locked)
+            {
+
+                float xq = _x;
+                float yq = _y;
+                Matrix3x3.Rotate(-angle).Transform(ref xq, ref yq);
+                xq -= rad;
+                float dist = (float)Math.Sqrt(xq * xq + yq * yq);
+                if (dist < ballRad)
+                {
+                    locked = true;
+                }
+            }
+
+            if (locked)
+            {
+                float r, phi;
+                Util.CartToPole(out r, out phi, _x, _y);
+                r = rad;
+                Util.PoleToCart(out _x, out _y, r, phi);
+                Transformation.Transform(ref _x, ref _y);
+                x = _x;
+                y = _y;
+                angle = -phi;
+            }
+            return true;
+        }
     }
 }

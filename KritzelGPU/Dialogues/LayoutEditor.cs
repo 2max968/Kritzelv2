@@ -131,7 +131,6 @@ namespace Kritzel.Main.Dialogues
             bgrTypes.Add(typeof(Backgrounds.BackgroundNull));
             names.Add("None");
             icons.Add(new Bitmap(PSIZE, PSIZE));
-            float iconFactor = 1.5f;
 
             foreach (Type t in asm.GetTypes())
             {
@@ -140,17 +139,10 @@ namespace Kritzel.Main.Dialogues
                 {
                     bgrTypes.Add(t);
                     names.Add(t.GetCustomAttribute<Backgrounds.BName>().Name);
-                    PageFormat format =
-                        new PageFormat(Util.PointToMm(PSIZE) * iconFactor, Util.PointToMm(PSIZE) * iconFactor);
                     Backgrounds.Background bgr =
                         (Backgrounds.Background)t.GetConstructor(new Type[0]).Invoke(new object[0]);
                     Bitmap bmp = new Bitmap(PSIZE, PSIZE);
-                    using (Graphics g = Graphics.FromImage(bmp))
-                    {
-                        g.ScaleTransform(1 / iconFactor, 1 / iconFactor);
-                        bgr.Draw(g.GetRenderer(), format,
-                            2, Color.LightGray, Color.Red);
-                    }
+                    bgr.DrawThumbnail(bmp);
                     icons.Add(bmp);
                 }
             }
