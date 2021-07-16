@@ -11,7 +11,7 @@ namespace Kritzel.Main.ScreenObject
 {
     public class Ruler : BaseScreenObject
     {
-        enum LockState { Up,Down,None};
+        enum LockState { Up, Down, None };
         static Bitmap icon = null;
         public static Bitmap Icon
         {
@@ -90,7 +90,7 @@ namespace Kritzel.Main.ScreenObject
             if (rotDiff != 0)
             {
                 float x = 0, y = 0;
-                if(lastDblTouch != null)
+                if (lastDblTouch != null)
                 {
                     x = lastDblTouch.Position.X;
                     y = lastDblTouch.Position.Y;
@@ -103,37 +103,7 @@ namespace Kritzel.Main.ScreenObject
             Touch inpDev = stylus | mouse;
             if (inpDev != null && inpDev.PenFlags == PenFlags.NONE)
             {
-                float x = inpDev.X;
-                float y = inpDev.Y;
-                Transformation.GetInverse().Transform(ref x, ref y);
-                if (lockState == LockState.None && y >= -grip && y < size / 2)
-                {
-                    y = 0;
-                    lockState = LockState.Down;
-                }
-                else if (lockState == LockState.None && y >= size / 2 && y <= size + grip)
-                {
-                    y = size;
-                    lockState = LockState.Up;
-                }
-                else if (lockState == LockState.Down)
-                {
-                    if (y < -grip)
-                        lockState = LockState.None;
-                    else
-                        y = 0;
-                }
-                else if (lockState == LockState.Up)
-                {
-                    if (y > size + grip)
-                        lockState = LockState.None;
-                    else
-                        y = size;
-                }
-
-                Transformation.Transform(ref x, ref y);
-                inpDev.X = (int)x;
-                inpDev.Y = (int)y;
+                ManipulateInput(inpDev, screenWidth, screenHeight);
             }
             else
             {
@@ -146,6 +116,38 @@ namespace Kritzel.Main.ScreenObject
         public override void Dispose()
         {
             base.Dispose();
+        }
+
+        public override bool ManipulateInput(ref float x, ref float y, int screenWidth, int screenHeight)
+        {
+            Transformation.GetInverse().Transform(ref x, ref y);
+            if (lockState == LockState.None && y >= -grip && y < size / 2)
+            {
+                y = 0;
+                lockState = LockState.Down;
+            }
+            else if (lockState == LockState.None && y >= size / 2 && y <= size + grip)
+            {
+                y = size;
+                lockState = LockState.Up;
+            }
+            else if (lockState == LockState.Down)
+            {
+                if (y < -grip)
+                    lockState = LockState.None;
+                else
+                    y = 0;
+            }
+            else if (lockState == LockState.Up)
+            {
+                if (y > size + grip)
+                    lockState = LockState.None;
+                else
+                    y = size;
+            }
+
+            Transformation.Transform(ref x, ref y);
+            return true;
         }
     }
 }

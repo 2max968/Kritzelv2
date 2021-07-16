@@ -329,5 +329,14 @@ namespace Kritzel.Main
             CalcSpline();
             CalculateBounds();
         }
+
+        public virtual Line Clone()
+        {
+            Type t = this.GetType();
+            Line clone = (Line)t.GetConstructor(new Type[0]).Invoke(new object[0]);
+            clone.FromParamString(this.ToParamString());
+            clone.Brush = this.Brush;
+            return clone;
+        }
     }
 }

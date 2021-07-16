@@ -5,5 +5,22 @@
     <AppxShowAllApps>False</AppxShowAllApps>
     <AppxBuildConfigurationSelection>x86</AppxBuildConfigurationSelection>
     <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
+    <UapAppxPackageBuildMode>StoreAndSideload</UapAppxPackageBuildMode>
+    <Source>C:\Users\milky\Documents\KritzelIcon.png</Source>
+    <SmallTileSource>C:\Users\milky\Documents\KritzelIcon.png</SmallTileSource>
+    <MediumTileSource>C:\Users\milky\Documents\KritzelIcon.png</MediumTileSource>
+    <WideTileSource>C:\Users\milky\Documents\KritzelIcon.png</WideTileSource>
+    <LargeTileSource>C:\Users\milky\Documents\KritzelIcon.png</LargeTileSource>
+    <AppIconSource>C:\Users\milky\Documents\KritzelIcon.png</AppIconSource>
+    <SplashScreenSource>C:\Users\milky\Documents\KritzelIcon.png</SplashScreenSource>
+    <PackageLogoSource>C:\Users\milky\Documents\KritzelIcon.png</PackageLogoSource>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DebuggerFlavor>AppHostLocalDebugger</DebuggerFlavor>
+    <RemoteDebugEnabled>False</RemoteDebugEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DebuggerFlavor>AppHostLocalDebugger</DebuggerFlavor>
+    <RemoteDebugEnabled>False</RemoteDebugEnabled>
   </PropertyGroup>
 </Project>

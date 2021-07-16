@@ -99,6 +99,14 @@ namespace Kritzel.Main
             return GetErrorBmp(width, height);
         }
 
+        //public static Icon GetIconMultisize(string path, params int[] sizes)
+        //{
+        //    for(int i = 0; i < sizes.Length; i++)
+        //    {
+        //
+        //    }
+        //}
+
         public static string GetText(string path)
         {
             Stream stream = GetStream(path);

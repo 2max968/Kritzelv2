@@ -50,6 +50,8 @@ namespace Kritzel.Main.GUIElements
             this.buffer = buffer;
             this.SizeMode = PictureBoxSizeMode.StretchImage;
             this.Image = (Bitmap)buffer.Clone();
+            this.SizeMode = PictureBoxSizeMode.Normal;
+            this.BackColor = Style.Default.Background;
             this.callback = callback;
             this.dialog = dialog;
             this.controls = controls;
@@ -146,7 +148,7 @@ namespace Kritzel.Main.GUIElements
                 Bitmap bmp = new Bitmap(this.Width, this.Height);
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
-                    g.DrawImage(buffer, new PointF(0, 0));
+                    g.DrawImage(buffer, new RectangleF(0, 0, buffer.Width, buffer.Height));
                     using (SolidBrush b = new SolidBrush(Color.FromArgb(100, 0, 0, 0)))
                         g.FillRectangle(b, new RectangleF(0, 0, this.Width, this.Height));
                 }

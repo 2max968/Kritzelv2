@@ -156,7 +156,7 @@ namespace Kritzel.Main
             this.Shown += MainWindow_Shown;
             inkControl1.SelectionChanged += InkControl1_SelectionChanged;
             inkControl1.PageLoaded += InkControl1_PageLoaded;
-            inkControl1.LineAdded += InkControl1_LineAdded;
+            inkControl1.InkModeChanged += InkControl1_InkModeChanged;
             Style.StyleChanged += Style_StyleChanged;
             Style_StyleChanged(null, Style.Default);
 
@@ -174,12 +174,19 @@ namespace Kritzel.Main
             HistoryManager.RegisterHistoryButtons(btnBack, btnForward);
         }
 
-        private void InkControl1_LineAdded(object sender, Line e)
+        private void InkControl1_InkModeChanged(object sender, InkMode e)
         {
-            if(inkControl1.InkMode == InkMode.Text)
+            switch (e)
             {
-                inkControl1.InkMode = InkMode.Pen;
-                btnFormType.BackgroundImage = Line.BitmapStrk;
+                case InkMode.Pen: btnFormType.BackgroundImage = Line.BitmapStrk; break;
+                case InkMode.Line: btnFormType.BackgroundImage = Forms.LinearLine.BitmapLL; break;
+                case InkMode.Rect: btnFormType.BackgroundImage = Forms.Rect.BitmapRect; break;
+                case InkMode.Arc: btnFormType.BackgroundImage = Forms.Arc.BitmapArc; break;
+                case InkMode.Arc2: btnFormType.BackgroundImage = Forms.Arc2.BitmapArc2; break;
+                case InkMode.Marker: btnFormType.BackgroundImage = Forms.Marker.BitmapMarker; break;
+                case InkMode.Text: btnFormType.BackgroundImage = Forms.TextBox.BitmapTB; break;
+                case InkMode.Stamp: btnFormType.BackgroundImage = Forms.LineGroup.Stamp; break;
+                default: btnFormType.BackgroundImage = ResManager.GetErrorBmp(16, 16); break;
             }
         }
 
@@ -352,17 +359,6 @@ namespace Kritzel.Main
             GUIElements.PenMenu menu = new GUIElements.PenMenu(inkControl1);
             OpenDialog(menu, delegate (Control dialog)
             {
-                switch (menu.Mode)
-                {
-                    case InkMode.Pen: btnFormType.BackgroundImage = Line.BitmapStrk; break;
-                    case InkMode.Line: btnFormType.BackgroundImage = Forms.LinearLine.BitmapLL; break;
-                    case InkMode.Rect: btnFormType.BackgroundImage = Forms.Rect.BitmapRect; break;
-                    case InkMode.Arc: btnFormType.BackgroundImage = Forms.Arc.BitmapArc;break;
-                    case InkMode.Arc2: btnFormType.BackgroundImage = Forms.Arc2.BitmapArc2; break;
-                    case InkMode.Marker: btnFormType.BackgroundImage = Forms.Marker.BitmapMarker;break;
-                    case InkMode.Text: btnFormType.BackgroundImage = Forms.TextBox.BitmapTB;break;
-                    default: btnFormType.BackgroundImage = ResManager.GetErrorBmp(16,16); break;
-                }
                 inkControl1.InkMode = menu.Mode;
                 setSizeButton();
             });
@@ -639,7 +635,7 @@ namespace Kritzel.Main
                 wndBreakout = new Form();
                 wndBreakout.TopMost = true;
                 wndBreakout.MinimizeBox = wndBreakout.MaximizeBox = wndBreakout.ShowInTaskbar = false;
-                wndBreakout.ClientSize = new Size(600, 400);
+                wndBreakout.ClientSize = new Size((int)(600 * Util.GetScaleFactor()), (int)(400 * Util.GetScaleFactor()));
                 wndBreakout.StartPosition = FormStartPosition.Manual;
                 var screenBounds = Screen.PrimaryScreen.WorkingArea;
                 wndBreakout.Location = new Point(screenBounds.Right - wndBreakout.Size.Width - 32,
@@ -653,7 +649,10 @@ namespace Kritzel.Main
                 {
                     pnInkControlContainer.Controls.Add(inkControl1);
                     wndBreakout = null;
+                    if (WindowState == FormWindowState.Minimized)
+                        WindowState = FormWindowState.Maximized;
                     this.Activate();
+                    inkControl1.Refresh();
                 };
                 wndBreakout.KeyDown += (_sender, _e) =>
                 {

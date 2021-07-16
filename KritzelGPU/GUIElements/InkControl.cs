@@ -18,7 +18,7 @@ using System.Xml;
 
 namespace Kritzel.Main
 {
-    public enum InkMode { Pen, Line, Rect, Arc, Arc2, Marker, Text };
+    public enum InkMode { Pen, Line, Rect, Arc, Arc2, Marker, Text, Stamp };
 
     [System.ComponentModel.DesignerCategory("")]
     public class InkControl : PictureBox
@@ -26,6 +26,7 @@ namespace Kritzel.Main
         public event EventHandler<Line[]> SelectionChanged;
         public event EventHandler<KPage> PageLoaded;
         public event EventHandler<Line> LineAdded;
+        public event EventHandler<InkMode> InkModeChanged;
         KPage page = null;
         public KPage Page { get { return page; } }
         Line line = null;
@@ -36,7 +37,19 @@ namespace Kritzel.Main
         bool active = true;
         public float Thicknes { get; set; } = 5;
         public PBrush Brush { get; set; } = PBrush.CreateSolid(Color.Black);
-        public InkMode InkMode { get; set; } = InkMode.Pen;
+        InkMode inkMode = InkMode.Pen;
+        public InkMode InkMode
+        {
+            get
+            {
+                return inkMode;
+            }
+            set
+            {
+                inkMode = value;
+                InkModeChanged?.Invoke(this, inkMode);
+            }
+        }
         public PageFormat PageFormat
         {
             get
@@ -119,6 +132,7 @@ namespace Kritzel.Main
         MouseButtons mouseButtons = MouseButtons.None;
         PointF fingerDownPos = new PointF();
         int lastFingerCount = 0;
+        public List<Line> Stamp { get; set; } = null;
 
         public InkControl()
         {
@@ -167,6 +181,140 @@ namespace Kritzel.Main
                 else
                     eraserCursor = Cursors.Default;
             }
+
+            pm.PenDown += Pm_PenDown; 
+            pm.PenMove += Pm_PenMove;
+            pm.PenUp += Pm_PenUp;
+        }
+
+        private void Pm_PenUp(object sender, Touch e)
+        {
+            foreach(ScreenObject.BaseScreenObject so in ScreenObjects)
+            {
+                so.ManipulateInput(e, Width, Height);
+            }
+            if (line != null)
+            {
+                line.CalcSpline();
+                gpuRenderer.EditPage();
+                if(line is Forms.LineGroup)
+                {
+                    foreach(Line l in ((Forms.LineGroup)line).GetLines())
+                    {
+                        page.AddLine(l);
+                    }
+                }
+                else
+                {
+                    page.AddLine(line);
+                }
+                page.Deselect();
+                gpuRenderer.EndEditPage();
+                //while (gpuRenderer.Drawing) ;
+                //Util.WaitTimeout(gpuRenderer, gpuRenderer.GetType().GetProperty("Drawing"), 500);
+                tmpLine = line;
+                if (line is Forms.TextBox)
+                {
+                    var input = new Dialogues.TextBoxInput((Forms.TextBox)line, this);
+                    input.Show();
+                }
+                LineAdded?.Invoke(this, line);
+                line = null;
+                linePoints = null;
+                recreateBufferFull();
+
+                if(InkMode == InkMode.Stamp || InkMode == InkMode.Text)
+                {
+                    InkMode = InkMode.Pen;
+                }
+            }
+        }
+
+        private void Pm_PenMove(object sender, Touch e)
+        {
+            foreach (ScreenObject.BaseScreenObject so in ScreenObjects)
+            {
+                so.ManipulateInput(e, Width, Height);
+            }
+            if (line != null)
+            {
+                var drawDev = e;
+                float rad;
+                rad = line.CalcRad(drawDev.Pressure, Thicknes);
+                PointF[] p = new PointF[1];
+                p[0] = new PointF(drawDev.X, drawDev.Y);
+                linePoints.Add(p[0]);
+                transform.GetInverse().Transform(p);
+                line.AddPoint(p[0].X, p[0].Y, rad);
+                RecreateBuffer(Util.GetBounds(linePoints.ToArray()).Expand(8));
+            }
+        }
+
+        private void Pm_PenDown(object sender, Touch e)
+        {
+            foreach(ScreenObject.BaseScreenObject so in ScreenObjects)
+            {
+                if (!so.ManipulateInput(e, Width, Height))
+                    return;
+            }
+            if (e.PenFlags == PenFlags.NONE)
+            {
+                var drawDev = e;
+                PointF[] p = new PointF[1];
+                long pressure;
+                p[0] = new PointF(drawDev.X, drawDev.Y);
+                pressure = drawDev.Pressure;
+                transform.GetInverse().Transform(p);
+                linePoints = new List<PointF>();
+                if (InkMode == InkMode.Pen)
+                {
+                    line = new Line();
+                    line.Brush = Brush;
+                    line.AddPoint(p[0].X, p[0].Y, line.CalcRad(pressure, Thicknes));
+                }
+                else if (InkMode == InkMode.Line)
+                {
+                    line = new Forms.LinearLine();
+                    line.Brush = Brush;
+                    line.AddPoint(p[0].X, p[0].Y, line.CalcRad(pressure, Thicknes));
+                }
+                else if (InkMode == InkMode.Rect)
+                {
+                    line = new Forms.Rect();
+                    line.Brush = Brush;
+                    line.AddPoint(p[0].X, p[0].Y, line.CalcRad(pressure, Thicknes));
+                }
+                else if (InkMode == InkMode.Arc)
+                {
+                    line = new Forms.Arc();
+                    line.Brush = Brush;
+                    line.AddPoint(p[0].X, p[0].Y, line.CalcRad(pressure, Thicknes));
+                }
+                else if (InkMode == InkMode.Arc2)
+                {
+                    line = new Forms.Arc2();
+                    line.Brush = Brush;
+                    line.AddPoint(p[0].X, p[0].Y, line.CalcRad(pressure, Thicknes));
+                }
+                else if (InkMode == InkMode.Marker)
+                {
+                    line = new Forms.Marker();
+                    line.Brush = Brush;
+                    line.AddPoint(p[0].X, p[0].Y, line.CalcRad(pressure, Thicknes));
+                }
+                else if (InkMode == InkMode.Text)
+                {
+                    line = new Forms.TextBox();
+                    line.Brush = Brush;
+                    line.AddPoint(p[0].X, p[0].Y, 1);
+                }
+                else if(InkMode == InkMode.Stamp)
+                {
+                    line = new Forms.LineGroup(Stamp);
+                    line.Brush = Brush;
+                    line.AddPoint(p[0].X, p[0].Y, 1);
+                }
+            }
         }
 
         public Matrix3x3 GetTransform()
@@ -181,12 +329,19 @@ namespace Kritzel.Main
                 mouseDown = true;
                 mousePos = e.Location;
                 mouseButtons = e.Button;
+                if (e.Button == MouseButtons.Left)
+                    Pm_PenDown(sender, new Touch(e.X, e.Y, 0, TouchDevice.Pen, 500, PenFlags.NONE, true));
             }
         }
 
         private void InkControl_MouseUp(object sender, MouseEventArgs e)
         {
             mouseDown = false;
+            if (Configuration.HandleMouseInput && pm.Touches.Count == 0)
+            {
+                if (e.Button == MouseButtons.Left)
+                    Pm_PenUp(sender, new Touch(e.X, e.Y, 0, TouchDevice.Pen, 500, PenFlags.NONE, true));
+            }
         }
 
         public void InitRenderer()
@@ -245,6 +400,12 @@ namespace Kritzel.Main
             {
                 mousePos = e.Location;
             }
+
+            if (Configuration.HandleMouseInput && pm.Touches.Count == 0)
+            {
+                if (e.Button == MouseButtons.Left)
+                    Pm_PenMove(sender, new Touch(e.X, e.Y, 0, TouchDevice.Pen, 500, PenFlags.NONE, true));
+            }
         }
 
         private void InkControl_MouseWheel(object sender, MouseEventArgs e)
@@ -269,7 +430,7 @@ namespace Kritzel.Main
 
         private void InkControl_SizeChanged(object sender, EventArgs e)
         {
-            recreateBuffer();
+            recreateBufferFull();
         }
 
         protected override void WndProc(ref Message m)
@@ -504,6 +665,7 @@ namespace Kritzel.Main
             }
 
             // Draw
+#if false
             Touch drawDev = pen | mouse;
             if (line != null)
             {
@@ -592,6 +754,7 @@ namespace Kritzel.Main
                     line.AddPoint(p[0].X, p[0].Y, 1);
                 }
             }
+#endif
 
             // Evaluate Transformation
             if (page != null)
@@ -841,7 +1004,7 @@ namespace Kritzel.Main
                             rbmp?.Dispose();
                             rbmp = gpuRenderer.CreateRenderTarget();
                         }
-                        if (!gpuRenderer.Begin(Style.Default.Background)) return;
+                        gpuRenderer.Begin(Style.Default.Background);
                         SizeF pSize = page.Format.GetPixelSize();
                         if (fullredraw)
                         {
@@ -989,13 +1152,11 @@ namespace Kritzel.Main
             Renderer.BaseRenderer r = g.GetRenderer();
             while (running)
             {
-                try
+                if(!renderThread.IsAlive)
                 {
-                    //g.Transform = transform.CreateGdiMatrix();
-                    //line?.Render(r);
-                    //g.Dispose();
+                    renderThread = new Thread(renderLoop);
+                    renderThread.Start();
                 }
-                catch (Exception) { }
                 Thread.Sleep(10);
             }
         }
