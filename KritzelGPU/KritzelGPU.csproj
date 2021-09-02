@@ -221,6 +221,49 @@
     <Compile Include="Dialogues\SettingsDialog.Designer.cs">
       <DependentUpon>SettingsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogues\Settings\ISettingsPage.cs" />
+    <Compile Include="Dialogues\Settings\LanguageSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\Settings\LanguageSelector.Designer.cs">
+      <DependentUpon>LanguageSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsPageInput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsPageInput.Designer.cs">
+      <DependentUpon>SettingsPageInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsPageGeneral.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsPageGeneral.Designer.cs">
+      <DependentUpon>SettingsPageGeneral.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsPagePalettes.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsPagePalettes.Designer.cs">
+      <DependentUpon>SettingsPagePalettes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsPagePerformance.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsPagePerformance.Designer.cs">
+      <DependentUpon>SettingsPagePerformance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsPageView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsPageView.Designer.cs">
+      <DependentUpon>SettingsPageView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\Settings\SettingsWindow.Designer.cs">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogues\Sizes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -439,6 +482,27 @@
     <EmbeddedResource Include="Dialogues\SettingsDialog.resx">
       <DependentUpon>SettingsDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\Settings\LanguageSelector.resx">
+      <DependentUpon>LanguageSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\Settings\SettingsPageInput.resx">
+      <DependentUpon>SettingsPageInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\Settings\SettingsPageGeneral.resx">
+      <DependentUpon>SettingsPageGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\Settings\SettingsPagePalettes.resx">
+      <DependentUpon>SettingsPagePalettes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\Settings\SettingsPagePerformance.resx">
+      <DependentUpon>SettingsPagePerformance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\Settings\SettingsPageView.resx">
+      <DependentUpon>SettingsPageView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\Settings\SettingsWindow.resx">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\Sizes.resx">
       <DependentUpon>Sizes.cs</DependentUpon>
     </EmbeddedResource>
@@ -585,6 +649,9 @@
     <Content Include="res\img\EraserWhite.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\img\globe.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="res\img\gui\down.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -604,6 +671,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\layout.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\simpleArrowDown.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\simpleArrowUp.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\tools\circ2.svg">

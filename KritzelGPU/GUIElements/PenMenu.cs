@@ -16,16 +16,18 @@ namespace Kritzel.Main.GUIElements
     {
         public event CloseDelegate OnClose;
         InkControl control;
+        MainWindow window;
         public InkMode Mode;
         static Bitmap bmpEraser = null;
 
         bool hasRuler;
         bool hasCompass;
 
-        public PenMenu(InkControl control)
+        public PenMenu(InkControl control, MainWindow window)
         {
             InitializeComponent();
             this.control = control;
+            this.window = window;
             this.Mode = control.InkMode;
 
             this.Font = new Font(this.Font.FontFamily, Util.GetFontSizePixel(), GraphicsUnit.Pixel);
@@ -95,6 +97,12 @@ namespace Kritzel.Main.GUIElements
             }
             if (hasRuler) btnRuler.BackColor = Style.Default.MenuContrast;
             if (hasCompass) btnCompass.BackColor = Style.Default.MenuContrast;
+
+            if(!Configuration.ShowBrokenFunctions)
+            {
+                btnAddImage.Hide();
+                btnTextBox.Hide();
+            }
 
             this.Dock = DockStyle.Right;
         }
@@ -233,7 +241,7 @@ namespace Kritzel.Main.GUIElements
             }
             else
             {
-                var stampmenu = new Dialogues.StampMenu(control);
+                var stampmenu = new Dialogues.StampMenu(control, window);
                 stampmenu.Show();
             }
         }

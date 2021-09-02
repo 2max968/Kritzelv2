@@ -172,6 +172,8 @@ namespace Kritzel.Main
 
             this.KeyPreview = true;
             HistoryManager.RegisterHistoryButtons(btnBack, btnForward);
+
+            toolStripStamps.ImageScalingSize = new Size(Util.GetGUISize(), Util.GetGUISize());
         }
 
         private void InkControl1_InkModeChanged(object sender, InkMode e)
@@ -352,11 +354,12 @@ namespace Kritzel.Main
         {
             panelSide.Dock = Configuration.LeftHanded ? DockStyle.Right : DockStyle.Left;
             pnSizes.Visible = Configuration.SizeOptionsInTitlebar;
+            colorPicker1.RefreshPens();
         }
 
         private void btnFormType_Click(object sender, EventArgs e)
         {
-            GUIElements.PenMenu menu = new GUIElements.PenMenu(inkControl1);
+            GUIElements.PenMenu menu = new GUIElements.PenMenu(inkControl1, this);
             OpenDialog(menu, delegate (Control dialog)
             {
                 inkControl1.InkMode = menu.Mode;
@@ -673,6 +676,46 @@ namespace Kritzel.Main
                 btnPaste.Visible = CopyPaster.CheckClipboard();
             }
             base.WndProc(ref m);
+        }
+
+        public void AddStampQuickAccess(List<Line> lines)
+        {
+            toolStripStamps.Show();
+            ToolStripButton btn = new ToolStripButton();
+            btn.Size = new Size(Util.GetGUISize(), Util.GetGUISize());
+            btn.Image = Dialogues.StampMenu.CreateThumbnail(lines, new Size(Util.GetGUISize(), Util.GetGUISize()));
+            btn.Click += Btn_Click;
+            btn.Tag = lines;
+            btn.MouseUp += Btn_MouseUp;
+            toolStripStamps.Items.Add(btn);
+        }
+
+        private void Btn_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && sender is ToolStripItem)
+            {
+                ctxQuickAccessMenu.Tag = sender;
+                ctxQuickAccessMenu.Show(toolStripStamps, e.Location);
+            }
+        }
+
+        private void stampdeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(ctxQuickAccessMenu.Tag is ToolStripItem)
+            {
+                toolStripStamps.Items.Remove(ctxQuickAccessMenu.Tag as ToolStripItem);
+                if (toolStripStamps.Items.Count == 0)
+                    toolStripStamps.Hide();
+            }
+        }
+
+        private void Btn_Click(object sender, EventArgs e)
+        {
+            if(sender is ToolStripItem && ((ToolStripItem)sender).Tag is List<Line>)
+            {
+                inkControl1.InkMode = InkMode.Stamp;
+                inkControl1.Stamp = (List<Line>)((ToolStripItem)sender).Tag;
+            }
         }
     }
 }

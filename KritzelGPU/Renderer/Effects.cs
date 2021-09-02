@@ -1,4 +1,5 @@
 ﻿using SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -55,11 +56,31 @@ namespace Kritzel.Main.Renderer
                 Color _c = Slerp(sc1, sc2, i / (float)width); ;
                 SolidColorBrush b = new SolidColorBrush(g,
                     new SharpDX.Mathematics.Interop.RawColor4(_c.R / 255f, _c.G / 255f, _c.B / 255f, _c.A / 255f));
-                var rrect = new SharpDX.Mathematics.Interop.RawRectangleF(rectf.Left, rectf.Top, rectf.Right, rectf.Bottom);
+                var rrect = new RawRectangleF(rectf.Left, rectf.Top, rectf.Right, rectf.Bottom);
                 g.DrawRectangle(rrect, b, 1);
                 b.Dispose();
                 rectf = rectf.Expand(1);
             }
+        }
+
+        static LinearGradientBrush createBruh(RenderTarget rt, float x1, float y1, Color c1, float x2, float y2, Color c2)
+        {
+            return new LinearGradientBrush(rt, new LinearGradientBrushProperties()
+            {
+                StartPoint = new SharpDX.Mathematics.Interop.RawVector2(x1, y1),
+                EndPoint = new SharpDX.Mathematics.Interop.RawVector2(x2, y2)
+            }, new GradientStopCollection(rt, new GradientStop[]{
+                new GradientStop()
+                {
+                    Color = new SharpDX.Mathematics.Interop.RawColor4(c1.R/255f,c1.G/255f,c1.B/255f, c1.A/255f),
+                    Position = 0
+                },
+                new GradientStop()
+                {
+                    Color = new SharpDX.Mathematics.Interop.RawColor4(c2.R/255f,c2.G/255f,c2.B/255f, c2.A/255f),
+                    Position = 1
+                }
+                }));
         }
 
         public static Color Slerp(Color a, Color b, float t, int brightness = 0)

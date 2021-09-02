@@ -54,8 +54,13 @@ namespace Kritzel.Main
         [CP] public static bool ShowTime = true;
         [CP] public static bool ShowDate = true;
         [CP] public static bool LeftHanded = false;
-        [CP] public static bool DarkMode = false;
+        [CP] public static bool DarkMode = true;
         [CP] public static bool SizeOptionsInTitlebar = true;
+#if DEBUG
+        [CP] public static bool ShowBrokenFunctions = true;
+#else
+        [CP] public static bool ShowBrokenFunctions = false;
+#endif
 
         public static void LoadConfig()
         {

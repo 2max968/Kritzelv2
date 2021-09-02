@@ -63,9 +63,6 @@ namespace Kritzel.Main.Dialogues
             cbCalcSpline.Checked = Configuration.CalculateSplinesDuringDrawing;
             numAutosaveInterval.Value = Configuration.AutosaveInterval;
             numGuiScale.Value = Configuration.GUIScaleFactor;
-            cbBattery.Checked = Configuration.ShowBattery;
-            cbTime.Checked = Configuration.ShowTime;
-            cbDate.Checked = Configuration.ShowDate;
             cbLefthand.Checked = Configuration.LeftHanded;
             cbDarkMode.Checked = Configuration.DarkMode;
             cbShowPenSizes.Checked = Configuration.SizeOptionsInTitlebar;
@@ -99,9 +96,6 @@ namespace Kritzel.Main.Dialogues
             Configuration.CalculateSplinesDuringDrawing = cbCalcSpline.Checked;
             Configuration.AutosaveInterval = (int)numAutosaveInterval.Value;
             Configuration.GUIScaleFactor = numGuiScale.Value;
-            Configuration.ShowBattery = cbBattery.Checked;
-            Configuration.ShowTime = cbTime.Checked;
-            Configuration.ShowDate = cbDate.Checked;
             Configuration.LeftHanded = cbLefthand.Checked;
             Configuration.DarkMode = cbDarkMode.Checked;
             Configuration.SizeOptionsInTitlebar = cbShowPenSizes.Checked;

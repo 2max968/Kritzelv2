@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Svg;
 using System.Runtime.InteropServices;
 using Ionic.Zip;
+using System.Diagnostics;
 
 namespace Kritzel.Main
 {
@@ -29,6 +30,7 @@ namespace Kritzel.Main
         public static extern void CopyMemory(IntPtr dest, IntPtr src, uint count);
 
         static ZipFile pack = null;
+        public static FileInfo LastSource { get; private set; } = null;
 
         public static void Init()
         {
@@ -142,6 +144,7 @@ namespace Kritzel.Main
                 Console.WriteLine("from Filesystem");
                 lText += "from Filesystem";
                 Program.MainLog.Add(MessageType.MSG, lText, name, dir);
+                LastSource = new FileInfo("res/" + dir + "/" + name);
                 return File.OpenRead("res/" + dir + "/" + name);
             }
             if (pack != null)
@@ -150,17 +153,25 @@ namespace Kritzel.Main
                 lText += "from Package";
                 Program.MainLog.Add(MessageType.MSG, lText, name, dir);
                 var entries = pack.SelectEntries($"name={name}", $"res/{dir}");
+                LastSource = null;
                 if (entries.Count > 0)
                 {
                     return entries.First().OpenReader();
                 }
             }
             Program.MainLog.Add(MessageType.ERROR, "File not found name={0}, dir={1}", name, dir);
+            LastSource = null;
             return null;
         }
 
         public static Stream GetStream(string path)
         {
+            if (path.Length > 2 && path[1] == ':')
+            {
+                Program.MainLog.Add(MessageType.MSG, "Loading path=\"{0}\" from Drive", path);
+                return File.OpenRead(path);
+            }
+
             int sep1 = path.LastIndexOf('/');
             int sep2 = path.LastIndexOf('\\');
             int sep = Math.Max(sep1, sep2);
@@ -227,6 +238,31 @@ namespace Kritzel.Main
             for(int i = numLogsToKeep; i < files.Length; i++)
             {
                 files[i].Delete();
+            }
+        }
+
+        public static void MakeLangDirWritable()
+        {
+            try
+            {
+                DirectoryInfo di = new DirectoryInfo("res\\lang");
+                di.Create();
+                string temppath = Path.Combine(di.FullName, "test.txt");
+                File.WriteAllText(temppath, "text");
+                File.Delete(temppath);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                string bat = $@"mkdir ""res\lang""
+icacls ""res\lang"" /GRANT *S-1-1-0:F";
+                string filename = Path.Combine(TmpManager.GetTmpDir().FullName, "access.bat");
+                if (!TmpManager.GetTmpDir().Exists)
+                    TmpManager.GetTmpDir().Create();
+                File.WriteAllText(filename, bat);
+                ProcessStartInfo psi = new ProcessStartInfo(filename);
+                psi.Verb = "runas";
+                psi.WorkingDirectory = Environment.CurrentDirectory;
+                Process.Start(psi).WaitForExit();
             }
         }
     }

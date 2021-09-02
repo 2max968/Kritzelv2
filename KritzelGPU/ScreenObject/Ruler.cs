@@ -27,6 +27,7 @@ namespace Kritzel.Main.ScreenObject
         float grip;
         LockState lockState = LockState.None;
         InkControl parent;
+        Matrix3x3 lastPageTrans = new Matrix3x3();
 
         public Ruler(InkControl parent)
         {
@@ -82,9 +83,15 @@ namespace Kritzel.Main.ScreenObject
         {
             bool changes = base.Think(allTouches, ref stylus, ref mouse, screenWidth, screenHeight);
 
+            /*var matDiff = parent.GetTransform() / lastPageTrans;
+            lastPageTrans = parent.GetTransform();
+            matDiff.Split(out Matrix3x3 matDiffTrans, out _, out Matrix3x3 matDiffRot);
+            Transformation *= matDiffTrans * matDiffRot;*/
+
             // Transform to Degree
             float thisRot = Transformation.GetRotation();
-            float rot = thisRot;
+            float pageRot = parent.GetTransform().GetRotation();
+            float rot = thisRot - pageRot;
             float rotRound = (float)(Math.Round(rot * 180f / Math.PI) * Math.PI / 180.0);
             float rotDiff = rotRound - rot;
             if (rotDiff != 0)

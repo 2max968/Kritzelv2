@@ -34,12 +34,14 @@ namespace Kritzel.Main
         Dictionary<string, string> texts = new Dictionary<string, string>();
         public string Name { get; private set; } = "";
         public string Key { get; private set; } = "";
+        public FileInfo Path { get; private set; } = null;
 
         public Language(string path)
         {
             string category = "";
             using (Stream stream = ResManager.GetStream(path))
             {
+                Path = ResManager.LastSource;
                 if (stream == null) return;
                 StreamReader reader = new StreamReader(stream);
                 while(!reader.EndOfStream)

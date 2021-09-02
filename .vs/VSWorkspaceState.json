@@ -3,9 +3,11 @@
     "",
     "\\Demo.Pen",
     "\\KritzelGPU",
+    "\\KritzelGPU\\Dialogues",
+    "\\KritzelGPU\\Dialogues\\Settings",
     "\\KritzelGPU\\GUIElements",
     "\\KritzelGPU\\ScreenObject"
   ],
-  "SelectedNode": "\\KritzelGPU\\GUIElements\\InkControl.cs",
+  "SelectedNode": "\\KritzelGPU\\GUIElements\\GraphRenderer.cs",
   "PreviewInSolutionExplorer": false
 }

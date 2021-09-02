@@ -133,6 +133,7 @@ namespace Kritzel.Main
         PointF fingerDownPos = new PointF();
         int lastFingerCount = 0;
         public List<Line> Stamp { get; set; } = null;
+        Stopwatch mouseBlocker = new Stopwatch();
 
         public InkControl()
         {
@@ -185,6 +186,8 @@ namespace Kritzel.Main
             pm.PenDown += Pm_PenDown; 
             pm.PenMove += Pm_PenMove;
             pm.PenUp += Pm_PenUp;
+
+            mouseBlocker.Start();
         }
 
         private void Pm_PenUp(object sender, Touch e)
@@ -324,12 +327,12 @@ namespace Kritzel.Main
 
         private void InkControl_MouseDown(object sender, MouseEventArgs e)
         {
-            if (Configuration.HandleMouseInput && pm.Touches.Count == 0)
+            if (Configuration.HandleMouseInput && pm.Touches.Count == 0 && mouseBlocker.ElapsedMilliseconds > 1000)
             {
                 mouseDown = true;
                 mousePos = e.Location;
                 mouseButtons = e.Button;
-                if (e.Button == MouseButtons.Left)
+                if (e.Button == MouseButtons.Left && ModifierKeys == Keys.None)
                     Pm_PenDown(sender, new Touch(e.X, e.Y, 0, TouchDevice.Pen, 500, PenFlags.NONE, true));
             }
         }
@@ -464,10 +467,12 @@ namespace Kritzel.Main
                 if (t.TouchDevice == TouchDevice.Mouse && t.Down)
                     mouse = t;
             }
-            if(mouseDown && (mouseButtons & MouseButtons.Left) == MouseButtons.Left)
+            if(mouseDown)
             {
                 mouse = new Touch((int)mousePos.X, (int)mousePos.Y, Touch.MOUSE_ID, TouchDevice.Mouse, Touch.MAX_PREASSURE, PenFlags.NONE, true);
             }
+
+            if (pm.Touches.Count > 0) mouseBlocker.Restart();
 
             // Show / Hide Cursor
             if (pen != null && pen.Down && cursorState != 1)
@@ -1105,27 +1110,6 @@ namespace Kritzel.Main
                             _p = _p.Parent;
                         }
                         _parentForm = (Form)_p;
-
-                        if(_parentForm.FormBorderStyle == FormBorderStyle.None)
-                        {
-                            string fullscreenInfo = "";
-                            if (Configuration.ShowBattery)
-                                fullscreenInfo += Language.GetText("Overlay.battery") + ": " + (int)(SystemInformation.PowerStatus.BatteryLifePercent * 100) + "%\n";
-                            if (Configuration.ShowTime)
-                                fullscreenInfo += Language.GetText("Overlay.time") + ": " + DateTime.Now.ToShortTimeString() + "\n";
-                            if (Configuration.ShowDate)
-                                fullscreenInfo += Language.GetText("Overlay.date") + ": " + DateTime.Now.ToShortDateString() + "\n";
-
-                            if (fullscreenInfo.Length > 1)
-                            {
-                                SizeF size = CreateGraphics().MeasureString(fullscreenInfo, new Font("Calibri", Util.MmToPoint(5)));
-                                RectangleF rect = new RectangleF(Width - size.Width - 16, Height - size.Height - 16, size.Width, size.Height);
-                                gpuRenderer.FillRectangle(Color.Black, rect);
-                                gpuRenderer.DrawText(fullscreenInfo, 
-                                    new PointF(Util.PointToMm(rect.X), Util.PointToMm(rect.Y)), 
-                                    5, Color.White);
-                            }
-                        }
 
                         if (rBounds.Equals(RectangleF.Empty))
                             gpuRenderer.End();

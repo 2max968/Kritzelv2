@@ -477,5 +477,52 @@ namespace Kritzel.Main
             }
             return new RectangleF(x1, y1, x2 - x1, y2 - y1);
         }
+
+        public static void SaveLines(XmlWriter xml, List<Line> lines, bool createRoot = true)
+        {
+            if(createRoot)
+                xml.WriteStartElement("Lines");
+
+            foreach(Line l in lines)
+            {
+                xml.WriteStartElement("Line");
+                xml.WriteAttributeString("type", l.GetType().FullName);
+                xml.WriteAttributeString("brush", ColorTranslator.ToHtml(l.Brush.GetColor()));
+                xml.WriteAttributeString("params", l.ToParamString());
+                xml.WriteEndElement();
+            }
+
+            if (createRoot)
+                xml.WriteEndElement();
+        }
+
+        public static List<Line> GetLines(XmlReader xml, string closingTag)
+        {
+            List<Line> lines = new List<Line>();
+
+            while(xml.Read())
+            {
+                if (xml.NodeType == XmlNodeType.EndElement && xml.Name == closingTag)
+                    break;
+
+                if(xml.NodeType == XmlNodeType.Element && xml.Name == "Line")
+                {
+                    try
+                    {
+                        Type type = Assembly.GetAssembly(typeof(Line)).GetType(xml.GetAttribute("type"));
+                        Line line = (Line)type.GetConstructor(new Type[0]).Invoke(new object[0]);
+                        PBrush brush = PBrush.CreateSolid(ColorTranslator.FromHtml(xml.GetAttribute("brush")));
+                        string pars = xml.GetAttribute("params");
+                        line.FromParamString(pars);
+                        line.Brush = brush;
+                        line.CalcSpline();
+                        line.CalculateBounds();
+                        lines.Add(line);
+                    }
+                    catch (Exception) { }
+                }
+            }
+            return lines;
+        }
     }
 }

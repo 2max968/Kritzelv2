@@ -59,6 +59,11 @@ namespace Kritzel.Main.GUIElements
             if (casting)
                 btnCast.Text = Language.GetText("File.stopCast");
             btnSave.Enabled = !document.IsSaved();
+
+            if(!Configuration.ShowBrokenFunctions)
+            {
+                btnPrint.Hide();
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -239,7 +244,7 @@ namespace Kritzel.Main.GUIElements
         {
             CloseMenu?.Invoke();
             await Task.Delay(0);
-            SettingsDialog settings = new SettingsDialog();
+            Dialogues.Settings.SettingsWindow settings = new Dialogues.Settings.SettingsWindow();
             settings.ShowDialog();
             SettingsClosed?.Invoke(this, 0);
             CloseMenu?.Invoke();

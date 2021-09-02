@@ -69,7 +69,7 @@ namespace Kritzel.Main
             MainLog.Add(MessageType.MSG, "Enable Window");
             if(Configuration.EnableVisualStyle) Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //DebugInterface.Start();
+                //DebugInterface.Start();
             Application.Run(new MainWindow());
             //DebugInterface.Stop();
             HTTPCast.StopCasting();

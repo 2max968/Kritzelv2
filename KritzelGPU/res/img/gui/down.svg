@@ -12,7 +12,7 @@
    viewBox="0 0 26.458333 26.458334"
    version="1.1"
    id="svg839"
-   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="down.svg">
   <defs
      id="defs833" />
@@ -23,18 +23,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="58.191765"
-     inkscape:cy="61.446901"
+     inkscape:zoom="11.2"
+     inkscape:cx="41.216511"
+     inkscape:cy="48.948071"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      units="px"
-     inkscape:window-width="1699"
-     inkscape:window-height="1166"
-     inkscape:window-x="90"
-     inkscape:window-y="-11"
+     inkscape:window-width="2736"
+     inkscape:window-height="1683"
+     inkscape:window-x="-13"
+     inkscape:window-y="-13"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata836">
@@ -53,22 +53,9 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       sodipodi:type="star"
-       style="fill:#cacaca;fill-opacity:1;stroke:#b6b6b6;stroke-width:0.564999;stroke-opacity:1"
+       style="fill:#00ccff;fill-opacity:1;stroke:none;stroke-width:0.449;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 13.160437,19.531107 3.10472,6.9809692 l 1.4149006,0.0031 8.6402994,10.7833218 8.728149,-10.7476649 1.430404,0.0031 z"
        id="path1404"
-       sodipodi:sides="3"
-       sodipodi:cx="13.02939"
-       sodipodi:cy="14.833458"
-       sodipodi:r1="12.429649"
-       sodipodi:r2="6.2148247"
-       sodipodi:arg1="-1.586924"
-       sodipodi:arg2="-0.53972641"
-       inkscape:flatsided="true"
-       inkscape:rounded="0"
-       inkscape:randomized="0"
-       d="M 12.828938,2.405425 23.892609,20.873877 2.3666244,21.221071 Z"
-       inkscape:transform-center-x="-0.016920867"
-       inkscape:transform-center-y="2.0777566"
-       transform="matrix(0.9388442,-0.0088891,-0.01241952,-0.67196454,1.146146,21.072689)" />
+       inkscape:connector-curvature="0" />
   </g>
 </svg>

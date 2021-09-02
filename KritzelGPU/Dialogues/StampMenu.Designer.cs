@@ -32,7 +32,11 @@ namespace Kritzel.Main.Dialogues
             this.components = new System.ComponentModel.Container();
             this.btnStamp = new System.Windows.Forms.Button();
             this.lvStamps = new System.Windows.Forms.ListView();
+            this.ctxStamp = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.stampdeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stampaddQuickAccessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imgStampThumbs = new System.Windows.Forms.ImageList(this.components);
+            this.ctxStamp.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStamp
@@ -51,7 +55,9 @@ namespace Kritzel.Main.Dialogues
             this.lvStamps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvStamps.ContextMenuStrip = this.ctxStamp;
             this.lvStamps.HideSelection = false;
+            this.lvStamps.LabelEdit = true;
             this.lvStamps.LargeImageList = this.imgStampThumbs;
             this.lvStamps.Location = new System.Drawing.Point(12, 12);
             this.lvStamps.Name = "lvStamps";
@@ -60,6 +66,29 @@ namespace Kritzel.Main.Dialogues
             this.lvStamps.TabIndex = 1;
             this.lvStamps.UseCompatibleStateImageBehavior = false;
             this.lvStamps.SelectedIndexChanged += new System.EventHandler(this.lvStamps_SelectedIndexChanged);
+            // 
+            // ctxStamp
+            // 
+            this.ctxStamp.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.ctxStamp.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.stampdeleteToolStripMenuItem,
+            this.stampaddQuickAccessToolStripMenuItem});
+            this.ctxStamp.Name = "ctxStamp";
+            this.ctxStamp.Size = new System.Drawing.Size(334, 124);
+            // 
+            // stampdeleteToolStripMenuItem
+            // 
+            this.stampdeleteToolStripMenuItem.Name = "stampdeleteToolStripMenuItem";
+            this.stampdeleteToolStripMenuItem.Size = new System.Drawing.Size(333, 38);
+            this.stampdeleteToolStripMenuItem.Text = "Stamp.delete";
+            this.stampdeleteToolStripMenuItem.Click += new System.EventHandler(this.stampdeleteToolStripMenuItem_Click);
+            // 
+            // stampaddQuickAccessToolStripMenuItem
+            // 
+            this.stampaddQuickAccessToolStripMenuItem.Name = "stampaddQuickAccessToolStripMenuItem";
+            this.stampaddQuickAccessToolStripMenuItem.Size = new System.Drawing.Size(333, 38);
+            this.stampaddQuickAccessToolStripMenuItem.Text = "Stamp.addQuickAccess";
+            this.stampaddQuickAccessToolStripMenuItem.Click += new System.EventHandler(this.stampaddQuickAccessToolStripMenuItem_Click);
             // 
             // imgStampThumbs
             // 
@@ -78,6 +107,7 @@ namespace Kritzel.Main.Dialogues
             this.MinimizeBox = false;
             this.Name = "StampMenu";
             this.Text = "StampMenu";
+            this.ctxStamp.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -87,5 +117,8 @@ namespace Kritzel.Main.Dialogues
         private System.Windows.Forms.Button btnStamp;
         private System.Windows.Forms.ListView lvStamps;
         private System.Windows.Forms.ImageList imgStampThumbs;
+        private System.Windows.Forms.ContextMenuStrip ctxStamp;
+        private System.Windows.Forms.ToolStripMenuItem stampdeleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stampaddQuickAccessToolStripMenuItem;
     }
 }

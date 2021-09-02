@@ -29,6 +29,13 @@ namespace Kritzel.Main.Dialogues
                     Translate(page, language);
                 }
             }
+            if(control is ToolStrip)
+            {
+                foreach(ToolStripItem item in ((ToolStrip)control).Items)
+                {
+                    item.Text = language.Get(item.Text);
+                }
+            }
         }
     }
 }

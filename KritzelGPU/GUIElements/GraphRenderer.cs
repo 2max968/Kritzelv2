@@ -32,6 +32,22 @@ namespace Kritzel.Main.GUIElements
 
                         g.DrawLine(pen, p1, p2);
 
+                        var font = new Font("Arial", Util.GetFontSizePixel(), GraphicsUnit.Pixel);
+                        var sf = new StringFormat()
+                        {
+                            Alignment = StringAlignment.Center,
+                            LineAlignment = StringAlignment.Far
+                        };
+                        g.DrawString(Language.GetText("Settings.styluspreassure"), font, Brushes.Black, new RectangleF(0, 0, size.Width, size.Height), sf);
+                        g.RotateTransform(-90);
+                        sf = new StringFormat()
+                        {
+                            Alignment = StringAlignment.Center,
+                            LineAlignment = StringAlignment.Near
+                        };
+                        g.DrawString(Language.GetText("Settings.lineSize"), font, Brushes.Black, new RectangleF(-size.Height, 0, size.Height, size.Width), sf);
+                        g.ResetTransform();
+
                         lF = f;
                     }
                 }

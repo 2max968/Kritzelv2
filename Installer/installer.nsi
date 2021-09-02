@@ -158,6 +158,7 @@ Section Uninstall
   ;Delete "$SMPROGRAMS\$ICONS_GROUP\Kritzel.lnk"
   
   Delete "$INSTDIR\Config\config.*.ini"
+  Delete "$INSTDIR\Config\stamps.*.xml"
   Delete "$INSTDIR\logs\KritzelLog*.htm"
   RMDir "$INSTDIR\logs"
   RMDir /r "$INSTDIR\tmp"

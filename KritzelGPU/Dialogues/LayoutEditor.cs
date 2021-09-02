@@ -166,5 +166,10 @@ namespace Kritzel.Main.Dialogues
             page.Filter = cbInvertColor.Checked ? ColorFilter.InvertLuminosity : ColorFilter.Normal;
             inkControl.RefreshPage();
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -21,7 +21,8 @@ namespace Kritzel.Main.Dialogues
 
         public static bool Show(string text, string btnOkText, string btnCancelText)
         {
-            MsgBoxDiag diag = new MsgBoxDiag(Language.GetText(text), Language.GetText(btnOkText), Language.GetText(btnCancelText));
+            text = Language.CurrentLanguage.Get(text);
+            MsgBoxDiag diag = new MsgBoxDiag(text, Language.GetText(btnOkText), Language.GetText(btnCancelText));
             return diag.ShowDialog() == DialogResult.OK;
         }
 

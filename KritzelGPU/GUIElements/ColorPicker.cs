@@ -279,5 +279,21 @@ namespace Kritzel.Main.GUIElements
             refresh(true);
             SetColor?.Invoke(c);
         }
+
+        public void RefreshPens()
+        {
+            colors.Clear();
+            try
+            {
+                string[] colorStrings = Configuration.PenColors.Split(',');
+                foreach (string colorString in colorStrings)
+                    colors.Add(ColorTranslator.FromHtml(colorString));
+            }
+            catch (Exception)
+            {
+
+            }
+            refresh(true);
+        }
     }
 }
