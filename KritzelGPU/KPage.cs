@@ -29,12 +29,14 @@ namespace Kritzel.Main
         Backgrounds.Background background = new Backgrounds.BackgroundQuadPaper5mm();
         public string PdfRenderPath = "";
         public ColorFilter Filter = ColorFilter.Normal;
+        public int Orientation = 0;
+        
         public Backgrounds.Background Background
         {
             get { return background; }
             set { background = value; Version++; }
         }
-        Color[] backgroundColor = new Color[] { Color.LightSteelBlue, Color.OrangeRed };
+        Color[] backgroundColor = new Color[] { Color.LightSteelBlue, Color.FromArgb(0, 128, 192)/*Color.OrangeRed*/ };
         public Color BackgroundColor1
         {
             get { return backgroundColor[0]; }
@@ -465,12 +467,36 @@ namespace Kritzel.Main
                 doc.Pages.Add(OriginalPage);
                 doc.Save(path);
                 Bitmap[] bmp = MupdfSharp.PageRenderer.Render(path, 50, 0);
+                switch(Orientation)
+                {
+                    case 1:
+                        bmp[0].RotateFlip(RotateFlipType.Rotate90FlipNone);
+                        break;
+                    case 2:
+                        bmp[0].RotateFlip(RotateFlipType.Rotate180FlipNone);
+                        break;
+                    case 3:
+                        bmp[0].RotateFlip(RotateFlipType.Rotate270FlipNone);
+                        break;
+                }
                 BackgroundImage = new Renderer.Image(bmp[0]);
 
                 loaderThread = new Thread(delegate ()
                 {
                     Bitmap[] bmp2 = MupdfSharp.PageRenderer.Render(path, PDFImporter.PAGETHEIGHTPIXEL, 0);
                     BackgroundImage.Dispose();
+                    switch (Orientation)
+                    {
+                        case 1:
+                            bmp2[0].RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            break;
+                        case 2:
+                            bmp2[0].RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            break;
+                        case 3:
+                            bmp2[0].RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            break;
+                    }
                     BackgroundImage = new Renderer.Image(bmp2[0]);
                     control.RefreshPage();
                 });
@@ -642,6 +668,37 @@ namespace Kritzel.Main
                         clickable.Click(control);
                     }
                 }
+            }
+        }
+
+        public void Rotate()
+        {
+            lock (this)
+            {
+                Matrix3x3 rotMat = new Matrix3x3();
+                var size = Format.GetPixelSize();
+                rotMat.TransformRotate(-.5f * (float)Math.PI);
+                rotMat.TransformTranslate(size.Height, 0);
+
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    lines[i].Transform(rotMat);
+                }
+
+                if (BackgroundImage != null)
+                {
+                    lock (BackgroundImage)
+                    {
+                        BackgroundImage.UnloadGPU();
+                        BackgroundImage.GdiBitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    }
+                }
+
+                PageFormat newFormat = new PageFormat(Format.Height, Format.Width);
+                Format = newFormat;
+
+                Orientation++;
+                if (Orientation > 3) Orientation = 0;
             }
         }
     }

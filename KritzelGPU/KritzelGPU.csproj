@@ -203,6 +203,12 @@
     <Compile Include="Dialogues\PasswordDialog.Designer.cs">
       <DependentUpon>PasswordDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogues\PDFExportDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\PDFExportDialog.Designer.cs">
+      <DependentUpon>PDFExportDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogues\PDFImporter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -473,6 +479,9 @@
     <EmbeddedResource Include="Dialogues\PasswordDialog.resx">
       <DependentUpon>PasswordDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\PDFExportDialog.resx">
+      <DependentUpon>PDFExportDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\PDFImporter.resx">
       <DependentUpon>PDFImporter.cs</DependentUpon>
     </EmbeddedResource>
@@ -620,6 +629,9 @@
     </Content>
     <Content Include="res\img\actions\redo.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\img\actions\RotatePage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\img\actions\undo.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

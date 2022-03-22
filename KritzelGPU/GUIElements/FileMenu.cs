@@ -161,7 +161,12 @@ namespace Kritzel.Main.GUIElements
                     }
                     else if (ext == ".pdf")
                     {
-                        Dialogues.ProgressWindow wnd = new Dialogues.ProgressWindow("Save to PDF");
+                        PDFExportDialog ped = new PDFExportDialog();
+                        if(ped.ShowDialog() != DialogResult.OK)
+                        {
+                            return;
+                        }
+                        ProgressWindow wnd = new ProgressWindow("Save to PDF");
                         wnd.TopMost = true;
                         wnd.Show();
                         try

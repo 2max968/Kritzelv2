@@ -61,11 +61,17 @@ namespace Kritzel.Main
             PdfDocument doc2 = PdfReader.Open(mstream, PdfDocumentOpenMode.Modify);
             for (int i = 0; i < doc2.Pages.Count; i++)
             {
+                doc2.Pages[i].Rotate = (doc2.Pages[i].Rotate + Pages[i].Orientation * 90) % 360;
                 XGraphics gfx = XGraphics.FromPdfPage(doc2.Pages[i]);
                 SizeF s = Pages[i].Format.GetPixelSize();
                 float sX = (float)doc2.Pages[i].Width.Point / s.Width;
                 float sY = (float)doc2.Pages[i].Height.Point / s.Height;
                 gfx.ScaleTransform(sX, sY);
+                for (int j = 0; j < doc2.Pages[i].Rotate; j += 90)
+                {
+                    double shift = (doc2.Pages[i].Rotate / 90 + j) % 2 == 0 ? s.Width : s.Height;
+                    gfx.RotateAtTransform(-90, new XPoint(shift / 2, shift / 2));
+                }
                 Renderer.PdfRenderer r = new Renderer.PdfRenderer(gfx);
                 r.RenderSpecial = false;
                 var pSize = Pages[i].Format.GetPixelSize();

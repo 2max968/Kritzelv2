@@ -43,6 +43,8 @@ namespace Kritzel.Main.Dialogues
                 if (control is Button) control.BackColor = Style.Default.MenuContrast;
             }
 
+            btnRotate.Image = ResManager.LoadIcon("actions/RotatePage.png", 64);
+
             Translator.Translate(this);
         }
 
@@ -170,6 +172,12 @@ namespace Kritzel.Main.Dialogues
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnRotate_Click(object sender, EventArgs e)
+        {
+            page.Rotate();
+            inkControl.RefreshPage();
         }
     }
 }

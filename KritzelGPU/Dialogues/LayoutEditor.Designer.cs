@@ -38,6 +38,7 @@
             this.iconlist = new System.Windows.Forms.ImageList(this.components);
             this.cbInvertColor = new System.Windows.Forms.CheckBox();
             this.btnClose = new System.Windows.Forms.Button();
+            this.btnRotate = new System.Windows.Forms.Button();
             this.lvBackgrounds = new Kritzel.Main.GUIElements.TListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
@@ -48,7 +49,7 @@
             this.btnMinus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMinus.Location = new System.Drawing.Point(20, 15);
-            this.btnMinus.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnMinus.Margin = new System.Windows.Forms.Padding(4);
             this.btnMinus.Name = "btnMinus";
             this.btnMinus.Size = new System.Drawing.Size(104, 80);
             this.btnMinus.TabIndex = 1;
@@ -63,7 +64,7 @@
             this.btnPlus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPlus.Location = new System.Drawing.Point(536, 15);
-            this.btnPlus.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPlus.Margin = new System.Windows.Forms.Padding(4);
             this.btnPlus.Name = "btnPlus";
             this.btnPlus.Size = new System.Drawing.Size(104, 80);
             this.btnPlus.TabIndex = 2;
@@ -88,8 +89,8 @@
             this.btnC1.FlatAppearance.BorderSize = 0;
             this.btnC1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnC1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnC1.Location = new System.Drawing.Point(20, 667);
-            this.btnC1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnC1.Location = new System.Drawing.Point(20, 743);
+            this.btnC1.Margin = new System.Windows.Forms.Padding(4);
             this.btnC1.Name = "btnC1";
             this.btnC1.Size = new System.Drawing.Size(279, 62);
             this.btnC1.TabIndex = 4;
@@ -103,8 +104,8 @@
             this.btnC2.FlatAppearance.BorderSize = 0;
             this.btnC2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnC2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnC2.Location = new System.Drawing.Point(360, 667);
-            this.btnC2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnC2.Location = new System.Drawing.Point(360, 743);
+            this.btnC2.Margin = new System.Windows.Forms.Padding(4);
             this.btnC2.Name = "btnC2";
             this.btnC2.Size = new System.Drawing.Size(279, 62);
             this.btnC2.TabIndex = 5;
@@ -117,8 +118,8 @@
             this.cbShowDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbShowDate.AutoSize = true;
             this.cbShowDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbShowDate.Location = new System.Drawing.Point(20, 604);
-            this.cbShowDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbShowDate.Location = new System.Drawing.Point(20, 596);
+            this.cbShowDate.Margin = new System.Windows.Forms.Padding(4);
             this.cbShowDate.Name = "cbShowDate";
             this.cbShowDate.Size = new System.Drawing.Size(393, 55);
             this.cbShowDate.TabIndex = 1;
@@ -137,8 +138,8 @@
             this.cbInvertColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbInvertColor.AutoSize = true;
             this.cbInvertColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cbInvertColor.Location = new System.Drawing.Point(20, 541);
-            this.cbInvertColor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbInvertColor.Location = new System.Drawing.Point(20, 533);
+            this.cbInvertColor.Margin = new System.Windows.Forms.Padding(4);
             this.cbInvertColor.Name = "cbInvertColor";
             this.cbInvertColor.Size = new System.Drawing.Size(302, 55);
             this.cbInvertColor.TabIndex = 7;
@@ -151,13 +152,27 @@
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnClose.FlatAppearance.BorderSize = 0;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Location = new System.Drawing.Point(20, 736);
+            this.btnClose.Location = new System.Drawing.Point(20, 812);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(619, 62);
             this.btnClose.TabIndex = 8;
             this.btnClose.Text = "Dialog.close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnRotate
+            // 
+            this.btnRotate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnRotate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRotate.Location = new System.Drawing.Point(20, 658);
+            this.btnRotate.Name = "btnRotate";
+            this.btnRotate.Size = new System.Drawing.Size(375, 78);
+            this.btnRotate.TabIndex = 9;
+            this.btnRotate.Text = "Layout.rotate";
+            this.btnRotate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRotate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnRotate.UseVisualStyleBackColor = true;
+            this.btnRotate.Click += new System.EventHandler(this.btnRotate_Click);
             // 
             // lvBackgrounds
             // 
@@ -173,7 +188,7 @@
             this.lvBackgrounds.Margin = new System.Windows.Forms.Padding(4);
             this.lvBackgrounds.MultiSelect = false;
             this.lvBackgrounds.Name = "lvBackgrounds";
-            this.lvBackgrounds.Size = new System.Drawing.Size(619, 431);
+            this.lvBackgrounds.Size = new System.Drawing.Size(619, 423);
             this.lvBackgrounds.SmallImageList = this.iconlist;
             this.lvBackgrounds.TabIndex = 6;
             this.lvBackgrounds.UseCompatibleStateImageBehavior = false;
@@ -188,7 +203,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(656, 853);
+            this.ClientSize = new System.Drawing.Size(656, 929);
+            this.Controls.Add(this.btnRotate);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.cbInvertColor);
             this.Controls.Add(this.lvBackgrounds);
@@ -198,7 +214,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnPlus);
             this.Controls.Add(this.btnMinus);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(682, 1000);
             this.MinimizeBox = false;
@@ -224,5 +240,6 @@
         private System.Windows.Forms.ImageList iconlist;
         private System.Windows.Forms.CheckBox cbInvertColor;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Button btnRotate;
     }
 }

@@ -49,9 +49,10 @@
             this.lvPages.CheckBoxes = true;
             this.lvPages.HideSelection = false;
             this.lvPages.LargeImageList = this.imgPages;
-            this.lvPages.Location = new System.Drawing.Point(12, 12);
+            this.lvPages.Location = new System.Drawing.Point(16, 15);
+            this.lvPages.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lvPages.Name = "lvPages";
-            this.lvPages.Size = new System.Drawing.Size(776, 367);
+            this.lvPages.Size = new System.Drawing.Size(1033, 458);
             this.lvPages.SmallImageList = this.imgPages;
             this.lvPages.TabIndex = 0;
             this.lvPages.UseCompatibleStateImageBehavior = false;
@@ -65,9 +66,10 @@
             // btnSelect
             // 
             this.btnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelect.Location = new System.Drawing.Point(12, 385);
+            this.btnSelect.Location = new System.Drawing.Point(16, 481);
+            this.btnSelect.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSelect.Name = "btnSelect";
-            this.btnSelect.Size = new System.Drawing.Size(167, 53);
+            this.btnSelect.Size = new System.Drawing.Size(223, 66);
             this.btnSelect.TabIndex = 1;
             this.btnSelect.Text = "Select All";
             this.btnSelect.UseVisualStyleBackColor = true;
@@ -76,9 +78,10 @@
             // btnDeselect
             // 
             this.btnDeselect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDeselect.Location = new System.Drawing.Point(185, 385);
+            this.btnDeselect.Location = new System.Drawing.Point(247, 481);
+            this.btnDeselect.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDeselect.Name = "btnDeselect";
-            this.btnDeselect.Size = new System.Drawing.Size(167, 53);
+            this.btnDeselect.Size = new System.Drawing.Size(223, 66);
             this.btnDeselect.TabIndex = 2;
             this.btnDeselect.Text = "Deselect All";
             this.btnDeselect.UseVisualStyleBackColor = true;
@@ -88,9 +91,10 @@
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.Enabled = false;
-            this.btnOk.Location = new System.Drawing.Point(621, 385);
+            this.btnOk.Location = new System.Drawing.Point(828, 481);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(167, 53);
+            this.btnOk.Size = new System.Drawing.Size(223, 66);
             this.btnOk.TabIndex = 3;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -101,9 +105,10 @@
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Enabled = false;
-            this.btnCancel.Location = new System.Drawing.Point(448, 385);
+            this.btnCancel.Location = new System.Drawing.Point(597, 481);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(167, 53);
+            this.btnCancel.Size = new System.Drawing.Size(223, 66);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -115,18 +120,20 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnProgress.Controls.Add(this.lblProgress);
             this.pnProgress.Controls.Add(this.pbProgress);
-            this.pnProgress.Location = new System.Drawing.Point(12, 12);
+            this.pnProgress.Location = new System.Drawing.Point(16, 15);
+            this.pnProgress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnProgress.Name = "pnProgress";
-            this.pnProgress.Size = new System.Drawing.Size(776, 64);
+            this.pnProgress.Size = new System.Drawing.Size(1035, 80);
             this.pnProgress.TabIndex = 5;
             // 
             // lblProgress
             // 
             this.lblProgress.AutoSize = true;
             this.lblProgress.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblProgress.Location = new System.Drawing.Point(0, 30);
+            this.lblProgress.Location = new System.Drawing.Point(0, 38);
+            this.lblProgress.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(66, 20);
+            this.lblProgress.Size = new System.Drawing.Size(89, 25);
             this.lblProgress.TabIndex = 1;
             this.lblProgress.Text = "Loading";
             // 
@@ -134,24 +141,26 @@
             // 
             this.pbProgress.Dock = System.Windows.Forms.DockStyle.Top;
             this.pbProgress.Location = new System.Drawing.Point(0, 0);
+            this.pbProgress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pbProgress.Name = "pbProgress";
-            this.pbProgress.Size = new System.Drawing.Size(776, 30);
+            this.pbProgress.Size = new System.Drawing.Size(1035, 38);
             this.pbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pbProgress.TabIndex = 0;
             // 
             // PDFImporter
             // 
             this.AcceptButton = this.btnOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1067, 562);
             this.Controls.Add(this.pnProgress);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnDeselect);
             this.Controls.Add(this.btnSelect);
             this.Controls.Add(this.lvPages);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PDFImporter";

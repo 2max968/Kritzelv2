@@ -29,7 +29,7 @@ namespace Kritzel.Main.Backgrounds
                 r.DrawLine(mainColor, 1, new PointF(0, yPx), new PointF(width, yPx));
             }
 
-            r.DrawLine(secondaryColor, 1, new PointF(borderpx*2, 0), new PointF(borderpx*2, height));
+            r.DrawLine(secondaryColor, 1, new PointF(borderpx, 0), new PointF(borderpx, height));
         }
     }
 }

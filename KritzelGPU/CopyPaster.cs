@@ -25,7 +25,7 @@ namespace Kritzel.Main
             sb.AppendFormat("{0}{1:X}\n", LineID, pageHash);
             foreach (Line line in lines)
                 sb.AppendFormat("{0};{1};{2}\n",
-                    ColorTranslator.ToHtml(line.Brush.GetColor()),
+                    ColorTranslator.ToHtml(line.Brush.GetRawColor()),
                     line.GetType().FullName,
                     line.ToParamString());
             data.SetData(DataType, sb.ToString());

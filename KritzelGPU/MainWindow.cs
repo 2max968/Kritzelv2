@@ -592,6 +592,24 @@ namespace Kritzel.Main
             {
                 inkControl1.RemoveSelection();
             }
+            else if(e.KeyCode == Keys.PageUp)
+            {
+                int current = -1;
+                for (int i = 0; i < doc.Pages.Count; i++)
+                    if (doc.Pages[i] == inkControl1.Page)
+                        current = i;
+                if (current < 1) return;
+                inkControl1.LoadPage(doc.Pages[current - 1]);
+            }
+            else if(e.KeyCode == Keys.PageDown)
+            {
+                int current = -1;
+                for (int i = 0; i < doc.Pages.Count; i++)
+                    if (doc.Pages[i] == inkControl1.Page)
+                        current = i;
+                if (current < 0 || current > doc.Pages.Count - 2) return;
+                inkControl1.LoadPage(doc.Pages[current + 1]);
+            }
             base.OnKeyDown(e);
         }
 

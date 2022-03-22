@@ -77,7 +77,7 @@ namespace Kritzel.Main.GUIElements
                 btn.BackgroundImage = bmp;
                 btn.Bounds = new Rectangle(i * guiSize, 0, guiSize, guiSize);
                 panelBottom.Controls.Add(btn);
-                btn.Tag = size;
+                btn.Tag = Configuration.PenSizeMin + i * (Configuration.PenSizeMax - Configuration.PenSizeMin) / (float)(Configuration.PenSizeNum - 1);
                 btn.Click += Btn_Click;
                 btn.FlatStyle = FlatStyle.Flat;
                 btn.FlatAppearance.BorderSize = 0;

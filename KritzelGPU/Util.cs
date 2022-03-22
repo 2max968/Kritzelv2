@@ -432,7 +432,23 @@ namespace Kritzel.Main
                 if (res == DialogResult.Cancel) cancel = true;
                 else if (res == DialogResult.Yes)
                 {
-                    cancel = !doc.SaveDocument(doc.FilePath);
+                    if (doc.FilePath == "")
+                    {
+                        SaveFileDialog sfd = new SaveFileDialog();
+                        sfd.Filter = "Kritzel Document|*.krit";
+                        if (sfd.ShowDialog() == DialogResult.OK)
+                        {
+                            cancel = !doc.SaveDocument(sfd.FileName);
+                        }
+                        else
+                        {
+                            cancel = true;
+                        }
+                    }
+                    else
+                    {
+                        cancel = !doc.SaveDocument(doc.FilePath);
+                    }
                 }
             }
             return !cancel;
