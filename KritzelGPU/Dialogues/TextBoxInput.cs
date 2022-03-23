@@ -53,6 +53,7 @@ namespace Kritzel.Main.Dialogues
         {
             if (opened.Contains(this))
                 opened.Remove(this);
+            HistoryManager.StoreState(ink.Page);
         }
 
         private void tbContent_TextChanged(object sender, EventArgs e)
@@ -89,6 +90,11 @@ namespace Kritzel.Main.Dialogues
         {
             while (opened.Count > 0)
                 opened[0].Close();
+        }
+
+        private void TextBoxInput_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

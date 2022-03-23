@@ -17,6 +17,7 @@ namespace Kritzel.Main.Renderer
         public d2d.Bitmap D2DBitmap { get; private set; }
         public bool IsDisposed { get; private set; } = false;
         public int GLTextureID { get; private set; }
+        public bool TextureFiltering { get; private set; } = true;
 
         public Image(gdi.Bitmap bmp)
         {

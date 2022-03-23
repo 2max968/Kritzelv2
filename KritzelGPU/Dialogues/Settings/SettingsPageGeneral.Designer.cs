@@ -43,6 +43,8 @@ namespace Kritzel.Main.Dialogues.Settings
             this.tbInfo.ReadOnly = true;
             this.tbInfo.Size = new System.Drawing.Size(741, 226);
             this.tbInfo.TabIndex = 0;
+            this.tbInfo.TextChanged += new System.EventHandler(this.tbInfo_TextChanged);
+            this.tbInfo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tbInfo_MouseDown);
             // 
             // btnSelectLanguage
             // 

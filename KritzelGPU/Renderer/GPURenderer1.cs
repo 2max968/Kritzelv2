@@ -298,7 +298,8 @@ namespace Kritzel.Main.Renderer
                 {
                     img.LoadD2D(mainRenderTarget);
                 }
-                renderTarget.DrawBitmap(img.D2DBitmap, rect.ToRectangleF(), 1, BitmapInterpolationMode.NearestNeighbor);
+                var intMode = img.TextureFiltering ? BitmapInterpolationMode.Linear : BitmapInterpolationMode.NearestNeighbor;
+                renderTarget.DrawBitmap(img.D2DBitmap, rect.ToRectangleF(), 1, intMode);
             }
             catch (Exception e)
             {

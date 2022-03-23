@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -14,10 +15,15 @@ namespace Kritzel.Main.Dialogues.Settings
     public partial class SettingsPageGeneral : UserControl, ISettingsPage
     {
         string currentLang;
+        int clickCount = 0;
+        Stopwatch stp;
 
         public SettingsPageGeneral()
         {
             InitializeComponent();
+
+            stp = new Stopwatch();
+            stp.Start();
         }
 
         public bool CheckValues()
@@ -68,6 +74,27 @@ namespace Kritzel.Main.Dialogues.Settings
                     btnSelectLanguage.Text += Language.Languages[currentLang].Name + " >>";
                 }
             }
+        }
+
+        private async void tbInfo_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (stp.ElapsedMilliseconds > 1000)
+                clickCount = 0;
+            stp.Restart();
+            clickCount++;
+            if(clickCount >= 15)
+            {
+                FindForm().Close();
+                clickCount = 0;
+                await Task.Delay(1);
+                DebugSetup ds = new DebugSetup();
+                ds.ShowDialog();
+            }
+        }
+
+        private void tbInfo_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

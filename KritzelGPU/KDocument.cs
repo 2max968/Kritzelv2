@@ -130,13 +130,22 @@ namespace Kritzel.Main
                         files.Add(pageFile);
                         writer.WriteAttributeString("src", pageFile.Name);
                         string pdf = "-1";
+                        string imgRef = "";
                         if (Pages[i].OriginalPage != null)
                         {
                             string pdfName = "Page" + i + ".pdf";
                             pdf = "" + pdfDoc.Pages.Count;
                             pdfDoc.AddPage(Pages[i].OriginalPage);
                         }
+                        if (Pages[i].OriginalPage == null && Pages[i].BackgroundImage != null)
+                        {
+                            FileInfo imgFile = new FileInfo(dir + "\\Page" + i + ".png");
+                            Pages[i].BackgroundImage.GdiBitmap.Save(imgFile.FullName);
+                            imgRef = imgFile.Name;
+                            files.Add(imgFile);
+                        }
                         writer.WriteAttributeString("pdf", pdf);
+                        writer.WriteAttributeString("img", imgRef);
                         writer.WriteEndElement(); // Page
                     }
                     writer.WriteEndElement(); // Pages
@@ -229,6 +238,21 @@ namespace Kritzel.Main
                 page.LoadFromString(text, log);
                 int pdfInd;
                 int.TryParse(xmlPage.Attributes["pdf"].Value, out pdfInd);
+                if(!string.IsNullOrWhiteSpace(xmlPage.Attributes["img"]?.Value))
+                {
+                    try
+                    {
+                        string filename = dir + "\\" + xmlPage.Attributes["img"].Value;
+                        Bitmap tmpBmp = new Bitmap(filename);
+                        Bitmap bmp = new Bitmap(tmpBmp.Width, tmpBmp.Height);
+                        using (Graphics g = Graphics.FromImage(bmp))
+                            g.DrawImage(tmpBmp, new PointF(0, 0));
+                        tmpBmp.Dispose();
+                        var image = new Renderer.Image(bmp);
+                        page.BackgroundImage = image;
+                    }
+                    catch { }
+                }
                 if (pdfInd >= 0 && loadPdf)
                 {
                     //page.BackgroundImage = new Renderer.Image(bgrs[pdfInd]);

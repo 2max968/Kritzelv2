@@ -39,7 +39,7 @@ namespace Kritzel.Main
         [CP] public static float RulerSize = 40;
         [CP] public static bool RefreshOnTransform = false;
         [CP][RS] public static float GUIScaleFactor = 1;
-        [CP] public static int AutosaveInterval = 10;
+        [CP] public static int AutosaveInterval = 30;
         [CP] public static string DefaultFormat = "A4";
         [CP] public static string PenColors = "Black,#D12324,#E66A0A,#FBC131,#82B92A,#009D63,#A267AB,#585C9C,#B9143C";
         [CP] public static float TransformRotationThreshold = 0.1f;

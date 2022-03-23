@@ -220,7 +220,13 @@ namespace Kritzel.Main.GUIElements
                 Renderer.Image img;
                 using (var stream = File.OpenRead(ofd.FileName))
                 {
-                    img = new Renderer.Image(new Bitmap(stream));
+                    using (var tmp = new Bitmap(stream))
+                    {
+                        var bmp = new Bitmap(tmp.Width, tmp.Height);
+                        using (Graphics g = Graphics.FromImage(bmp))
+                            g.DrawImage(tmp, 0, 0);
+                        img = new Renderer.Image(bmp);
+                    }
                 }
                 float s1 = control.Page.Format.Width / img.GdiBitmap.Width;
                 float s2 = control.Page.Format.Height / img.GdiBitmap.Height;

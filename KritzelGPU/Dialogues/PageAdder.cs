@@ -51,6 +51,8 @@ namespace Kritzel.Main.Dialogues
             comboBox1.BackColor = Style.Default.MenuContrast;
             comboBox1.ForeColor = Style.Default.MenuForeground;
             isPosition.ForeColor = Style.Default.MenuForeground;
+            lblAddPDF.LinkColor = Style.Default.Selection;
+            lblAddImage.LinkColor = Style.Default.Selection;
 
             formats = PageFormat.GetFormats();
             foreach (var f in formats)
@@ -125,19 +127,48 @@ namespace Kritzel.Main.Dialogues
                 {
                     pages = new List<KPage>();
                     pages.AddRange(imp.Pages);
-                    pnPDF.Visible = true;
-                    pnPDF.Height = Util.GetGUISize();
-                    pbPDFIcon.Width = Util.GetGUISize();
                     Icon ico = Icon.ExtractAssociatedIcon(ofd.FileName);
-                    pbPDFIcon.Image = ico.ToBitmap();
-                    ico.Dispose();
-                    lblPDF1.Text = "" + imp.Pages.Length + " pages from";
-                    lblPDF2.Text = new FileInfo(ofd.FileName).Name;
-                    lblPDF2.Font = new Font(lblPDF1.Font, FontStyle.Bold);
-                    comboBox1.Visible = false;
-                    linkLabel1.Visible = false;
+                    showImportPageInfo(ico, "" + imp.Pages.Length + " pages from", new FileInfo(ofd.FileName).Name);
                 }
             }
+        }
+
+        private void lblAddImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Images|*.png;*.bmp;*.jpg;*.jpeg";
+            if(ofd.ShowDialog() == DialogResult.OK)
+            {
+                ImageImporter ii = new ImageImporter(new Bitmap(ofd.FileName));
+                if(ii.ShowDialog() == DialogResult.OK)
+                {
+                    KPage page = new KPage(document);
+                    page.Format = ii.Format;
+                    page.ShowDate = false;
+                    page.Background = null;
+                    page.BackgroundImage = new Renderer.Image(ii.EditetImage);
+                    pages = new List<KPage>();
+                    pages.Add(page);
+
+                    Icon ico = Icon.ExtractAssociatedIcon(ofd.FileName);
+                    showImportPageInfo(ico, new FileInfo(ofd.FileName).Name, "");
+                }
+            }
+        }
+
+        void showImportPageInfo(Icon ico, string txt1, string txt2)
+        {
+            pnPDF.Visible = true;
+            pnPDF.Height = Util.GetGUISize();
+            pbPDFIcon.Width = Util.GetGUISize();
+            pbPDFIcon.Image = ico.ToBitmap();
+            ico.Dispose();
+            lblPDF1.Text = txt1;
+            lblPDF2.Text = txt2;
+            lblPDF2.Font = new Font(lblPDF1.Font, FontStyle.Bold);
+            comboBox1.Visible = false;
+            lblAddPDF.Visible = false;
+            lblAddImage.Visible = false;
         }
     }
 }
