@@ -32,6 +32,17 @@ namespace Kritzel.Main.Dialogues
             this.Width = 5 * Util.GetGUISize();
             this.Dock = DockStyle.Left;
 
+            cbFilters.Height = cbPageFormat.Height = Util.GetGUISize();
+            cbFilters.Font = cbPageFormat.Font = new Font(cbFilters.Font.FontFamily, Util.GetGUISize() / 2, GraphicsUnit.Pixel);
+            cbFilters.BackColor = cbPageFormat.BackColor = Style.Default.MenuContrast;
+            cbFilters.ForeColor = cbPageFormat.ForeColor = Style.Default.MenuForeground;
+
+            label1.Font = label2.Font = new Font(label1.Font.FontFamily, Util.GetGUISize() / 2, GraphicsUnit.Pixel);
+
+            btnCreate.Height = Util.GetGUISize();
+            btnCreate.ForeColor = Style.Default.MenuForeground;
+            btnCreate.BackColor = Style.Default.MenuBackground;
+
             formats = PageFormat.GetFormats();
             foreach (var f in formats)
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -141,6 +142,31 @@ namespace Kritzel.Main.Renderer
                         var textSize = g.MeasureString(text, ft, int.MaxValue, sf);
                         g.DrawString(text, ft, b, new RectangleF(x, y, textSize.Width, textSize.Height), sf);
                     }
+                }
+            }
+        }
+
+        public override void DrawStroke(PBrush brush, IEnumerable<LPoint> points)
+        {
+            using (SolidBrush b = new SolidBrush(brush.GetColor()))
+            {
+                var enumerator = points.GetEnumerator();
+                if (!enumerator.MoveNext())
+                    return;
+                LPoint lastPoint = enumerator.Current;
+                while (enumerator.MoveNext())
+                {
+                    LPoint pt = enumerator.Current;
+                    float width = pt.Rad * 2;
+                    var p1 = new PointF(lastPoint.X, lastPoint.Y);
+                    var p2 = new PointF(pt.X, pt.Y);
+                    using (Pen p = new Pen(b, width))
+                    {
+                        p.StartCap = LineCap.Round;
+                        p.EndCap = LineCap.Round;
+                        g.DrawLine(p, p1, p2);
+                    }
+                    lastPoint = pt;
                 }
             }
         }

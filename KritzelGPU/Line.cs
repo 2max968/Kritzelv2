@@ -110,10 +110,10 @@ namespace Kritzel.Main
             if (Points.Count == 0)
                 bounds = new RectangleF(x, y, 1, 1);
 
-            if(checkDist && Points.Count > 0 && Points.Last().DistSquared(x,y) < 4)
+            /*if(checkDist && Points.Count > 0 && Points.Last().DistSquared(x,y) < 4)
             {
                 return;
-            }
+            }*/
 
             if (x < bounds.Left) { bounds.Width += bounds.X - x; bounds.X = x; }
             if (x > bounds.Right) bounds.Width = x - bounds.X;
@@ -146,23 +146,36 @@ namespace Kritzel.Main
             }
             else if (Points.Count > 1 && !simple)
             {
-                g.BeginCircles(brush);
-                renderPoint(g, Points[0], border);
-                if (start < 1) start = 1;
-                for (int i = start; i < Points.Count; i++)
+                if (Configuration.LineRenderMode == LineRenderMode.Dots)
                 {
-                    if (Points[i] == null) continue;
-                    renderPoint(g, Points[i], border);
-                    renderSegment(g, Points[i - 1], Points[i], quality,
-                        border);
-                    PointF p1 = new PointF(Points[i].X - Points[i].dX * 16,
-                        Points[i].Y - Points[i].dY * 16);
-                    PointF p2 = new PointF(Points[i].X + Points[i].dX * 16,
-                        Points[i].Y + Points[i].dY * 16);
-                    //g.DrawLine(Color.Lime, 1, p1, p2, false, true);
+                    g.BeginCircles(brush);
+                    renderPoint(g, Points[0], border);
+                    if (start < 1) start = 1;
+                    for (int i = start; i < Points.Count; i++)
+                    {
+                        if (Points[i] == null) continue;
+                        renderPoint(g, Points[i], border);
+                        renderSegment(g, Points[i - 1], Points[i], quality,
+                            border);
+                        PointF p1 = new PointF(Points[i].X - Points[i].dX * 16,
+                            Points[i].Y - Points[i].dY * 16);
+                        PointF p2 = new PointF(Points[i].X + Points[i].dX * 16,
+                            Points[i].Y + Points[i].dY * 16);
+                        //g.DrawLine(Color.Lime, 1, p1, p2, false, true);
+                    }
+                    RenderPos = Points.Count - 1;
+                    g.EndCircle();
                 }
-                RenderPos = Points.Count - 1;
-                g.EndCircle();
+                else
+                {
+                    g.DrawStroke(brush, Points);
+                    /*for(int i = 1; i < Points.Count; i++)
+                    {
+                        var p1 = new PointF(Points[i - 1].X, Points[i - 1].Y);
+                        var p2 = new PointF(Points[i].X, Points[i].Y);
+                        g.DrawLine(brush.GetColor(), Points[i].Rad, p1, p2, true, true);
+                    }*/
+                }
             }
             else if(Points.Count > 1)
             {
@@ -252,6 +265,8 @@ namespace Kritzel.Main
 
         public bool CalcSpline()
         {
+            //Spline = null;
+            //return true;
             if (Points.Count < 4) return false;
             double[] px = new double[Points.Count];
             double[] py = new double[Points.Count];

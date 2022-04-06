@@ -22,7 +22,7 @@ namespace Kritzel.Main.Dialogues
 
             cb = new GUIElements.ItemSelector();
             cb.Dock = DockStyle.Top;
-            cb.Items = new string[] { "High Quality (300 Dpi)", "Medium Quality (150 Dpi)", "Low Quality (75 Dpi)" };
+            cb.Items = new string[] { "High Quality (600 Dpi)", "Medium Quality (300 Dpi)", "Low Quality (150 Dpi)", "Vector (Experimental)" };
             cb.Height = cb.Items.Length * Util.GetGUISize();
             Controls.Add(cb);
             cb.SelectedIndex = 1;
@@ -39,7 +39,9 @@ namespace Kritzel.Main.Dialogues
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            Dpi = new int[] { 300, 150, 75 }[cb.SelectedIndex];
+            Dpi = new int[] { 600, 300, 150, -1 }[cb.SelectedIndex];
+            DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

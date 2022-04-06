@@ -36,6 +36,7 @@ namespace Kritzel.Main.Dialogues
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(68, 384);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(177, 72);
@@ -57,9 +58,11 @@ namespace Kritzel.Main.Dialogues
             // 
             // PDFExportDialog
             // 
+            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(440, 468);
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(436, 464);
             this.ControlBox = false;
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);

@@ -21,6 +21,7 @@ namespace Kritzel.Main
     public static class Util
     {
         public static float guiScale = 0;
+        public const float MmPerInch = 25.4f;
 
         public delegate void DelayedAction();
 

@@ -1,4 +1,5 @@
-﻿using Kritzel.PointerInputLibrary;
+﻿using Kritzel.Main.GUIElements;
+using Kritzel.PointerInputLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -284,14 +285,24 @@ namespace Kritzel.Main
             }
             await Task.Delay(500);
             btnPaste.Visible = CopyPaster.CheckClipboard();
+
+            if(TmpManager.GetRecoverableDocuments().Count > 0)
+            {
+                RestorePanel rest = new RestorePanel(this);
+                rest.Dock = DockStyle.Left;
+                OpenDialog(rest);
+            }
         }
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             bool cancel = false;
             bool user = false;
-            if(e.CloseReason == CloseReason.UserClosing)
+
+            doc?.SaveDocument(null, e.CloseReason.ToString());
+
+            if (e.CloseReason == CloseReason.UserClosing)
             {
-                if(Util.AskForSave(doc))
+                if (Util.AskForSave(doc))
                 {
                     user = true;
                 }
@@ -300,6 +311,7 @@ namespace Kritzel.Main
                     cancel = true;
                 }
             }
+
             if (!cancel)
             {
                 ChangeClipboardChain(this.Handle, clipboardViewerNewNext);
@@ -733,6 +745,25 @@ namespace Kritzel.Main
             {
                 inkControl1.InkMode = InkMode.Stamp;
                 inkControl1.Stamp = (List<Line>)((ToolStripItem)sender).Tag;
+            }
+        }
+
+        public async Task RecoverFile(TmpManager.RecoverableFileInfo doc)
+        {
+            if(Util.AskForSave(this.doc))
+            {
+                foreach (var file in TmpManager.GetTmpDir().GetFiles())
+                    file.Delete();
+                foreach (var file in doc.Directory.GetFiles())
+                {
+                    string dest = Path.Combine(TmpManager.GetTmpDir().FullName, file.Name);
+                    Console.WriteLine($"Move '{file.FullName}' to '{dest}'");
+                    file.MoveTo(dest);
+                }
+                //doc.Directory.MoveTo(TmpManager.GetTmpDir().FullName);
+                KDocument document = new KDocument();
+                document.LoadDocument(null, Program.MainLog);
+                SetDocument(document);
             }
         }
     }

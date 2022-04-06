@@ -24,7 +24,8 @@ namespace Demo.Pen
         SolidColorBrush brushWhite;
         Thread renderThread;
         bool running = true;
-
+        List<Point> points = new List<Point>();
+        SolidColorBrush pointBrush;
 
         public Form1()
         {
@@ -49,6 +50,7 @@ namespace Demo.Pen
             });
             brushBlack = new SolidColorBrush(rt, new SharpDX.Mathematics.Interop.RawColor4(0, 0, 0, 1));
             brushWhite = new SolidColorBrush(rt, new SharpDX.Mathematics.Interop.RawColor4(1, 1, 1, 1));
+            pointBrush = new SolidColorBrush(rt, new SharpDX.Mathematics.Interop.RawColor4(0, 1, 0, 1));
 
             this.FormClosing += Form1_FormClosing;
 
@@ -62,6 +64,7 @@ namespace Demo.Pen
             renderThread.Join();
             brushBlack.Dispose();
             brushWhite.Dispose();
+            pointBrush.Dispose();
             rt.Dispose();
             factory.Dispose();
         }
@@ -85,6 +88,12 @@ namespace Demo.Pen
             if(current != null)
             {
                 current.Points.Add(new PointF(e.X, e.Y));
+                if(e.HistoryCount > 0)
+                {
+                    e.TranslateTrail(this);
+                    lock(points)
+                        points.AddRange(e.Trail);
+                }
             }
         }
 
@@ -118,6 +127,13 @@ namespace Demo.Pen
                     foreach(Line l in lines)
                     {
                         l.Draw(rt, brushBlack);
+                    }
+                }
+                lock(points)
+                {
+                    foreach(Point p in points)
+                    {
+                        rt.DrawRectangle(new SharpDX.Mathematics.Interop.RawRectangleF(p.X, p.Y, p.X, p.Y), pointBrush);
                     }
                 }
                 if (current != null)

@@ -1,7 +1,9 @@
 ﻿using PdfSharp.Drawing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ namespace Kritzel.Main.Renderer
     {
         XGraphics g;
         XBrush cBrush;
+        static int imgCounter = 0;
 
         public PdfRenderer(XGraphics g)
         {
@@ -20,65 +23,62 @@ namespace Kritzel.Main.Renderer
 
         public override void DrawLine(Color c, float width, PointF p1, PointF p2, bool capStart = false, bool capEnd = false)
         {
-            Pen p = new Pen(c, width);
-            if (capStart) p.StartCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
-            if (capEnd) p.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
-            g.DrawLine(p, p1, p2);
+            var p = new XPen(c.Pdf(), width);
+            //if (capStart) p.StartCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+            //if (capEnd) p.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+            g.DrawLine(p, p1.Pdf(), p2.Pdf());
         }
 
         public override void FillEllipse(PBrush c, RectangleF rect)
         {
-            g.DrawEllipse(createBrush(c), rect);
+            g.DrawEllipse(createBrush(c), rect.Pdf());
         }
 
         public override void DrawRoundedLine(PBrush c, float width, PointF p1, PointF p2)
         {
-            g.DrawLine(new Pen(c.Brush, width)
-            {
-                DashCap = System.Drawing.Drawing2D.DashCap.Round,
-                EndCap = System.Drawing.Drawing2D.LineCap.Round,
-                StartCap = System.Drawing.Drawing2D.LineCap.Round
-            },
-                    p1, p2);
+            var pen = new XPen(c.GetColor().Pdf(), width);
+            pen.LineCap = XLineCap.Round;
+            g.DrawLine(pen, p1.Pdf(), p2.Pdf());
         }
 
         public override void DrawEllipse(PBrush c, float width, RectangleF rect)
         {
-            g.DrawEllipse(new Pen(c.Brush, width), rect);
+            g.DrawEllipse(new XPen(c.GetColor().Pdf(), width), rect.Pdf());
         }
 
         public override void DrawRoundedRectangle(PBrush c, float width, RectangleF rect)
         {
-            g.DrawRectangle(new Pen(c.Brush, width)
-            {
-                LineJoin = System.Drawing.Drawing2D.LineJoin.Round
-            }, rect.X, rect.Y, rect.Width, rect.Height);
+            g.DrawRoundedRectangle(new XPen(c.GetColor().Pdf(), width), rect.Pdf(), new XSize(width, width));
         }
 
         public override void DrawRect(Color c, float width, RectangleF rect)
         {
-            g.DrawRectangle(new Pen(c, width),
+            g.DrawRectangle(new XPen(c.Pdf(), width),
                 rect.X, rect.Y, rect.Width, rect.Height);
         }
 
         public override void DrawImage(Image img, RectangleF rect)
         {
-            string tmpPath = TmpManager.GetTmpDir() + "\\tmp.jpg";
-            img.GdiBitmap.Save(tmpPath);
-            XImage bmp = XImage.FromFile(tmpPath);
-            //XImage bmp = XImage.FromGdiPlusImage(img.GdiBitmap);
-            g.DrawImage(bmp, rect);
-            bmp.Dispose();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                img.GdiBitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                XImage _bmp = XImage.FromStream(ms);
+                g.DrawImage(_bmp, rect.Pdf());
+                _bmp.Dispose();
+            }
         }
 
         public override void FillPolygon(PBrush b, PointF[] pts)
         {
-            g.DrawPolygon(createBrush(b), pts, XFillMode.Alternate);
+            XPoint[] _pts = new XPoint[pts.Length];
+            for (int i = 0; i < pts.Length; i++)
+                _pts[i] = pts[i].Pdf();
+            g.DrawPolygon(createBrush(b), _pts, XFillMode.Alternate);
         }
 
         XBrush createBrush(PBrush pBrush)
         {
-            XBrush brush = new XSolidBrush(pBrush.GetMainColor());
+            XBrush brush = new XSolidBrush(pBrush.GetMainColor().Pdf());
             return brush;
         }
 
@@ -89,17 +89,17 @@ namespace Kritzel.Main.Renderer
             float w = Util.MmToPoint(rect.Width);
             float h = 0;
             g.DrawString(text, new XFont("Calibri", Util.MmToPoint(size) * 1.3), createBrush(brush),
-                new RectangleF(x, y, w, h));
+                new XRect(x, y, w, h));
         }
 
         public override void BeginCircles(PBrush brush)
         {
-            cBrush = new XSolidBrush(brush.GetColor());
+            cBrush = new XSolidBrush(brush.GetColor().Pdf());
         }
 
         public override void Circle(float x, float y, float r)
         {
-            RectangleF rect = new RectangleF(x - r, y - r, 2 * r, 2 * r);
+            var rect = new XRect(x - r, y - r, 2 * r, 2 * r);
             g.DrawEllipse(cBrush, rect);
         }
 
@@ -110,12 +110,12 @@ namespace Kritzel.Main.Renderer
 
         public override void BeginRects(PBrush brush)
         {
-            cBrush = new XSolidBrush(brush.GetColor());
+            cBrush = new XSolidBrush(brush.GetColor().Pdf());
         }
 
         public override void Rect(RectangleF rect)
         {
-            g.DrawRectangle(cBrush, rect);
+            g.DrawRectangle(cBrush, rect.Pdf());
         }
 
         public override void EndRects()
@@ -126,7 +126,7 @@ namespace Kritzel.Main.Renderer
         public override void DrawText(string text, Color color, float x, float y, string fontFamily, float size, TextAlign align)
         {
             XFont ft = new XFont(fontFamily, Util.MmToPoint(size));
-            XSolidBrush b = new XSolidBrush(color);
+            XSolidBrush b = new XSolidBrush(color.Pdf());
             XStringFormat sf = new XStringFormat();
             switch (align)
             {
@@ -135,7 +135,28 @@ namespace Kritzel.Main.Renderer
                 case TextAlign.Right: sf.Alignment = XStringAlignment.Far; break;
             }
             var textSize = g.MeasureString(text, ft, sf);
-            g.DrawString(text, ft, b, new RectangleF(x, y, (float)textSize.Width, (float)textSize.Height), sf);
+            g.DrawString(text, ft, b, new XRect(x, y, (float)textSize.Width, (float)textSize.Height), sf);
+        }
+
+        public override void DrawStroke(PBrush brush, IEnumerable<LPoint> points)
+        {
+            var b = brush.GetColor().Pdf();
+
+            var enumerator = points.GetEnumerator();
+            if (!enumerator.MoveNext())
+                return;
+            LPoint lastPoint = enumerator.Current;
+            while (enumerator.MoveNext())
+            {
+                LPoint pt = enumerator.Current;
+                float width = pt.Rad * 2;
+                var p1 = new XPoint(lastPoint.X, lastPoint.Y);
+                var p2 = new XPoint(pt.X, pt.Y);
+                XPen p = new XPen(b, width);
+                p.LineCap = XLineCap.Round;
+                g.DrawLine(p, p1, p2);
+                lastPoint = pt;
+            }
         }
     }
 }

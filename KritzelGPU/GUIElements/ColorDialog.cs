@@ -32,8 +32,10 @@ namespace Kritzel.Main.GUIElements
             this.BackColor = Style.Default.MenuBackground;
             panelBottom.BackColor = Style.Default.MenuContrast;
             panelTop.BackColor = Style.Default.MenuBackground;
+            btnMore.ForeColor = Style.Default.MenuForeground;
+            btnOk.ForeColor = Style.Default.MenuForeground;
 
-            if(centerX < 0) centerX = MainWindow.Instance.PointToClient(Cursor.Position).X;
+            if (centerX < 0) centerX = MainWindow.Instance.PointToClient(Cursor.Position).X;
             int locX = centerX - this.Width / 2;
             if (locX + Width >= MainWindow.Instance.ClientSize.Width) locX = MainWindow.Instance.ClientSize.Width - Width;
             if (locX < 0) locX = 0;

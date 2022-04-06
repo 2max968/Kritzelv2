@@ -65,13 +65,11 @@ namespace Kritzel.Main
             MainLog.Add(MessageType.MSG, "Load Window Icon");
             WindowIcon = Properties.Resources.KritzelIcon;//Icon.FromHandle(Properties.Resources.KritzelIcon.GetHicon());
             MainLog.Add(MessageType.MSG, "Look for temporary Data");
-            RestoreData = TmpManager.OvertakeFirstUnused();
+            //RestoreData = TmpManager.OvertakeFirstUnused();
             MainLog.Add(MessageType.MSG, "Enable Window");
             if(Configuration.EnableVisualStyle) Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-                //DebugInterface.Start();
             Application.Run(new MainWindow());
-            //DebugInterface.Stop();
             HTTPCast.StopCasting();
 #if !DEBUG
             }

@@ -493,5 +493,33 @@ namespace Kritzel.Main.Renderer
                 }
             }
         }
+
+        public override void DrawStroke(PBrush brush, IEnumerable<LPoint> points)
+        {
+            var gdic = brush.GetColor();
+            RawColor4 color = new RawColor4(gdic.R / 255f, gdic.G/ 255f, gdic.B / 255f, gdic.A / 255f);
+            using (SolidColorBrush b = new SolidColorBrush(renderTarget, color))
+            {
+                using (StrokeStyle style = new StrokeStyle(factory, new StrokeStyleProperties()
+                {
+                    EndCap = CapStyle.Round,
+                    StartCap = CapStyle.Round
+                })) {
+                    var enumerator = points.GetEnumerator();
+                    if (!enumerator.MoveNext())
+                        return;
+                    LPoint lastPoint = enumerator.Current;
+                    while (enumerator.MoveNext())
+                    {
+                        LPoint pt = enumerator.Current;
+                        float width = pt.Rad * 2;
+                        var p1 = new RawVector2(lastPoint.X, lastPoint.Y);
+                        var p2 = new RawVector2(pt.X, pt.Y);
+                        renderTarget.DrawLine(p1, p2, b, width, style);
+                        lastPoint = pt;
+                    }
+                }
+            }
+        }
     }
 }

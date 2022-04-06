@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -34,6 +35,9 @@ namespace Kritzel.PointerInputLibrary
         public bool Down { get; private set; } = true;
         public int Param;
         public List<Point> Trail { get; } = new List<Point>();
+        public IntPtr SourceDevice { get; private set; }
+        public uint HistoryCount { get; private set; }
+        bool trailTranslated = false;
 
         public Touch(int x, int y, uint id, TouchDevice device, long pressure, PenFlags flags, bool down)
         {
@@ -80,18 +84,45 @@ namespace Kritzel.PointerInputLibrary
             if (PointerInfo.GetPointerPenInfo(Id, out pInfo))
             {
                 TouchDevice = TouchDevice.Pen;
-                if (System.Environment.Is64BitProcess)
+                /*if (System.Environment.Is64BitProcess)
                 {
                     Pressure = (long)pInfo.x64pressure;
                     PenFlags = pInfo.x64penFlags;
+                    SourceDevice = pInfo.sourceDevice;
+                    HistoryCount = pInfo.x64historyCount;
                 }
                 else
                 {
                     Pressure = (long)pInfo.x86pressure;
                     PenFlags = pInfo.x86penFlags;
-                }
+                    SourceDevice = pInfo.sourceDevice;
+                    HistoryCount = pInfo.x86historyCount;
+                }*/
+
+                Pressure = (long)pInfo.prssure;
+                PenFlags = pInfo.penFlags;
+                SourceDevice = pInfo.pointerInfo.sourceDevice;
+                HistoryCount = pInfo.pointerInfo.historyCount;
+
                 if(Pressure == 0) Down = false;
                 Pressure = (long)(Math.Pow(Pressure / (float)MAX_PREASSURE, PointerManager.Gamma) * MAX_PREASSURE);
+                int piSize = Marshal.SizeOf<PointerInfo.POINTER_INFO>();
+                if (HistoryCount > 0)
+                {
+                    PointerInfo.POINTER_INFO[] history = new PointerInfo.POINTER_INFO[HistoryCount];
+                    uint count = (uint)history.Length;
+                    var arrayPtr = Marshal.AllocHGlobal(piSize * (int)HistoryCount);
+                    if (PointerInfo.GetPointerInfoHistory(pInfo.pointerInfo.pointerId, ref count, arrayPtr))
+                    {
+                        for (int i = 0; i < count; i++)
+                        {
+                            int offset = i * piSize;
+                            var info = Marshal.PtrToStructure<PointerInfo.POINTER_INFO>(arrayPtr + offset);
+                            Trail.Add((Point)info.ptPixelLocation);
+                        }
+                    }
+                    Marshal.FreeHGlobal(arrayPtr);
+                }
             }
         }
 
@@ -114,6 +145,15 @@ namespace Kritzel.PointerInputLibrary
         {
             if (a == null) return b;
             else return a;
+        }
+
+        public void TranslateTrail(Control parent)
+        {
+            if (trailTranslated)
+                return;
+            trailTranslated = true;
+            for (int i = 0; i < Trail.Count; i++)
+                Trail[i] = parent.PointToClient(Trail[i]);
         }
     }
 }

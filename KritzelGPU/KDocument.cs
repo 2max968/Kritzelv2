@@ -31,11 +31,11 @@ namespace Kritzel.Main
             DefaultFormat = Configuration.DefaultFormat;
         }
 
-        public void SavePDF(string path, ProgressBar pb = null)
+        public void SavePDF(string path, ProgressBar pb = null, int dpi = -1)
         {
             if(pb != null)
             {
-                pb.Maximum = Pages.Count * 2;
+                pb.Maximum = Pages.Count;
                 pb.Value = 0;
             }
             MemoryStream mstream = new MemoryStream();
@@ -54,7 +54,6 @@ namespace Kritzel.Main
                     page.Width = new XUnit(Pages[i].Format.Width, XGraphicsUnit.Millimeter);
                     page.Height = new XUnit(Pages[i].Format.Height, XGraphicsUnit.Millimeter);
                 }
-                if (pb != null) pb.Value++;
             }
             doc.Save(mstream);
 
@@ -72,13 +71,38 @@ namespace Kritzel.Main
                     double shift = (doc2.Pages[i].Rotate / 90 + j) % 2 == 0 ? s.Width : s.Height;
                     gfx.RotateAtTransform(-90, new XPoint(shift / 2, shift / 2));
                 }
-                Renderer.PdfRenderer r = new Renderer.PdfRenderer(gfx);
+                var pdfRenderer = new Renderer.PdfRenderer(gfx);
+                Renderer.BaseRenderer r = pdfRenderer;
+                Bitmap _bmp = null;
+                Graphics _g = null;
+                if (dpi > 0)
+                {
+                    int _w = (int)(Pages[i].Format.Width * dpi / Util.MmPerInch);
+                    int _h = (int)(Pages[i].Format.Height * dpi / Util.MmPerInch);
+                    _bmp = new Bitmap(_w, _h);
+                    _g = Graphics.FromImage(_bmp);
+                    _g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                    _g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    _g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                    _g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                    _g.ScaleTransform(Util.PointToMm(dpi / Util.MmPerInch), Util.PointToMm(dpi / Util.MmPerInch));
+                    _g.Clear(Color.FromArgb(0, 255, 255, 255));
+                    r = new Renderer.GdiRenderer(_g);
+                }
                 r.RenderSpecial = false;
                 var pSize = Pages[i].Format.GetPixelSize();
                 if (Pages[i].OriginalPage == null && Pages[i].BackgroundImage != null)
                     r.DrawImage(Pages[i].BackgroundImage, new RectangleF(0, 0, pSize.Width, pSize.Height));
-                Pages[i].Draw(r);
+                Pages[i].Draw(r, pdfRenderer);
                 if (pb != null) pb.Value++;
+                _g?.Dispose();
+                if(_bmp != null)
+                {
+                    var _img = new Renderer.Image(_bmp);
+                    pdfRenderer.DrawImage(_img, new RectangleF(0, 0, Util.MmToPoint(Pages[i].Format.Width), Util.MmToPoint(Pages[i].Format.Height)));
+                    _img.Dispose();
+                }
+                _bmp?.Dispose();
             }
             doc2.Save(path);
 
@@ -93,7 +117,7 @@ namespace Kritzel.Main
                 page.Dispose();
         }
 
-        public bool SaveDocument(string path)
+        public bool SaveDocument(string path, string comment = null)
         {
             try
             {
@@ -119,6 +143,9 @@ namespace Kritzel.Main
                 {
                     PdfDocument pdfDoc = new PdfDocument();
                     writer.WriteStartElement("Document");
+                    writer.WriteElementString("Filename", comment ?? (path != null ? new FileInfo(path).Name : "Autosave"));
+                    writer.WriteElementString("Date", DateTime.Now.ToShortDateString());
+                    writer.WriteElementString("Time", DateTime.Now.ToShortTimeString());
                     writer.WriteElementString("DefaultFormat", DefaultFormat);
                     writer.WriteStartElement("Pages");
                     for (int i = 0; i < Pages.Count; i++)

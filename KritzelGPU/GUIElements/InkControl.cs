@@ -235,26 +235,42 @@ namespace Kritzel.Main
 
         private void Pm_PenMove(object sender, Touch e)
         {
+            e.TranslateTrail(this);
             foreach (ScreenObject.BaseScreenObject so in ScreenObjects)
             {
                 so.ManipulateInput(e, Width, Height);
             }
             if (line != null)
             {
+                var invTransform = transform.GetInverse();
                 var drawDev = e;
                 float rad;
                 rad = line.CalcRad(drawDev.Pressure, Thicknes);
                 PointF[] p = new PointF[1];
                 p[0] = new PointF(drawDev.X, drawDev.Y);
                 linePoints.Add(p[0]);
-                transform.GetInverse().Transform(p);
-                line.AddPoint(p[0].X, p[0].Y, rad);
+                invTransform.Transform(p);
+                if (drawDev.HistoryCount > 0)
+                {
+                    float lastRad = line.Points.Count > 0 ? line.Points.First().Rad : rad;
+                    for (int i = drawDev.Trail.Count - 1; i >= 0; i--)
+                    {
+                        float t = i / (float)drawDev.Trail.Count;
+                        float cRad = rad * (1 - t) + lastRad * t;
+                        PointF pt = new PointF(drawDev.Trail[i].X, drawDev.Trail[i].Y);
+                        invTransform.Transform(ref pt);
+                        line.AddPoint(pt.X, pt.Y, rad);
+                    }
+                }
+                else
+                    line.AddPoint(p[0].X, p[0].Y, rad);
                 RecreateBuffer(Util.GetBounds(linePoints.ToArray()).Expand(8));
             }
         }
 
         private void Pm_PenDown(object sender, Touch e)
         {
+            e.TranslateTrail(this);
             foreach(ScreenObject.BaseScreenObject so in ScreenObjects)
             {
                 if (!so.ManipulateInput(e, Width, Height))
@@ -273,7 +289,8 @@ namespace Kritzel.Main
                 {
                     line = new Line();
                     line.Brush = Brush;
-                    line.AddPoint(p[0].X, p[0].Y, line.CalcRad(pressure, Thicknes));
+                    //line.AddPoint(p[0].X, p[0].Y, line.CalcRad(pressure, Thicknes));
+                    Pm_PenMove(sender, e);
                 }
                 else if (InkMode == InkMode.Line)
                 {

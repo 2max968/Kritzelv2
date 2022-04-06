@@ -517,5 +517,10 @@ namespace Kritzel.Main.Renderer
                 textUpdate = false;
             }
         }
+
+        public override void DrawStroke(PBrush brush, IEnumerable<LPoint> points)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

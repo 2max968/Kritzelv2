@@ -51,7 +51,7 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.ItemHeight = 73;
             this.comboBox1.Location = new System.Drawing.Point(0, 0);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(581, 81);
             this.comboBox1.TabIndex = 0;
@@ -61,7 +61,7 @@
             this.btnAdd.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.Location = new System.Drawing.Point(413, 0);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(168, 125);
             this.btnAdd.TabIndex = 4;
@@ -75,7 +75,7 @@
             this.panelBottom.Controls.Add(this.btnAdd);
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelBottom.Location = new System.Drawing.Point(0, 635);
-            this.panelBottom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelBottom.Margin = new System.Windows.Forms.Padding(4);
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(581, 125);
             this.panelBottom.TabIndex = 5;
@@ -101,7 +101,7 @@
             this.pnPDF.Controls.Add(this.pbPDFIcon);
             this.pnPDF.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnPDF.Location = new System.Drawing.Point(0, 81);
-            this.pnPDF.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnPDF.Margin = new System.Windows.Forms.Padding(4);
             this.pnPDF.Name = "pnPDF";
             this.pnPDF.Size = new System.Drawing.Size(581, 106);
             this.pnPDF.TabIndex = 8;
@@ -134,7 +134,7 @@
             // 
             this.pbPDFIcon.Dock = System.Windows.Forms.DockStyle.Left;
             this.pbPDFIcon.Location = new System.Drawing.Point(0, 0);
-            this.pbPDFIcon.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pbPDFIcon.Margin = new System.Windows.Forms.Padding(4);
             this.pbPDFIcon.Name = "pbPDFIcon";
             this.pbPDFIcon.Size = new System.Drawing.Size(133, 106);
             this.pbPDFIcon.TabIndex = 0;
@@ -163,7 +163,7 @@
             this.Controls.Add(this.pnPDF);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.panelBottom);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "PageAdder";
             this.Size = new System.Drawing.Size(581, 760);
             this.panelBottom.ResumeLayout(false);

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Kritzel.Main
 {
@@ -18,11 +19,17 @@ namespace Kritzel.Main
         {
             if (!Directory.Exists(ResManager.TMPDIR))
                 Directory.CreateDirectory(ResManager.TMPDIR);
+
+            // Delete empty unused directories
+            RemoveUnusedDirs();
         }
 
-        public static DirectoryInfo GetTmpDir()
+        public static DirectoryInfo GetTmpDir(bool checkAndCreate = true)
         {
-            return new DirectoryInfo(ResManager.TMPDIR + Process.GetCurrentProcess().Id);
+            var tmp = new DirectoryInfo(ResManager.TMPDIR + Process.GetCurrentProcess().Id);
+            if (checkAndCreate && !tmp.Exists)
+                tmp.Create();
+            return tmp;
         }
 
         public static void RemoveUnusedDirs()
@@ -35,6 +42,8 @@ namespace Kritzel.Main
 
             foreach (string dir in Directory.GetDirectories(ResManager.TMPDIR))
             {
+                string docName = Path.Combine(dir, "document.kritzel");
+                if (File.Exists(docName)) continue;
                 string name = new FileInfo(dir).Name;
                 int id;
                 int.TryParse(name, out id);
@@ -68,6 +77,8 @@ namespace Kritzel.Main
             var dirs = ListUnusedDirs();
             if (dirs.Count == 0) return false;
             var newName = GetTmpDir().FullName;
+            if (Directory.Exists(newName))
+                Directory.Delete(newName);
             Directory.Move(dirs[0], newName);
             return true;
         }
@@ -83,6 +94,48 @@ namespace Kritzel.Main
                     return name;
                 }
             }
+        }
+
+        public class RecoverableFileInfo
+        {
+            public int Pid = -1;
+            public string Name = null;
+            public string Date = null;
+            public string Time = null;
+            public DirectoryInfo Directory = null;
+        }
+
+        public static List<RecoverableFileInfo> GetRecoverableDocuments()
+        {
+            var list = new List<RecoverableFileInfo>();
+            foreach(string dir in ListUnusedDirs())
+            {
+                string docName = Path.Combine(dir, "document.kritzel");
+                if(File.Exists(docName))
+                {
+                    var info = new RecoverableFileInfo();
+                    info.Directory = new DirectoryInfo(dir);
+                    using (XmlReader xml = XmlReader.Create(docName))
+                    {
+                        while(xml.Read())
+                        {
+                            if (xml.NodeType == XmlNodeType.Element)
+                            {
+                                try
+                                {
+                                    string name = xml.Name;
+                                    if (name == "Filename") info.Name = xml.ReadElementContentAsString();
+                                    if (name == "Date") info.Date = xml.ReadElementContentAsString();
+                                    if (name == "Time") info.Time = xml.ReadElementContentAsString();
+                                }
+                                catch { }
+                            }
+                        }
+                    }
+                    list.Add(info);
+                }
+            }
+            return list;
         }
     }
 }

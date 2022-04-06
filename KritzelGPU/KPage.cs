@@ -314,18 +314,20 @@ namespace Kritzel.Main
                     lines[i].Render(r);
         }
 
-        public void Draw(Renderer.BaseRenderer r)
+        public void Draw(Renderer.BaseRenderer r, Renderer.BaseRenderer rBgr = null)
         {
             lock (this)
             {
+                if (rBgr == null)
+                    rBgr = r;
                 SizeF pSize = Format.GetPixelSize();
 
                 if (Background != null)
-                    Background.Draw(r, Format, Border,
+                    Background.Draw(rBgr, Format, Border,
                         Util.ApplyFilter(BackgroundColor1, this.Filter), Util.ApplyFilter(BackgroundColor2, this.Filter));
 
                 if (ShowDate)
-                    r.DrawText(CreationTime.ToLongDateString() + " " + CreationTime.ToShortTimeString(),
+                    rBgr.DrawText(CreationTime.ToLongDateString() + " " + CreationTime.ToShortTimeString(),
                         PBrush.CreateSolid(Util.ApplyFilter(BackgroundColor1, this.Filter)),
                         new RectangleF(Border + 1, Border - 5, 300, 50), 2);
 

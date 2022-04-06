@@ -61,6 +61,7 @@ namespace Kritzel.Main
 #else
         [CP] public static bool ShowBrokenFunctions = false;
 #endif
+        [CP] public static LineRenderMode LineRenderMode = LineRenderMode.Dots;
 
         public static void LoadConfig()
         {
@@ -270,5 +271,11 @@ namespace Kritzel.Main
     {
         Normal,
         InvertLuminosity
+    }
+
+    public enum LineRenderMode
+    {
+        Dots,
+        Lines
     }
 }

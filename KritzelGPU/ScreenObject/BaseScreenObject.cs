@@ -110,11 +110,22 @@ namespace Kritzel.Main.ScreenObject
 
         public bool ManipulateInput(Touch t, int screenWidth, int screenHeight)
         {
+            bool b = false;
+
             float x = t.X;
             float y = t.Y;
-            bool b = ManipulateInput(ref x, ref y, screenWidth, screenHeight);
+            b |= ManipulateInput(ref x, ref y, screenWidth, screenHeight);
             t.X = (int)x;
             t.Y = (int)y;
+
+            for(int i = 0; i < t.Trail.Count; i++)
+            {
+                float tx = t.Trail[i].X;
+                float ty = t.Trail[i].Y;
+                b |= ManipulateInput(ref tx, ref ty, screenWidth, screenHeight);
+                t.Trail[i] = new Point((int)tx, (int)ty);
+            }
+
             return b;
         }
     }

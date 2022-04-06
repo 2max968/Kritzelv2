@@ -171,7 +171,7 @@ namespace Kritzel.Main.GUIElements
                         wnd.Show();
                         try
                         {
-                            document.SavePDF(diagSaveDoc.FileName, wnd.ProgressBar);
+                            document.SavePDF(diagSaveDoc.FileName, wnd.ProgressBar, ped.Dpi);
                             //inkControl1.Page.SavePDF(sfd.FileName);
                         }
                         catch (Exception ex)
