@@ -518,7 +518,7 @@ namespace Kritzel.Main.Renderer
             }
         }
 
-        public override void DrawStroke(PBrush brush, IEnumerable<LPoint> points)
+        public override void DrawStroke(PBrush brush, IList<LPoint> points, float wScale)
         {
             throw new NotImplementedException();
         }

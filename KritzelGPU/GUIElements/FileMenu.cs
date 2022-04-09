@@ -166,12 +166,12 @@ namespace Kritzel.Main.GUIElements
                         {
                             return;
                         }
-                        ProgressWindow wnd = new ProgressWindow("Save to PDF");
+                        ProgressWindow wnd = new ProgressWindow("Save to PDF", true);
                         wnd.TopMost = true;
                         wnd.Show();
                         try
                         {
-                            document.SavePDF(diagSaveDoc.FileName, wnd.ProgressBar, ped.Dpi);
+                            await document.SavePDF(diagSaveDoc.FileName, wnd, ped.Dpi);
                             //inkControl1.Page.SavePDF(sfd.FileName);
                         }
                         catch (Exception ex)
@@ -289,35 +289,56 @@ namespace Kritzel.Main.GUIElements
             int currentPage = 0;
             pd.Document.PrintPage += (_sender, _e) =>
             {
+                KPage page = null;
                 if (pd.PrinterSettings.PrintRange == PrintRange.AllPages)
                 {
-                    Renderer.GdiRenderer r = new Renderer.GdiRenderer(_e.Graphics);
-                    document.Pages[currentPage].DrawPDFHQ(r, (int)Util.MmToPoint(_e.PageBounds.Height));
-                    document.Pages[currentPage++].Draw(r);
+                    page = document.Pages[currentPage++];
                     _e.HasMorePages = currentPage < document.Pages.Count;
                 }
                 else if (pd.PrinterSettings.PrintRange == PrintRange.CurrentPage)
                 {
-                    Renderer.GdiRenderer r = new Renderer.GdiRenderer(_e.Graphics);
-                    control.Page.DrawPDFHQ(r, (int)Util.MmToPoint(_e.PageBounds.Height));
-                    control.Page.Draw(r);
+                    page = control.Page;
                     _e.HasMorePages = false;
                 }
                 else if (pd.PrinterSettings.PrintRange == PrintRange.SomePages)
                 {
                     int fromPage = Math.Max(0, pd.PrinterSettings.FromPage - 1);
                     int toPage = Math.Min(document.Pages.Count - 1, pd.PrinterSettings.ToPage - 1);
-                    Renderer.GdiRenderer r = new Renderer.GdiRenderer(_e.Graphics);
                     int realPage = currentPage++ + fromPage;
-                    document.Pages[realPage].DrawPDFHQ(r, (int)Util.MmToPoint(_e.PageBounds.Height));
-                    document.Pages[realPage].Draw(r);
+                    page = document.Pages[realPage];
                     _e.HasMorePages = realPage < toPage;
                 }
+
+                var r = new Renderer.GdiRenderer(_e.Graphics);
+                var psize = page.Format.GetPixelSize();
+                float scale1 = Math.Min(_e.PageBounds.Height / psize.Height, _e.PageBounds.Width / psize.Width);
+                float scale2 = Math.Min(_e.PageBounds.Width / psize.Height, _e.PageBounds.Height / psize.Width);
+                float scale = scale1;
+                Matrix3x3 mat = new Matrix3x3();
+                if(scale2 > scale1)
+                {
+                    scale = scale2;
+                    mat.TransformRotateAt((float)Math.PI / 2, psize.Width / 2f, psize.Height / 2f);
+                }
+                mat.TransformScale(scale);
+                mat.TransformTranslate((_e.PageBounds.Width - psize.Width * scale) / 2, (_e.PageBounds.Height - psize.Height * scale) / 2);
+                _e.Graphics.Transform = mat.CreateGdiMatrix();
+                page.DrawPDFHQ(r, (int)Util.MmToPoint(_e.PageBounds.Height));
+                page.Draw(r);
             };
             if(pd.ShowDialog() == DialogResult.OK)
             {
                 pd.Document.Print();
             }
+        }
+
+        private async void btnRecovery_Click(object sender, EventArgs e)
+        {
+            CloseMenu?.Invoke();
+            await Task.Delay(0);
+            RestorePanel rp = new RestorePanel(window);
+            rp.Dock = DockStyle.Left;
+            window.OpenDialog(rp);
         }
     }
 }

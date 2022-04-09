@@ -138,7 +138,7 @@ namespace Kritzel.Main.Renderer
             g.DrawString(text, ft, b, new XRect(x, y, (float)textSize.Width, (float)textSize.Height), sf);
         }
 
-        public override void DrawStroke(PBrush brush, IEnumerable<LPoint> points)
+        public override void DrawStroke(PBrush brush, IList<LPoint> points, float wScale)
         {
             var b = brush.GetColor().Pdf();
 
@@ -152,7 +152,7 @@ namespace Kritzel.Main.Renderer
                 float width = pt.Rad * 2;
                 var p1 = new XPoint(lastPoint.X, lastPoint.Y);
                 var p2 = new XPoint(pt.X, pt.Y);
-                XPen p = new XPen(b, width);
+                XPen p = new XPen(b, width + wScale);
                 p.LineCap = XLineCap.Round;
                 g.DrawLine(p, p1, p2);
                 lastPoint = pt;

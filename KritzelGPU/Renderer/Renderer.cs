@@ -27,6 +27,6 @@ namespace Kritzel.Main.Renderer
         public abstract void Rect(RectangleF rect);
         public abstract void EndRects();
         public abstract void DrawText(string text, Color color, float x, float y, string fontFamily, float size, TextAlign align);
-        public abstract void DrawStroke(PBrush brush, IEnumerable<LPoint> points);
+        public abstract void DrawStroke(PBrush brush, IList<LPoint> points, float wScale);
     }
 }

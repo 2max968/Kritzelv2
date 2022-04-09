@@ -61,7 +61,7 @@ namespace Kritzel.Main
 #else
         [CP] public static bool ShowBrokenFunctions = false;
 #endif
-        [CP] public static LineRenderMode LineRenderMode = LineRenderMode.Dots;
+        [CP] public static LineRenderMode LineRenderMode = LineRenderMode.Lines;
 
         public static void LoadConfig()
         {

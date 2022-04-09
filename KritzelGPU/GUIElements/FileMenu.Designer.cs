@@ -37,6 +37,7 @@
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnCast = new System.Windows.Forms.Button();
             this.btnPrint = new System.Windows.Forms.Button();
+            this.btnRecovery = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnNew
@@ -177,11 +178,26 @@
             this.btnPrint.UseVisualStyleBackColor = true;
             this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
+            // btnRecovery
+            // 
+            this.btnRecovery.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnRecovery.FlatAppearance.BorderSize = 0;
+            this.btnRecovery.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRecovery.Location = new System.Drawing.Point(0, 606);
+            this.btnRecovery.Name = "btnRecovery";
+            this.btnRecovery.Size = new System.Drawing.Size(401, 35);
+            this.btnRecovery.TabIndex = 9;
+            this.btnRecovery.Text = "Recovery.title";
+            this.btnRecovery.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRecovery.UseVisualStyleBackColor = true;
+            this.btnRecovery.Click += new System.EventHandler(this.btnRecovery_Click);
+            // 
             // FileMenu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.btnRecovery);
             this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.btnCast);
             this.Controls.Add(this.btnSettings);
@@ -193,7 +209,7 @@
             this.Controls.Add(this.btnClose);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "FileMenu";
-            this.Size = new System.Drawing.Size(401, 672);
+            this.Size = new System.Drawing.Size(401, 701);
             this.ResumeLayout(false);
 
         }
@@ -209,5 +225,6 @@
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnCast;
         private System.Windows.Forms.Button btnPrint;
+        private System.Windows.Forms.Button btnRecovery;
     }
 }

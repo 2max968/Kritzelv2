@@ -103,6 +103,7 @@ namespace Kritzel.Main
             public string Date = null;
             public string Time = null;
             public DirectoryInfo Directory = null;
+            public string Comment = null;
         }
 
         public static List<RecoverableFileInfo> GetRecoverableDocuments()
@@ -127,6 +128,7 @@ namespace Kritzel.Main
                                     if (name == "Filename") info.Name = xml.ReadElementContentAsString();
                                     if (name == "Date") info.Date = xml.ReadElementContentAsString();
                                     if (name == "Time") info.Time = xml.ReadElementContentAsString();
+                                    if (name == "Comment") info.Comment = xml.ReadElementContentAsString();
                                 }
                                 catch { }
                             }

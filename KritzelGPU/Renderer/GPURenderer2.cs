@@ -297,9 +297,9 @@ namespace Kritzel.Main.Renderer
             return g;
         }
 
-        public override void DrawStroke(PBrush brush, IEnumerable<LPoint> points)
+        public override void DrawStroke(PBrush brush, IList<LPoint> points, float wScale)
         {
-            r.DrawStroke(brush, points);
+            r.DrawStroke(brush, points, wScale);
         }
     }
 }

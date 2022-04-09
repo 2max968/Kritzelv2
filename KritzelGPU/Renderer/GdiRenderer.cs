@@ -146,7 +146,7 @@ namespace Kritzel.Main.Renderer
             }
         }
 
-        public override void DrawStroke(PBrush brush, IEnumerable<LPoint> points)
+        public override void DrawStroke(PBrush brush, IList<LPoint> points, float wScale)
         {
             using (SolidBrush b = new SolidBrush(brush.GetColor()))
             {
@@ -160,7 +160,7 @@ namespace Kritzel.Main.Renderer
                     float width = pt.Rad * 2;
                     var p1 = new PointF(lastPoint.X, lastPoint.Y);
                     var p2 = new PointF(pt.X, pt.Y);
-                    using (Pen p = new Pen(b, width))
+                    using (Pen p = new Pen(b, width + wScale))
                     {
                         p.StartCap = LineCap.Round;
                         p.EndCap = LineCap.Round;

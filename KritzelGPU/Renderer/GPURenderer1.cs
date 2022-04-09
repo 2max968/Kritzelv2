@@ -494,8 +494,10 @@ namespace Kritzel.Main.Renderer
             }
         }
 
-        public override void DrawStroke(PBrush brush, IEnumerable<LPoint> points)
+        public override void DrawStroke(PBrush brush, IList<LPoint> points, float wScale)
         {
+            if (points == null)
+                return;
             var gdic = brush.GetColor();
             RawColor4 color = new RawColor4(gdic.R / 255f, gdic.G/ 255f, gdic.B / 255f, gdic.A / 255f);
             using (SolidColorBrush b = new SolidColorBrush(renderTarget, color))
@@ -505,18 +507,16 @@ namespace Kritzel.Main.Renderer
                     EndCap = CapStyle.Round,
                     StartCap = CapStyle.Round
                 })) {
-                    var enumerator = points.GetEnumerator();
-                    if (!enumerator.MoveNext())
+                    if (points.Count == 0)
                         return;
-                    LPoint lastPoint = enumerator.Current;
-                    while (enumerator.MoveNext())
+                    for(int i = 1; i < points.Count; i++)
                     {
-                        LPoint pt = enumerator.Current;
+                        LPoint pt = points[i];
+                        LPoint lastPoint = points[i - 1];
                         float width = pt.Rad * 2;
                         var p1 = new RawVector2(lastPoint.X, lastPoint.Y);
                         var p2 = new RawVector2(pt.X, pt.Y);
-                        renderTarget.DrawLine(p1, p2, b, width, style);
-                        lastPoint = pt;
+                        renderTarget.DrawLine(p1, p2, b, width + wScale, style);
                     }
                 }
             }

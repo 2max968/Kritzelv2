@@ -168,13 +168,7 @@ namespace Kritzel.Main
                 }
                 else
                 {
-                    g.DrawStroke(brush, Points);
-                    /*for(int i = 1; i < Points.Count; i++)
-                    {
-                        var p1 = new PointF(Points[i - 1].X, Points[i - 1].Y);
-                        var p2 = new PointF(Points[i].X, Points[i].Y);
-                        g.DrawLine(brush.GetColor(), Points[i].Rad, p1, p2, true, true);
-                    }*/
+                    g.DrawStroke(brush, Points, border);
                 }
             }
             else if(Points.Count > 1)

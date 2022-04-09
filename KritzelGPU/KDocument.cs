@@ -31,12 +31,12 @@ namespace Kritzel.Main
             DefaultFormat = Configuration.DefaultFormat;
         }
 
-        public void SavePDF(string path, ProgressBar pb = null, int dpi = -1)
+        public async Task SavePDF(string path, Dialogues.ProgressWindow pb = null, int dpi = -1)
         {
             if(pb != null)
             {
-                pb.Maximum = Pages.Count;
-                pb.Value = 0;
+                pb.ProgressBar.Maximum = Pages.Count;
+                pb.ProgressBar.Value = 0;
             }
             MemoryStream mstream = new MemoryStream();
             PdfDocument doc = new PdfDocument();
@@ -60,49 +60,70 @@ namespace Kritzel.Main
             PdfDocument doc2 = PdfReader.Open(mstream, PdfDocumentOpenMode.Modify);
             for (int i = 0; i < doc2.Pages.Count; i++)
             {
-                doc2.Pages[i].Rotate = (doc2.Pages[i].Rotate + Pages[i].Orientation * 90) % 360;
-                XGraphics gfx = XGraphics.FromPdfPage(doc2.Pages[i]);
-                SizeF s = Pages[i].Format.GetPixelSize();
-                float sX = (float)doc2.Pages[i].Width.Point / s.Width;
-                float sY = (float)doc2.Pages[i].Height.Point / s.Height;
-                gfx.ScaleTransform(sX, sY);
-                for (int j = 0; j < doc2.Pages[i].Rotate; j += 90)
+                Task<Exception> t = new Task<Exception>(() =>
                 {
-                    double shift = (doc2.Pages[i].Rotate / 90 + j) % 2 == 0 ? s.Width : s.Height;
-                    gfx.RotateAtTransform(-90, new XPoint(shift / 2, shift / 2));
-                }
-                var pdfRenderer = new Renderer.PdfRenderer(gfx);
-                Renderer.BaseRenderer r = pdfRenderer;
-                Bitmap _bmp = null;
-                Graphics _g = null;
-                if (dpi > 0)
+                    try
+                    {
+                        doc2.Pages[i].Rotate = (doc2.Pages[i].Rotate + Pages[i].Orientation * 90) % 360;
+                        XGraphics gfx = XGraphics.FromPdfPage(doc2.Pages[i]);
+                        SizeF s = Pages[i].Format.GetPixelSize();
+                        float sX = (float)doc2.Pages[i].Width.Point / s.Width;
+                        float sY = (float)doc2.Pages[i].Height.Point / s.Height;
+                        gfx.ScaleTransform(sX, sY);
+                        for (int j = 0; j < doc2.Pages[i].Rotate; j += 90)
+                        {
+                            double shift = (doc2.Pages[i].Rotate / 90 + j) % 2 == 0 ? s.Width : s.Height;
+                            gfx.RotateAtTransform(-90, new XPoint(shift / 2, shift / 2));
+                        }
+                        var pdfRenderer = new Renderer.PdfRenderer(gfx);
+                        Renderer.BaseRenderer r = pdfRenderer;
+                        Bitmap _bmp = null;
+                        Graphics _g = null;
+                        if (dpi > 0)
+                        {
+                            int _w = (int)(Pages[i].Format.Width * dpi / Util.MmPerInch);
+                            int _h = (int)(Pages[i].Format.Height * dpi / Util.MmPerInch);
+                            _bmp = new Bitmap(_w, _h);
+                            _g = Graphics.FromImage(_bmp);
+                            _g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                            _g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                            _g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                            _g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                            _g.ScaleTransform(Util.PointToMm(dpi / Util.MmPerInch), Util.PointToMm(dpi / Util.MmPerInch));
+                            _g.Clear(Color.FromArgb(0, 255, 255, 255));
+                            r = new Renderer.GdiRenderer(_g);
+                        }
+                        r.RenderSpecial = false;
+                        var pSize = Pages[i].Format.GetPixelSize();
+                        if (Pages[i].OriginalPage == null && Pages[i].BackgroundImage != null)
+                            r.DrawImage(Pages[i].BackgroundImage, new RectangleF(0, 0, pSize.Width, pSize.Height));
+                        Pages[i].Draw(r, pdfRenderer);
+                        _g?.Dispose();
+                        if (_bmp != null)
+                        {
+                            var oRect = new RectangleF(0, 0, Util.MmToPoint(Pages[i].Format.Width), Util.MmToPoint(Pages[i].Format.Height));
+                            var _img = new Renderer.Image(_bmp);
+                            pdfRenderer.DrawImage(_img, oRect);
+                            _img.Dispose();
+                        }
+                        _bmp?.Dispose();
+                    }
+                    catch(Exception e)
+                    {
+                        return e;
+                    }
+                    return null;
+                });
+                t.Start();
+                var exception = await t;
+                if (exception != null)
+                    throw exception;
+                pb.ProgressBar.Value++;
+                if(pb.Cancel)
                 {
-                    int _w = (int)(Pages[i].Format.Width * dpi / Util.MmPerInch);
-                    int _h = (int)(Pages[i].Format.Height * dpi / Util.MmPerInch);
-                    _bmp = new Bitmap(_w, _h);
-                    _g = Graphics.FromImage(_bmp);
-                    _g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                    _g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                    _g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                    _g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                    _g.ScaleTransform(Util.PointToMm(dpi / Util.MmPerInch), Util.PointToMm(dpi / Util.MmPerInch));
-                    _g.Clear(Color.FromArgb(0, 255, 255, 255));
-                    r = new Renderer.GdiRenderer(_g);
+                    mstream.Close();
+                    return;
                 }
-                r.RenderSpecial = false;
-                var pSize = Pages[i].Format.GetPixelSize();
-                if (Pages[i].OriginalPage == null && Pages[i].BackgroundImage != null)
-                    r.DrawImage(Pages[i].BackgroundImage, new RectangleF(0, 0, pSize.Width, pSize.Height));
-                Pages[i].Draw(r, pdfRenderer);
-                if (pb != null) pb.Value++;
-                _g?.Dispose();
-                if(_bmp != null)
-                {
-                    var _img = new Renderer.Image(_bmp);
-                    pdfRenderer.DrawImage(_img, new RectangleF(0, 0, Util.MmToPoint(Pages[i].Format.Width), Util.MmToPoint(Pages[i].Format.Height)));
-                    _img.Dispose();
-                }
-                _bmp?.Dispose();
             }
             doc2.Save(path);
 
@@ -142,8 +163,10 @@ namespace Kritzel.Main
                 using (XmlWriter writer = XmlWriter.Create(docFile.FullName, settings))
                 {
                     PdfDocument pdfDoc = new PdfDocument();
+                    string dispPath = path ?? FilePath;
                     writer.WriteStartElement("Document");
-                    writer.WriteElementString("Filename", comment ?? (path != null ? new FileInfo(path).Name : "Autosave"));
+                    writer.WriteElementString("Filename", !string.IsNullOrWhiteSpace(dispPath) ? new FileInfo(dispPath).Name : "Autosave");
+                    if (comment != null) writer.WriteElementString("Comment", comment);
                     writer.WriteElementString("Date", DateTime.Now.ToShortDateString());
                     writer.WriteElementString("Time", DateTime.Now.ToShortTimeString());
                     writer.WriteElementString("DefaultFormat", DefaultFormat);

@@ -29,6 +29,9 @@ namespace Kritzel.Main
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool IsUserAnAdmin();
 
+        [DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]
+        public static extern void CopyMemory(IntPtr dest, IntPtr src, uint count);
+
         public static RectangleF CreateRect(PointF p1, PointF p2)
         {
             RectangleF rect = new RectangleF(p1.X, p1.Y, p2.X - p1.X, p2.Y - p1.Y);
@@ -540,6 +543,118 @@ namespace Kritzel.Main
                 }
             }
             return lines;
+        }
+
+        public static Bitmap TrimBitmap(Bitmap bmp, out Rectangle rect)
+        {
+            BitmapData bDat = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            byte[] pixels = new byte[bmp.Width * bmp.Height * 4];
+            Marshal.Copy(bDat.Scan0, pixels, 0, pixels.Length);
+            bmp.UnlockBits(bDat);
+
+            int fX = 0, lX = bmp.Height, fY = 0, lY = bmp.Width;
+
+            // Find first x
+            bool breakloop = false;
+            for(int x = 0; x <= bmp.Width && !breakloop; x++)
+            {
+                if (x == bmp.Width)
+                {
+                    rect = new Rectangle(0, 0, 0, 0);
+                    return null;
+                }
+                else
+                {
+                    for (int y = 0; y < bmp.Height && !breakloop; y++)
+                    {
+                        int alpha = pixels[(y * bmp.Width) + x * 4];
+                        if (alpha > 0)
+                        {
+                            breakloop = true;
+                            fX = x;
+                        }
+                    }
+                }
+            }
+
+            // Find first y
+            breakloop = false;
+            for (int y = 0; y < bmp.Height && !breakloop; y++)
+            {
+                for (int x = 0; x < bmp.Width && !breakloop; x++)
+                {
+                    int alpha = pixels[(y * bmp.Width + x) * 4];
+                    if (alpha > 0)
+                    {
+                        breakloop = true;
+                        fY = y;
+                    }
+                }
+            }
+
+            // Find last x
+            breakloop = false;
+            for (int x = bmp.Width - 1; x >= 0 && !breakloop; x--)
+            {
+                for (int y = 0; y < bmp.Height && !breakloop; y++)
+                {
+                    int alpha = pixels[(y * bmp.Width + x) * 4];
+                    if (alpha > 0)
+                    {
+                        breakloop = true;
+                        lX = x;
+                    }
+                }
+            }
+
+            // Find last y
+            breakloop = false;
+            for (int y = bmp.Height - 1; y >= 0 && !breakloop; y--)
+            {
+                for (int x = 0; x < bmp.Width && !breakloop; x++)
+                {
+                    int alpha = pixels[(y * bmp.Width + x) * 4];
+                    if (alpha > 0)
+                    {
+                        breakloop = true;
+                        lY = y;
+                    }
+                }
+            }
+
+            // Copy area to new Bitmap
+            rect = new Rectangle(fX, fY, lX - fX, lY - fY);
+            Bitmap nbmp = new Bitmap(rect.Width, rect.Height);
+            /*BitmapData bDat2 = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData bDat3 = nbmp.LockBits(new Rectangle(0, 0, rect.Width, rect.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            byte[] buffer = new byte[rect.Width * rect.Height * 4];
+            Marshal.Copy(bDat2.Scan0, buffer, 0, buffer.Length);
+            Marshal.Copy(buffer, 0, bDat3.Scan0, buffer.Length);
+            //CopyMemory(bDat3.Scan0, bDat2.Scan0, (uint)(rect.Width * rect.Height * 4));
+            bmp.UnlockBits(bDat2);
+            nbmp.UnlockBits(bDat3);*/
+            using (Graphics g = Graphics.FromImage(nbmp))
+            {
+                g.DrawImage(bmp, new Rectangle(0, 0, rect.Width, rect.Height), rect, GraphicsUnit.Pixel);
+            }
+
+            return nbmp;
+        }
+
+        public static Bitmap TrimBitmap(Bitmap bmp, ref RectangleF rect)
+        {
+            var bmp2 = Util.TrimBitmap(bmp, out Rectangle trimrect);
+            if(bmp2 == null)
+            {
+                rect = new RectangleF(rect.X, rect.Y, 0, 0);
+                return null;
+            }
+            float scaleX = rect.Width / bmp.Width;
+            float scaleY = rect.Height / bmp.Height;
+            float offsX = rect.X;
+            float offsY = rect.Y;
+            rect = new RectangleF(offsX + trimrect.X * scaleX, offsY + trimrect.Y * scaleY, trimrect.Width * scaleX, trimrect.Height * scaleY);
+            return bmp2;
         }
     }
 }

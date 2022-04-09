@@ -12,10 +12,20 @@ namespace Kritzel.Main.Dialogues
 {
     public partial class ProgressWindow : Form
     {
-        public ProgressWindow(string text)
+        public bool Cancel { get; private set; } = false;
+
+        public ProgressWindow(string text, bool canCancel)
         {
             InitializeComponent();
             this.Text = text;
+            btnCancel.Text = Language.GetText(btnCancel.Text);
+            btnCancel.Enabled = canCancel;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Cancel = true;
+            btnCancel.Enabled = false;
         }
     }
 }
