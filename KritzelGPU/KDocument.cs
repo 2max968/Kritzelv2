@@ -232,7 +232,7 @@ namespace Kritzel.Main
         {
             log?.Add(MessageType.MSG, "Loading File '{0}'", path);
             DirectoryInfo dir = TmpManager.GetTmpDir();
-            if (path != null)
+            if (!string.IsNullOrWhiteSpace(path))
             {
                 ZipFile zip = new ZipFile(path);
                 if (dir.Exists) dir.RemoveAll();
@@ -322,8 +322,15 @@ namespace Kritzel.Main
                 pdfDoc.Dispose();
             }
 
-            this.FilePath = path;
-            SetCurrentStateAsSaved();
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                this.FilePath = null;
+            }
+            else
+            {
+                this.FilePath = path;
+                SetCurrentStateAsSaved();
+            }
             return true;
         }
 

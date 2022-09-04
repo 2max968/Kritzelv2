@@ -15,7 +15,6 @@ namespace Kritzel.Main.GUIElements
     {
         public delegate void CloseMenuEvent();
         public event CloseMenuEvent CloseMenu;
-        public event EventHandler<int> SettingsClosed;
 
         MainWindow window;
 
@@ -84,6 +83,8 @@ namespace Kritzel.Main.GUIElements
                 Label lblNodoc = new Label();
                 lblNodoc.Location = new Point(4, x + 4);
                 lblNodoc.Text = Language.GetText("Recovery.nodocs");
+                lblNodoc.AutoSize = true;
+                lblNodoc.MaximumSize = new Size(this.Width - Util.GetGUISize() * 2, 0);
                 Controls.Add(lblNodoc);
             }
         }
@@ -93,7 +94,7 @@ namespace Kritzel.Main.GUIElements
             this.CloseMenu += new CloseMenuEvent(handler);
         }
 
-        private void BtnDelete_Click(object sender, EventArgs e)
+        private async void BtnDelete_Click(object sender, EventArgs e)
         {
             var doc = (sender as Control)?.Tag as TmpManager.RecoverableFileInfo;
             if (doc == null)
@@ -105,6 +106,10 @@ namespace Kritzel.Main.GUIElements
             {
                 doc.Directory.Delete(true);
                 CloseMenu?.Invoke();
+                await Task.Delay(10);
+                RestorePanel rp = new RestorePanel(window);
+                rp.Dock = DockStyle.Left;
+                window.OpenDialog(rp);
             }
         }
 

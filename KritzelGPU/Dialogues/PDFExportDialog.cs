@@ -27,6 +27,10 @@ namespace Kritzel.Main.Dialogues
             Controls.Add(cb);
             cb.SelectedIndex = 1;
 
+            this.ClientSize = new Size(this.ClientSize.Width, (cb.Items.Length + 1) * Util.GetGUISize());
+            btnOk.Location = new Point(this.ClientSize.Width - btnOk.Width, this.ClientSize.Height - btnOk.Height);
+            btnCancel.Location = new Point(btnOk.Left - btnCancel.Width, this.ClientSize.Height - btnCancel.Height);
+
             Translator.Translate(this);
             this.BackColor = Style.Default.MenuBackground;
         }

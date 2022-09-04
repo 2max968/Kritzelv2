@@ -34,7 +34,7 @@ namespace Kritzel.Main
 
         public static void RemoveUnusedDirs()
         {
-            int[] list = new int[1024];
+            int[] list = new int[2048];
             int size = 0;
             EnumProcesses(list, 1024 * sizeof(int), ref size);
             int[] trunclist = new int[size];
@@ -54,9 +54,9 @@ namespace Kritzel.Main
 
         public static List<string> ListUnusedDirs()
         {
-            int[] list = new int[1024];
+            int[] list = new int[2048];
             int size = 0;
-            EnumProcesses(list, 1024 * sizeof(int), ref size);
+            EnumProcesses(list, 2048 * sizeof(int), ref size);
             int[] trunclist = new int[size];
             Array.Copy(list, trunclist, trunclist.Length);
 
@@ -118,21 +118,25 @@ namespace Kritzel.Main
                     info.Directory = new DirectoryInfo(dir);
                     using (XmlReader xml = XmlReader.Create(docName))
                     {
-                        while(xml.Read())
+                        try
                         {
-                            if (xml.NodeType == XmlNodeType.Element)
+                            while (xml.Read())
                             {
-                                try
+                                if (xml.NodeType == XmlNodeType.Element)
                                 {
-                                    string name = xml.Name;
-                                    if (name == "Filename") info.Name = xml.ReadElementContentAsString();
-                                    if (name == "Date") info.Date = xml.ReadElementContentAsString();
-                                    if (name == "Time") info.Time = xml.ReadElementContentAsString();
-                                    if (name == "Comment") info.Comment = xml.ReadElementContentAsString();
+                                    try
+                                    {
+                                        string name = xml.Name;
+                                        if (name == "Filename") info.Name = xml.ReadElementContentAsString();
+                                        if (name == "Date") info.Date = xml.ReadElementContentAsString();
+                                        if (name == "Time") info.Time = xml.ReadElementContentAsString();
+                                        if (name == "Comment") info.Comment = xml.ReadElementContentAsString();
+                                    }
+                                    catch { }
                                 }
-                                catch { }
                             }
                         }
+                        catch (Exception) { }
                     }
                     list.Add(info);
                 }

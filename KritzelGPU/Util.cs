@@ -436,7 +436,7 @@ namespace Kritzel.Main
                 if (res == DialogResult.Cancel) cancel = true;
                 else if (res == DialogResult.Yes)
                 {
-                    if (doc.FilePath == "")
+                    if (string.IsNullOrWhiteSpace(doc.FilePath))
                     {
                         SaveFileDialog sfd = new SaveFileDialog();
                         sfd.Filter = "Kritzel Document|*.krit";

@@ -513,6 +513,8 @@ namespace Kritzel.Main.Renderer
                     {
                         LPoint pt = points[i];
                         LPoint lastPoint = points[i - 1];
+                        if (pt == null || lastPoint == null)
+                            return;
                         float width = pt.Rad * 2;
                         var p1 = new RawVector2(lastPoint.X, lastPoint.Y);
                         var p2 = new RawVector2(pt.X, pt.Y);

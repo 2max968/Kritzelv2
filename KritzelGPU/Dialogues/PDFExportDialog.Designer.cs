@@ -35,9 +35,8 @@ namespace Kritzel.Main.Dialogues
             // 
             // btnCancel
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(68, 384);
+            this.btnCancel.Location = new System.Drawing.Point(76, 368);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(177, 72);
             this.btnCancel.TabIndex = 0;
@@ -47,8 +46,7 @@ namespace Kritzel.Main.Dialogues
             // 
             // btnOk
             // 
-            this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(251, 384);
+            this.btnOk.Location = new System.Drawing.Point(259, 368);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(177, 72);
             this.btnOk.TabIndex = 1;
@@ -62,7 +60,7 @@ namespace Kritzel.Main.Dialogues
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(436, 464);
+            this.ClientSize = new System.Drawing.Size(440, 444);
             this.ControlBox = false;
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
